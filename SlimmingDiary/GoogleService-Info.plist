@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>408674516813-57bbponber83hnea93o9fffl37tp5q3v.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.408674516813-57bbponber83hnea93o9fffl37tp5q3v</string>
+	<key>API_KEY</key>
+	<string>AIzaSyALlCEBdxWeKA6laznb92YtIrVPhDptfKc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>408674516813</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.Nick.SlimmingDiary</string>
+	<key>PROJECT_ID</key>
+	<string>simmingdiary-75e3b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>simmingdiary-75e3b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:408674516813:ios:6eec72a9ecfda184</string>
+	<key>DATABASE_URL</key>
+	<string>https://simmingdiary-75e3b.firebaseio.com</string>
+</dict>
+</plist>

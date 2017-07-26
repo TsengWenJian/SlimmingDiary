@@ -1,0 +1,33 @@
+//
+//  bodyTableViewCell.swift
+//  SlimmingDiary
+//
+//  Created by TSENGWENJIAN on 2017/6/16.
+//  Copyright © 2017年 Nick. All rights reserved.
+//
+
+import UIKit
+
+class BodyTableViewCell: UITableViewCell {
+    @IBOutlet weak var shadowView: UIView!
+    @IBOutlet weak var rightLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+
+    @IBOutlet weak var bodyLabel: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+       shadowView.backgroundColor = UIColor.white
+       shadowView.layer.shadowOpacity = 0.3
+       shadowView.layer.shadowOffset = CGSize(width: 1, height: 1)
+       shadowView.layer.shadowColor = UIColor.black.cgColor
+        // Initialization code
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
+}
