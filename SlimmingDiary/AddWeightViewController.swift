@@ -8,11 +8,7 @@
 
 import UIKit
 
-
-
-
-
-class AddWeightViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+class AddWeightViewController: UIViewController{
     
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var addPhotoTableView: UITableView!
@@ -22,30 +18,23 @@ class AddWeightViewController: UIViewController,UIImagePickerControllerDelegate,
     
     var detailArray = ["","加入"]{
         didSet{
-            
             addPhotoTableView.reloadData()
-            
         }
     }
     
     
     var titleArray = ["體重","進展照片"]
     var image:UIImage?
-    
-    
     var weight:Double = 0
     var actionType:ActionType = .insert
     var weightId:Int?
     
     
-    
-    
-    
     let proFileManager = ProfileManager.standard
     let weightMaster = WeightMaster.standard
+    var pickerVC:PickerViewController?
     
-    var pickerVC:PickerViewController!
-    var numberOfRows:Int = 300
+    var numberOfRows:Int = 200
     var numberOfComponents:Int = 2
     var setSelectRowOfbegin:Double = 1.0
     
@@ -55,35 +44,28 @@ class AddWeightViewController: UIViewController,UIImagePickerControllerDelegate,
         super.viewDidLoad()
         
         pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController")
-            as! PickerViewController
+            as? PickerViewController
         
         
-        pickerVC.delegate = self
+        pickerVC?.delegate = self
         titleArray[0] = type.rawValue
         detailArray[0] = "\(weight)"
         
         
-        
-        
-        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        pickerVC = nil
     }
     
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
+    //MARK:- Function
     func cancelAction(sender:UIButton){
-        
         dismiss(animated: true, completion: nil)
     }
     
-    
+
     func confirmAction(sender:UIButton){
-        
         
         var imageName:String?
         
@@ -91,22 +73,13 @@ class AddWeightViewController: UIViewController,UIImagePickerControllerDelegate,
             
             
             let hashString = "Cache_\(myImage.hash)"
-            
             let cachesURL = FileManager.default.urls(for:.cachesDirectory,in:.userDomainMask).first
             let fullFileImageName = cachesURL?.appendingPathComponent(hashString)
             
-            
-            
             let imageData = UIImageJPEGRepresentation(myImage,1)
             
-            
-            do{
-                try imageData?.write(to:fullFileImageName!,options: [.atomic])
-            }catch{
-                
-                
+            guard let _ = try? imageData?.write(to:fullFileImageName!,options: [.atomic]) else{
                 print("寫入照片失敗")
-                
                 return
             }
             
@@ -115,17 +88,19 @@ class AddWeightViewController: UIViewController,UIImagePickerControllerDelegate,
         }
         
         
-         weightMaster.diaryType = .weightDiary
+        weightMaster.diaryType = .weightDiary
         
         if actionType == .update {
             
             
             if let id = weightId {
                 let cond = "Weight_Id = '\(id)'"
-               
-                weightMaster.updataDiary(cond:cond,rowInfo: ["Weight_Photo":"'\(imageName ?? "No_Image")'",
-                    "Weight_Value":"'\(weight)'"])
+                
+                weightMaster.updataDiary(cond:cond,
+                                         rowInfo:["Weight_Photo":"'\(imageName ?? "No_Image")'",
+                                            "Weight_Value":"'\(weight)'"])
             }
+            
             
             
         }else{
@@ -135,8 +110,6 @@ class AddWeightViewController: UIViewController,UIImagePickerControllerDelegate,
                 proFileManager.setUserWeight(weight)
                 
             }
-
-            
             
             let diary = WeightDiary(id:nil,
                                     date:calender.displayDateString(),
@@ -151,62 +124,29 @@ class AddWeightViewController: UIViewController,UIImagePickerControllerDelegate,
         
         dismiss(animated: true, completion: nil)
         
-        
-        
     }
-    
-    
-    
+
     
     func launchImagePickerWithSourceType(type:UIImagePickerControllerSourceType){
+        
         
         if UIImagePickerController.isSourceTypeAvailable(type) == false{
             return
             
         }
         
-        
         let picker = UIImagePickerController()
         picker.sourceType =  type
         picker.delegate = self
-       
+        
         if type == .camera{
-             picker.mediaTypes = ["public.image"]
+            picker.mediaTypes = ["public.image"]
             
         }else{
             picker.allowsEditing = true;
             
         }
-       
         present(picker, animated: true, completion: nil)
-
-        
-        
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        
-       
-        image = UIImage()
-        
-        if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage{
-            image = photo
-            
-        }
-        
-        
-        if let myImage = info[UIImagePickerControllerEditedImage] as? UIImage {
-            image = myImage
-        }
-        
-        
-        
-        
-       
-        photoImageView.image = image?.resizeImage(maxLength:1024)
-        
-         dismiss(animated: true, completion: nil)
         
     }
     
@@ -215,7 +155,31 @@ class AddWeightViewController: UIViewController,UIImagePickerControllerDelegate,
 }
 
 
+//MARK: -UIImagePickerControllerDelegate,UINavigationControllerDelegate
+extension AddWeightViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
 
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        image = UIImage()
+        
+        if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage{
+            image = photo
+            
+        }
+        if let myImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+            image = myImage
+        }
+        
+        photoImageView.image = image?.resizeImage(maxLength:1024)
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+}
+
+
+//MARK: -UITableViewDelegate,UITableViewDataSource
 extension AddWeightViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -231,6 +195,7 @@ extension AddWeightViewController:UITableViewDelegate,UITableViewDataSource{
         return headerCell.contentView
     }
     
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -243,21 +208,20 @@ extension AddWeightViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        
         return 44
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0{
+            
             if let detail = Double(detailArray[0]){
                 
                 setSelectRowOfbegin = detail
-                
-                
             }
             
-            pickerVC.displayPickViewDialog(present: self)
+            pickerVC?.displayPickViewDialog(present: self)
             
         }
         
@@ -285,27 +249,16 @@ extension AddWeightViewController:UITableViewDelegate,UITableViewDataSource{
             
         }
         
-        
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
-        
-        
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell", for: indexPath)
         cell.textLabel?.text = titleArray[indexPath.row]
-        
         cell.detailTextLabel?.text = detailArray[indexPath.row]
-        
-        
         
         return cell
     }
-    
-    
 }
 
 extension AddWeightViewController:PickerViewDelegate{

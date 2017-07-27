@@ -14,9 +14,7 @@ class FoodDiaryViewController: UIViewController{
     var isExpend = [true,true,true,true]
     var sectionArray = [[foodDetails]]()
     let master = foodMaster.standard
-    var ok:Int = {
-        return 1
-    }()
+    
     
     
     override func viewDidLoad() {
@@ -25,10 +23,7 @@ class FoodDiaryViewController: UIViewController{
         
         // 收到通知刷新 tableView
         NotificationCenter.default.addObserver(self, selector: #selector(refreshSectionArray), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
-        
-        
-        
-        
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,11 +41,7 @@ class FoodDiaryViewController: UIViewController{
         let nibFooter = UINib(nibName: "FooterTableViewCell", bundle: nil)
         diaryTableView.register(nibFooter, forCellReuseIdentifier: "footerCell")
         
-        
-        
-        
-        
-        
+
         
     }
     
@@ -93,9 +84,7 @@ class FoodDiaryViewController: UIViewController{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! BodyTableViewCell
         
-        
-        
-        
+
         let  diary = sectionArray[indexPath.section][indexPath.row]
         cell.titleLabel.text = diary.sampleName
         
@@ -206,15 +195,10 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             master.deleteDiary(cond: cond)
             sectionArray[indexPath.section].remove(at:indexPath.row)
             
-            
-            
+
             diaryTableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)
             
-        } else if editingStyle == .insert {
-            
         }
-        
-        
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -238,10 +222,7 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         
         
         return footerCell.contentView
-        
-        
-        
-        
+
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -263,28 +244,18 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
                 return "- "+String(Int(calorieSum))+" 大卡"
                 
             }
-            
         }()
         
-        var stretchbButton  = UIButton(type: .custom)
-        stretchbButton = UIButton(frame:CGRect(x: 0, y: 0,
-                                               width: headerCell.contentView.bounds.width,
-                                               height:headerCell.contentView.bounds.height))
-        stretchbButton.addTarget(self, action: #selector(sectionIsExpend), for: .touchUpInside)
-        stretchbButton.tag = 1000 + section
-        headerCell.contentView.addSubview(stretchbButton)
+        
+        headerCell.expendBtn.addTarget(self, action: #selector(sectionIsExpend), for: .touchUpInside)
+        headerCell.expendBtn.tag = 1000 + section
+        
         
         
         return headerCell.contentView
         
     }
-    
-    
-    
-    
-    
-    
-    
+
 }
 
 

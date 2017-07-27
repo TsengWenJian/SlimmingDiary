@@ -18,23 +18,15 @@ class RssTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        shadowView.layer.shadowColor = UIColor.black.cgColor
-        shadowView.layer.shadowOpacity = 0.5
-        shadowView.layer.shadowOffset = CGSize(width: 1, height: 1)
+        shadowView.setShadowView(1,0.4, CGSize(width: 1, height: 1))
+        LabelView.setShadowView(0,0.2, CGSize(width: 1, height: 1))
         
-        LabelView.layer.shadowColor = UIColor.black.cgColor
-        LabelView.layer.shadowOpacity = 0.2
-        LabelView.layer.shadowOffset = CGSize(width: 1, height: 1)
-        LabelView.backgroundColor = UIColor.white
-        
-      
-        // Initialization code
-    }
+            }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+        
     }
 
 }

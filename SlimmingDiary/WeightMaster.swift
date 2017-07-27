@@ -19,15 +19,12 @@ struct WeightDiary {
 }
 
 
-
-
-
-
-
 enum WeightDiaryType:String {
     case weight = "體重"
     case bodyFat = "體脂"
 }
+
+
 class WeightMaster: DiaryManager {
     
     static let standard = WeightMaster()
@@ -41,20 +38,12 @@ class WeightMaster: DiaryManager {
     
         
         var array = [WeightDiary]()
-        
-        let cachesURL = FileManager.default.urls(for:.cachesDirectory, in: .userDomainMask).first
-        
-        
-        
+    
         for diary in getDiaryData(cond: cond, order: order){
             
             var fullFileImageName:String
             
-            
-            
-            
-
-            
+                 
             if diary["Weight_Photo"] as? String == "No_Image"{
                 
                 fullFileImageName = "No_Image"
@@ -65,11 +54,7 @@ class WeightMaster: DiaryManager {
                 
             }
             
-           
-            
-            
-            
-            let weDiary = WeightDiary(id:diary["Weight_Id"] as? Int,
+             let weDiary = WeightDiary(id:diary["Weight_Id"] as? Int,
                                       date:diary["Weight_Date"] as! String,
                                       time:diary["Weight_Time"] as! String,
                                       type:diary["Weight_Type"] as! String,

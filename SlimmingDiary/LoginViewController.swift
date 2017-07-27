@@ -24,12 +24,14 @@ class LoginViewController: UIViewController {
     let serviceManager = DataService.standard
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         containerTextFieldsView.setShadowView(5,0.2, CGSize.zero)
         loginBtn.layer.cornerRadius = 5
         fbLoginBtn.layer.cornerRadius = 5
+        
         
     }
     
@@ -44,9 +46,6 @@ class LoginViewController: UIViewController {
         view.endEditing(true)
         
     }
-    
-    
-    
     
     func singInWithEmail(email:String,password:String){
         
@@ -63,8 +62,6 @@ class LoginViewController: UIViewController {
             
             self.serviceManager.downlondUserDataWithLogin(done: { (dataDict) in
                 
-                toast.removefromView()
-                
                 
                 guard let dict = dataDict else{
                     
@@ -76,11 +73,12 @@ class LoginViewController: UIViewController {
                 
                 if let imageURLString = dict["imageURL"] as? String{
                     photoURL = URL(string:imageURLString)
+                    
                 }
                 
                 
                 self.setDataWithUserDefault(name:dict["name"] as? String,
-                                            imageURL:photoURL)
+                                            imageURL:photoURL,toast:toast)
                 
             })
             
@@ -107,17 +105,17 @@ class LoginViewController: UIViewController {
             
             self.serviceManager.uploadUserDataToDB(userName: name, imageURL: nil, done: { (error) in
                 
-                toast.removefromView()
+                
                 
                 if let err = error{
-                    
+                    toast.removefromView()
                     self.showAlertWithError(message:err.localizedDescription)
                     
                     return
                     
                 }
                 
-                self.setDataWithUserDefault(name:name,imageURL: nil)
+                self.setDataWithUserDefault(name:name,imageURL:nil,toast: toast)
             })
             
         }
@@ -131,17 +129,19 @@ class LoginViewController: UIViewController {
         
         serviceManager.longInWithFB(VC: self) { (error) in
             
-            toast.removefromView()
+            
             
             if let err = error{
+                toast.removefromView()
                 self.showAlertWithError(message: err.localizedDescription)
                 return
             }
             
             
+            
             let user = self.serviceManager.currentUser
             self.setDataWithUserDefault(name:user?.displayName,
-                                        imageURL:user?.photoURL)
+                                        imageURL:user?.photoURL, toast: toast)
             
             
         }
@@ -156,9 +156,10 @@ class LoginViewController: UIViewController {
         
         
     }
-
     
-    func setDataWithUserDefault(name:String?,imageURL:URL?){
+    func setDataWithUserDefault(name:String?,imageURL:URL?,toast:NickToastUIView){
+        
+        
         
         //check is real login
         guard let user = serviceManager.currentUser else{
@@ -167,43 +168,33 @@ class LoginViewController: UIViewController {
         }
         
         
-        
         self.manager.setUid(user.uid)
         self.manager.setUserName(name)
         self.manager.setUserEmail(user.email)
         
-        
-        
         if let url = imageURL {
+            
             //Save image into caches
             let photoName = "Profile_\(user.uid)"
             self.manager.setPhotName(photoName)
-            
-            serviceManager.downloadImageSaveWithCaches(url: url, imageName: photoName, done: { (error) in
+            serviceManager.downloadImageSaveWithCaches(url:url,imageName:photoName,done: { (error) in
                 
                 
                 DispatchQueue.main.async {
+                    toast.removefromView()
                     self.navigationController?.popViewController(animated: true)
                     
                 }
-                
             })
-            
             
         }else{
             
-            
             DispatchQueue.main.async {
+                toast.removefromView()
                 self.navigationController?.popViewController(animated: true)
                 
             }
-            
-            
-            
-            
         }
-        
-        
         
     }
     
@@ -278,7 +269,6 @@ class LoginViewController: UIViewController {
         }, completion: { (Bool) in
             
             self.nameTextField.isHidden = isHidden
-            
             
         })
     }

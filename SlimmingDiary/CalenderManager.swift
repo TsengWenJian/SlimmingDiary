@@ -187,11 +187,13 @@ class CalenderManager{
         let formmater = DateFormatter()
         formmater.dateFormat = "YYYY-MM-dd"
         
+        
         return formmater.string(from: date)
         
     }
     
     func displayDateString()->String{
+        
        return myDateToString(displayDate)
     }
     
@@ -214,10 +216,8 @@ class CalenderManager{
     
     func myDateToString(_ myDate:MyDate)->String{
         
-        let dateComponent = myDateToDateComponet(myDate:myDate)
-        let calendar = Calendar.current
-        let date = calendar.date(from:dateComponent)!
-        return dateToString(date)
+    
+        return "\(myDate.year)-\(myDate.month)-\(myDate.day)"
         
     }
    

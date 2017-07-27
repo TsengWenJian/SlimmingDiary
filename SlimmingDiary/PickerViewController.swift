@@ -48,7 +48,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         
         pickerView.reloadAllComponents()
         dotLabel.isHidden = true
-               
+        
         interger = floor(delegate.setSelectRowOfbegin)
         point = (delegate.setSelectRowOfbegin - interger)*10
         //有bug double 轉int 2.0->結果是1 暫時用先轉float
@@ -61,7 +61,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         
         if delegate.numberOfComponents == 2{
             
-           dotLabel.isHidden = false
+            dotLabel.isHidden = false
             
             
             pickerView.selectRow(Int(s), inComponent: 1, animated: true)
@@ -92,7 +92,6 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
     @IBAction func comfirmButton(_ sender: Any) {
         
         didSelectRowNumber = interger+point
-        
         delegate.getSelectRow(data:didSelectRowNumber)
         hideDialog()
         
@@ -126,7 +125,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         return  delegate.numberOfComponents
     }
     
-
+    
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
@@ -138,10 +137,8 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
             point = Double(row)/10
             
         }
-    
+        
     }
-    
-    
     
     
     

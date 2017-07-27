@@ -25,14 +25,14 @@ class WeightDiaryViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
+        let nibHeader = UINib(nibName: "HeaderTableViewCell",bundle: nil)
         weightTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
         
         
-        let nibFooter = UINib(nibName: "FooterTableViewCell", bundle: nil)
+        let nibFooter = UINib(nibName: "FooterTableViewCell",bundle: nil)
         weightTableView.register(nibFooter, forCellReuseIdentifier: "footerCell")
         
-         NotificationCenter.default.addObserver(self, selector: #selector(setWeightDiary), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(setWeightDiary), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
         
         
     }
@@ -50,9 +50,7 @@ class WeightDiaryViewController: UIViewController{
     func setWeightDiary(){
         
         weightDiaryArray.removeAll()
-        
         weightMaster.diaryType = .weightDiary
-        
         
         for title in sectionTitle{
             let cond = "Weight_Type = '\(title)' and Weight_Date = '\(CalenderManager.standard.displayDateString())'"
@@ -63,8 +61,7 @@ class WeightDiaryViewController: UIViewController{
         
         self.weightTableView.reloadData()
         
-        
-          }
+    }
     
     func setWeightProgress(){
         
@@ -72,19 +69,17 @@ class WeightDiaryViewController: UIViewController{
         guard let weight = weightMaster.getLasetWeightValue(.weight) else{
             return
         }
-    
+        
         bodyManager.setBodyData(ProfileManager.standard.userHeight,
                                 weight,
                                 ProfileManager.standard.userGender)
         
         let bmi  = String(format:"%0.1f",bodyManager.getBmi())
-        weightView.setTitleLabelText(text:bodyManager.getWeightType().rawValue)
+        weightView.setTitleText(text:bodyManager.getWeightType().rawValue)
         weightView.setTitleColor(bodyManager.getWeightTypeColor())
-        weightView.setDetailTitleLabelText(text:"理想 \(bodyManager.getIdealWeight())kg")
-        weightView.setSubTitleLabelText(text:"BMI:\(bmi)")
+        weightView.setDetailText(text:"理想 \(bodyManager.getIdealWeight())kg")
+        weightView.setSubTitleText(text:"BMI:\(bmi)")
         weightView.resetProgress(progress:bodyManager.getBmi())
-        
-        
         
     }
     
@@ -95,12 +90,11 @@ class WeightDiaryViewController: UIViewController{
         }
         
         let bodyType = bodyManager.getBodyFatType(fat: bodyFat)
-        bodyFatView.setTitleLabelText(text:bodyType.rawValue)
+        bodyFatView.setTitleText(text:bodyType.rawValue)
         bodyFatView.setTitleColor(bodyManager.getBodyFatTitleColor(type:bodyType))
-        bodyFatView.setDetailTitleLabelText(text:"理想 \(bodyManager.getIdealBodyFat())%")
-        bodyFatView.setSubTitleLabelText(text:"\(bodyFat)")
+        bodyFatView.setDetailText(text:"理想 \(bodyManager.getIdealBodyFat())%")
+        bodyFatView.setSubTitleText(text:"\(bodyFat)")
         bodyFatView.resetProgress(progress:bodyFat)
-
         
     }
     
@@ -127,8 +121,6 @@ class WeightDiaryViewController: UIViewController{
     
     
     func plusWeight(sender:UIButton){
-        
-        
         
         let section = sender.tag - 1500
         var type:WeightDiaryType
@@ -160,7 +152,7 @@ class WeightDiaryViewController: UIViewController{
         nextPage.weight = data
         navigationController?.showDetailViewController(nextPage, sender: self)
     }
-
+    
     
 }
 
@@ -201,7 +193,6 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             weightView = progressCell.weightProgress
             setWeightProgress()
             
-
             
             bodyFatView = progressCell.fatProgress
             setBodyFatProgress()
@@ -229,11 +220,10 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         }
         
         cell.photoImageView.image = UIImage(imageName:diary[indexPath.row].photo)
-            
-        
         
         return cell
     }
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0{
@@ -286,7 +276,7 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         footerCell.titleLabel.text = footText
         footerCell.footerButton.addTarget(self,action:#selector(plusWeight), for: .touchUpInside)
         footerCell.footerButton.tag = 1500 + section
-
+        
         return footerCell.contentView
     }
     
@@ -323,7 +313,7 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             navigationController?.showDetailViewController(nextPage, sender: self)
             nextPage.weightId = weightDiaryArray[indexPath.section-1][indexPath.row].id
             
-
+            
             return
             
         }
@@ -332,11 +322,10 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         nextPage.type = sectionTitle[indexPath.section-1]
         nextPage.weightId = weightDiaryArray[indexPath.section-1][indexPath.row].id
         
-    
+        
     }
+    
 
-    
-    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
@@ -345,14 +334,10 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             weightMaster.diaryType = .weightDiary
             weightMaster.deleteDiary(cond: cond)
             weightDiaryArray[indexPath.section-1].remove(at:indexPath.row)
-            weightTableView.deleteRows(at:[indexPath], with: .automatic)
-            
-            
-        } else if editingStyle == .insert {
-                    }
+            weightTableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)
+        }
+    
+    
     }
-    
-    
-    
 }
 

@@ -74,6 +74,8 @@ import UIKit
             
         }
         
+        
+        
         trackLayer = CAShapeLayer()
         let startAngle:CGFloat = CGFloat(Double.pi)
         let endAngle: CGFloat = CGFloat(Double.pi * 2)
@@ -273,7 +275,7 @@ import UIKit
     
     
     
-    func setTitleLabelText(text:String){
+    func setTitleText(text:String){
         
         titleLabel.text = text
         titleLabel.sizeToFit()
@@ -282,7 +284,7 @@ import UIKit
         
     }
     
-    func setSubTitleLabelText(text:String){
+    func setSubTitleText(text:String){
         
         subTitleLabel.text = text
         subTitleLabel.sizeToFit()
@@ -292,7 +294,7 @@ import UIKit
         
     }
     
-    func setDetailTitleLabelText(text:String){
+    func setDetailText(text:String){
         
         detailLabel.text = text
         detailLabel.sizeToFit()

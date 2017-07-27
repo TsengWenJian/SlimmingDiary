@@ -17,10 +17,11 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     @IBOutlet weak var basicCalorieLabel: UILabel!
     
     
+    
+    
     let bodyManager = BodyInformationManager.standard
     let profileManager = ProfileManager.standard
     let foodManager = foodMaster.standard
-    
     let textView = UITextView()
     let rangeTextLabel = UILabel()
     let placeholderLabel = UILabel()
@@ -169,9 +170,6 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     
     
-    
-    
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
@@ -191,10 +189,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         
         
-        
-        
-        
-        
+          
         if countOfWords > 0{
             
             placeholderLabel.isHidden = true

@@ -76,20 +76,22 @@ class PersonalFilesViewController: UIViewController {
         
     }
     
-
+    
     
     func editUserData(sender:UIBarButtonItem){
         
         
-        
-       // is not log in
+        // save basic body data into userDefault
         self.manager.setUserData(data: userData)
+        
+        
+        // is not log in
         if manager.userUid == nil{
             self.navigationController?.popViewController(animated:true)
-
+            
             return
         }
-
+        
         
         userNameTextfield?.resignFirstResponder()
         let name = userNameTextfield?.text
@@ -108,45 +110,53 @@ class PersonalFilesViewController: UIViewController {
             return
         }
         
-        let uploadData = UIImageJPEGRepresentation(userPhoto!,1)
         
-        
-        let toast = NickToastUIView(supView: self.view, type:.Upload)
-        
-        serviceManager.uploadProfileImage(data:uploadData!) { (photoURL, error) in
-            
-            if error != nil{
-                toast.removefromView()
-                self.showAlertError(error:error?.localizedDescription)
-                return
-            }
+        // upload userPhoto to storage and update name and photoUrl to firDB
+        if let finalPhoto = userPhoto,
+           let uploadData = UIImageJPEGRepresentation(finalPhoto,0.8){
             
             
             
-            self.serviceManager.uploadUserDataToDB(userName:name,imageURL:photoURL,done: { (error) in
+            
+            
+            let toast = NickToastUIView(supView: self.view, type:.Upload)
+            
+            serviceManager.uploadProfileImage(data:uploadData) { (photoURL, error) in
                 
-                toast.removefromView()
-                
-                if error != nil {
+                if error != nil{
+                    toast.removefromView()
                     self.showAlertError(error:error?.localizedDescription)
                     return
+                }
+                
+                
+                
+                self.serviceManager.uploadUserDataToDB(userName:name,imageURL:photoURL,done: { (error) in
                     
-                }
+                    toast.removefromView()
+                    
+                    if error != nil {
+                        self.showAlertError(error:error?.localizedDescription)
+                        return
+                        
+                    }
+                    
+                    guard let uid = self.manager.userUid else{
+                        return
+                    }
+                    
+                    self.manager.setPhotName("Profile_\(uid)")
+                    self.manager.setUserName(name)
+                    let cachesURL = FileManager.default.urls(for:.cachesDirectory, in: .userDomainMask).first
+                    let fullFileImageName = cachesURL?.appendingPathComponent("Profile_\(uid)")
+                    try?uploadData.write(to: fullFileImageName!)
                 
-                guard let uid = self.manager.userUid else{
-                    return
-                }
+                    self.navigationController?.popViewController(animated:true)
+                    
+                    
+                })
                 
-                self.manager.setPhotName("Profile_\(uid)")
-                let cachesURL = FileManager.default.urls(for:.cachesDirectory, in: .userDomainMask).first
-                let fullFileImageName = cachesURL?.appendingPathComponent("Profile_\(uid)")
-                try?uploadData?.write(to: fullFileImageName!)
-                self.manager.setUserName(name)
-                self.navigationController?.popViewController(animated:true)
-                
-                
-            })
-            
+            }
         }
     }
     
@@ -325,6 +335,8 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
         
         currentTouchRow = indexPath.row
         if indexPath.row == 0{

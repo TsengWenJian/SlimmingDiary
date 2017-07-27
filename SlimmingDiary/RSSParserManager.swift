@@ -60,16 +60,21 @@ class RSSParserManager:NSObject,XMLParserDelegate {
         
     }
     
-    
-//    func f(str:String){
-//        let dateformatter = DateFormatter()
-//        let date = Date()
-//        dateformatter.dateFormat = "EEE, dd MMM YYYY HH:mm:ss"
-//        dateformatter.locale = Locale(identifier: "en_US")
-//        let newDate = dateformatter.date(from:string)
-//        print(dateString)
-//    }
 //    
+//    func f(str:String){
+//        
+//        let dateformatter = DateFormatter()
+//        dateformatter.dateFormat = "EEE, dd MMM YYYY HH:mm:ss "
+//        dateformatter.locale = Locale(identifier: "en_US")
+////      dateformatter.timeZone = TimeZone(abbreviation: "GMT")
+//        
+//        
+//        let offset = TimeZone.current.secondsFromGMT()
+//        let date = Date(timeInterval:TimeInterval(offset), since:dateformatter.date(from: str)!)
+//        print(Calendar.current.dateComponents([.year,.month,.day], from: date))
+//        
+//    }
+    
     
     
     
@@ -143,10 +148,17 @@ class RSSParserManager:NSObject,XMLParserDelegate {
             
         }else if  elementName ==  "pubDate"{
             
+            
+            
+            
+            
+         
+            
        let date = currentValue.replacingOccurrences(of:"+0800", with:"")
             
             currentNewsItem?.pubDate = date
             
+           
         }
         
         currentElementValue = nil

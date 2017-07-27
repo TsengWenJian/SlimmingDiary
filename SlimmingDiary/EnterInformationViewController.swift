@@ -22,8 +22,8 @@ class EnterInformationViewController: UIViewController {
     @IBOutlet weak var weightProgress: NickProgress2UIView!
     let manager = ProfileManager.standard
     let bodyManager = BodyInformationManager.standard
-    var datePickerVC:DatePickerViewController!
-    var pickerVC:PickerViewController!
+    var datePickerVC:DatePickerViewController?
+    var pickerVC:PickerViewController?
     
     
     var numberOfRows:Int = 0
@@ -56,7 +56,7 @@ class EnterInformationViewController: UIViewController {
            
         }
         
-        weightProgress.setSubTitleLabelText(text: "--")
+        weightProgress.setSubTitleText(text: "--")
         
         
     
@@ -70,15 +70,21 @@ class EnterInformationViewController: UIViewController {
         
         
         datePickerVC = storyboard?.instantiateViewController(withIdentifier:"DatePickerViewController")
-            as! DatePickerViewController
+            as? DatePickerViewController
         
         pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController")
-            as! PickerViewController
+            as? PickerViewController
         
-        datePickerVC.delegate = self
-        pickerVC.delegate = self
+        datePickerVC?.delegate = self
+        pickerVC?.delegate = self
         
         
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // 有 leak 需要 設 nil
+        datePickerVC = nil
+        pickerVC = nil
     }
     
     
@@ -87,7 +93,7 @@ class EnterInformationViewController: UIViewController {
         if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "FirstPage") {
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
-            self.dismiss(animated: true, completion: nil)
+            navigationController?.popViewController(animated: false)
         }
     
     }
@@ -172,7 +178,7 @@ class EnterInformationViewController: UIViewController {
                 setSelectRowOfbegin = 60
             }
             
-            pickerVC.displayPickViewDialog(present: self)
+            pickerVC?.displayPickViewDialog(present: self)
             
             
         case 1:
@@ -202,7 +208,7 @@ class EnterInformationViewController: UIViewController {
         case 2:
             
             
-            datePickerVC.displayPickViewDialog(present: self)
+            datePickerVC?.displayPickViewDialog(present: self)
             
             break
         case 3:
@@ -218,7 +224,7 @@ class EnterInformationViewController: UIViewController {
                 
             }
             
-            pickerVC.displayPickViewDialog(present: self)
+            pickerVC?.displayPickViewDialog(present: self)
             
             break
         case 4:
@@ -231,7 +237,7 @@ class EnterInformationViewController: UIViewController {
                 
             }
             
-            pickerVC.displayPickViewDialog(present: self)
+            pickerVC?.displayPickViewDialog(present: self)
             
             break
         default:
@@ -247,6 +253,7 @@ class EnterInformationViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
 }
 //MARK: - DatePickerDelegate
@@ -302,10 +309,10 @@ extension EnterInformationViewController:PickerViewDelegate{
         let bmi  = String(format:"%0.1f",bodyManager.getBmi())
         
         
-        weightProgress.setTitleLabelText(text:bodyManager.getWeightType().rawValue)
+        weightProgress.setTitleText(text:bodyManager.getWeightType().rawValue)
         weightProgress.setTitleColor(bodyManager.getWeightTypeColor())
-        weightProgress.setDetailTitleLabelText(text:"理想體重:\(bodyManager.getIdealWeight())kg")
-        weightProgress.setSubTitleLabelText(text:"BMI:\(bmi)")
+        weightProgress.setDetailText(text:"理想體重:\(bodyManager.getIdealWeight())kg")
+        weightProgress.setSubTitleText(text:"BMI:\(bmi)")
         weightProgress.resetProgress(progress:bodyManager.getBmi())
         
         

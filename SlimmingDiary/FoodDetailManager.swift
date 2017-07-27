@@ -49,10 +49,6 @@ class foodDetailManager {
             
         }
         
-        
-        
-        
-        
         if(lastPageVC == .insert){
             
             let cond = "foodDetails_id = "+"\""+String(foodId!)+"\""

@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ProgressPhotoViewController:UIViewController,UICollectionViewDelegate,UICollectionViewDataSource{
+
+class ProgressPhotoViewController:UIViewController{
     
     
     @IBOutlet weak var imageScrollView2: UIScrollView!
@@ -54,12 +55,10 @@ class ProgressPhotoViewController:UIViewController,UICollectionViewDelegate,UICo
         
         imageScrollView2Trailing.constant = -view.frame.width/2
         
-        
-        
-        
         weightMaster.diaryType = .weightDiary
         let cond = "Weight_Photo != 'No_Image' and Weight_Type = '\(myType)'"
-        weightArray = weightMaster.getWeightDiary(cond:cond,order: nil)
+        let order = "Weight_Date asc"
+        weightArray = weightMaster.getWeightDiary(cond:cond,order:order)
         imageNumber = 0
         
         
@@ -91,8 +90,6 @@ class ProgressPhotoViewController:UIViewController,UICollectionViewDelegate,UICo
         imageScrollView2.zoomScale = 1.1
         
         
-        
-        
         for (index,value) in weightArray.enumerated(){
             
             if value.id == weightId{
@@ -115,12 +112,13 @@ class ProgressPhotoViewController:UIViewController,UICollectionViewDelegate,UICo
         
     }
     
-    
+    // photo Collection view contentoffset 
     func setContentOffSet(index:Int){
         let itemWidth = view.frame.width/4
         let offset = -(photoCollectionView.contentInset.left)
         let x = CGPoint(x:offset + itemWidth*CGFloat(index),y:0)
         photoCollectionView.setContentOffset(x,animated: true)
+        
         
     }
     
@@ -176,8 +174,7 @@ class ProgressPhotoViewController:UIViewController,UICollectionViewDelegate,UICo
     
     
     
-    
-    
+
     
     func changeLabelText(){
         
@@ -236,17 +233,19 @@ class ProgressPhotoViewController:UIViewController,UICollectionViewDelegate,UICo
         
     }
     
+
+}
+//MARK: -UICollectionViewDelegate,UICollectionViewDataSource
+extension ProgressPhotoViewController:UICollectionViewDelegate,UICollectionViewDataSource{
     
-    
-    
-    
-    //MARK: - UICollectionViewDelegate,UICollectionViewDataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return  1
+        
     }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return weightArray.count
     }
     
@@ -277,18 +276,13 @@ class ProgressPhotoViewController:UIViewController,UICollectionViewDelegate,UICo
         setContentOffSet(index:indexPath.row)
         
     }
-    
-    
-    
 }
 
+//MARK: -UIScrollViewDelegate
 extension ProgressPhotoViewController:UIScrollViewDelegate{
     
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        
-        
         
         
         //  container photo scrollView
@@ -298,8 +292,6 @@ extension ProgressPhotoViewController:UIScrollViewDelegate{
            
             return
         }
-        
-        
         
         let itemHalf = view.frame.width/4
         let offset = scrollView.contentOffset.x + view.frame.midX - itemHalf/2
@@ -319,13 +311,11 @@ extension ProgressPhotoViewController:UIScrollViewDelegate{
     }
     
     
+    
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         
-       
-
         
         if scrollView.tag == 100 {
-            
             
             return displayImageView
             
@@ -336,7 +326,4 @@ extension ProgressPhotoViewController:UIScrollViewDelegate{
         
         return nil
     }
-    
-    
-    
 }

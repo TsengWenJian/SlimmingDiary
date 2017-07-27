@@ -113,12 +113,10 @@ class ChoiceFoodViewController: UIViewController{
     }
     override func viewWillAppear(_ animated: Bool) {
         
-        
-        
-        
         let int = currentButton
         currentButton = int
-        setPlusSum()
+        setNavBtnTitle()
+        
         
     }
     
@@ -172,12 +170,12 @@ class ChoiceFoodViewController: UIViewController{
     
     
     //MARK: - Fucction
-    func setPlusSum(){
+    func setNavBtnTitle(){
         
         navigationItem.rightBarButtonItems?[0].title = "加入(\(master.switchIsOn.count))"
         
-        
     }
+    
     func insertFoodDiary(){
         
         master.diaryType = .foodDiary
@@ -208,68 +206,54 @@ class ChoiceFoodViewController: UIViewController{
         let point = sender.convert(CGPoint.zero, to: choiceFoodTableView)
         
         
-        
-        
-        guard let myDinnerTime = dinnerTime else{
-            return
+        guard let myDinnerTime = dinnerTime,
+            let indexPath = choiceFoodTableView.indexPathForRow(at: point),
+            let cell = choiceFoodTableView.cellForRow(at:indexPath) as? SearchTableViewCell,
+            let cellFoodId = cell.id else{
+                
+                return
         }
         
-        guard  let indexPath = choiceFoodTableView.indexPathForRow(at: point) else{
-            return
-        }
-        
-        
-        let cell = choiceFoodTableView.cellForRow(at:indexPath) as! SearchTableViewCell
-        
-        guard let cellFoodId = cell.id else{
-            
-            return
-        }
-        
-        var  food:foodDiary?
-        
-        
-        
-        food = foodDiary(dinnerTime:myDinnerTime,
-                         amount:choiceArray[(indexPath.row)].amount,
-                         weight:choiceArray[indexPath.row].weight,
-                         foodId:cellFoodId)
         
         
         
         if !sender.isSelected{
             master.switchIsOn.append(cellFoodId)
-            master.foodDiaryArrary.append(food!)
+            let  food = foodDiary(dinnerTime:myDinnerTime,
+                                  amount:choiceArray[(indexPath.row)].amount,
+                                  weight:choiceArray[indexPath.row].weight,
+                                  foodId:cellFoodId)
             
+            master.foodDiaryArrary.append(food)
             sender.isSelected = true
             
-            setPlusSum()
+            setNavBtnTitle()
             
         }else{
             
-            let index = master.switchIsOn.index(of:cellFoodId)
-            master.switchIsOn.remove(at:index!)
+            guard let index = master.switchIsOn.index(of:cellFoodId) else{
+                return
+            }
+            master.switchIsOn.remove(at:index)
             
             
             for (index,value) in  master.foodDiaryArrary.enumerated(){
                 if value.foodId == cell.id{
-                    master.foodDiaryArrary.remove(at: index)
-                    
+                    master.foodDiaryArrary.remove(at:index)
                     
                 }
+                
+                sender.isSelected = false
+                setNavBtnTitle()
             }
-            sender.isSelected = false
-            setPlusSum()
         }
-        
         
     }
     
     
-    
-    
-    
 }
+
+
 //MARK: - UITableViewDelegate,UITableViewDataSource
 extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
     
@@ -287,10 +271,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        
-        
         let searchCell = tableView.dequeueReusableCell(withIdentifier: "searchCell") as!SearchTableViewCell
-        
         
         let foodDetails = choiceArray[indexPath.row]
         
@@ -314,9 +295,6 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         return searchCell
         
         
-        
-        
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -325,9 +303,8 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         nextPage.foodId = choiceArray[indexPath.row].foodDetailId
         nextPage.dinnerTime = dinnerTime
         nextPage.lastPageVC = .insert
-        
         navigationController?.pushViewController(nextPage, animated: true)
-    
+        
         
     }
     
@@ -339,8 +316,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         return false
     }
     
-    
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
@@ -354,7 +330,6 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             }
             
             tableView.reloadData()
-            
             
         } else if editingStyle == .insert {
             
@@ -384,24 +359,15 @@ extension ChoiceFoodViewController:UISearchBarDelegate{
                                             weight:nil,
                                             cond:cond,
                                             order: nil)
-        
-        
-        
-        
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        
-        
         
         if viewIsframe{
             viewIsframe = false
             changeViewOrigin(isUp:viewIsframe)
             currentButton = lastPage
-            
-            
         }
-        
         
         searchBar.resignFirstResponder()
         searchBar.text = nil
@@ -416,7 +382,6 @@ extension ChoiceFoodViewController:UISearchBarDelegate{
             
         }
         
-        
     }
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         
@@ -430,43 +395,27 @@ extension ChoiceFoodViewController:UISearchBarDelegate{
             
         }
         
-        
-        
-        
-        
         return true
     }
     
     
     func changeViewOrigin(isUp:Bool){
         
-        
         let buttonHight = buttonView.frame.height
         
         UIView.animate(withDuration:0.3) {
             
-            
             if isUp{
+                
                 self.btnViewTopConstraint.constant = -buttonHight
                 
             }else{
                 
                 self.btnViewTopConstraint.constant = 0
-                
-                
             }
             
             self.view.layoutIfNeeded()
-            
         }
-        
-        
-        
     }
-    
-    
-    
-    
-    
 }
 
