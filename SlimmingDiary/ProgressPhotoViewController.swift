@@ -93,7 +93,6 @@ class ProgressPhotoViewController:UIViewController{
         for (index,value) in weightArray.enumerated(){
             
             if value.id == weightId{
-                
                 setContentOffSet(index:index)
                 return
                 
@@ -180,7 +179,6 @@ class ProgressPhotoViewController:UIViewController{
         
         
         if weightArray.count>0{
-            
             
             let date =  "\(weightArray[imageNumber].date) \(weightArray[imageNumber].time)"
             let kg = "\(weightArray[imageNumber].value) kg"
@@ -313,8 +311,7 @@ extension ProgressPhotoViewController:UIScrollViewDelegate{
     
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        
-        
+    
         if scrollView.tag == 100 {
             
             return displayImageView

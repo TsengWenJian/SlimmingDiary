@@ -41,6 +41,9 @@
 		6C2AC0A31F1D03ED00F3AC91 /* NickArrowUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2AC0A21F1D03ED00F3AC91 /* NickArrowUIView.swift */; };
 		6C2AC0A51F1D11B200F3AC91 /* AddWeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2AC0A41F1D11B200F3AC91 /* AddWeightViewController.swift */; };
 		6C2DF75F1EDDA58A0018D78D /* SQLiteConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA0CE91ED7C0C500122595 /* SQLiteConnect.swift */; };
+		6C2E942D1F301B76004E784E /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E942C1F301B76004E784E /* ShareViewController.swift */; };
+		6C2E94311F30D792004E784E /* ReadCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E94301F30D792004E784E /* ReadCollectionTableViewCell.swift */; };
+		6C2E94331F30D7C8004E784E /* ReadTextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E94321F30D7C8004E784E /* ReadTextViewTableViewCell.swift */; };
 		6C342EB41EF3A4B1008378BF /* BodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C342EB21EF3A4B1008378BF /* BodyTableViewCell.swift */; };
 		6C342EB51EF3A4B1008378BF /* BodyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C342EB31EF3A4B1008378BF /* BodyTableViewCell.xib */; };
 		6C345A311F1A0A6F006CAB9F /* PersonalFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C345A301F1A0A6F006CAB9F /* PersonalFilesViewController.swift */; };
@@ -58,8 +61,16 @@
 		6C5D60301F16635E00FE0C85 /* AddFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5D602F1F16635E00FE0C85 /* AddFoodViewController.swift */; };
 		6C5D60321F16650E00FE0C85 /* AddFoodManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5D60311F16650E00FE0C85 /* AddFoodManager.swift */; };
 		6C5D60341F16698100FE0C85 /* AddTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5D60331F16698100FE0C85 /* AddTextFieldTableViewCell.swift */; };
+		6C5DCC8D1F2C2F6C00141786 /* InTableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5DCC8C1F2C2F6C00141786 /* InTableCollectionViewCell.swift */; };
+		6C5DCC8F1F2C3CFD00141786 /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5DCC8E1F2C3CFD00141786 /* TextViewTableViewCell.swift */; };
+		6C5DCC941F2CB78500141786 /* food.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C5DCC921F2CB78500141786 /* food.png */; };
+		6C5DCC951F2CB78500141786 /* sport.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C5DCC931F2CB78500141786 /* sport.png */; };
+		6C6682BC1F3154D600DE1B01 /* photo-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C6682BB1F3154D600DE1B01 /* photo-camera.png */; };
 		6C7D5C2D1EED0DD400A89AE3 /* SpotsDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7D5C2C1EED0DD400A89AE3 /* SpotsDiaryViewController.swift */; };
 		6C8D4CE91EE97C3C00A74FE6 /* CalenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D4CE81EE97C3C00A74FE6 /* CalenderManager.swift */; };
+		6C8D5A391F2F662B00BD3033 /* ShowRecordDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D5A381F2F662B00BD3033 /* ShowRecordDetailViewController.swift */; };
+		6C8D5A3B1F2F6F9B00BD3033 /* ShowRecordsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D5A3A1F2F6F9B00BD3033 /* ShowRecordsTableViewController.swift */; };
+		6C8D5A3D1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D5A3C1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift */; };
 		6C8F91DB1EF6984A003FCB5E /* NickProgressUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8F91DA1EF6984A003FCB5E /* NickProgressUIView.swift */; };
 		6CA649171F1D9CF8002C31D1 /* AddWeightHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA649161F1D9CF8002C31D1 /* AddWeightHeaderTableViewCell.swift */; };
 		6CBA0CD21ED7BBDF00122595 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA0CD11ED7BBDF00122595 /* AppDelegate.swift */; };
@@ -71,8 +82,12 @@
 		6CBA0CF71ED7CD8900122595 /* FoodDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA0CF61ED7CD8900122595 /* FoodDiaryViewController.swift */; };
 		6CBA0CFB1ED7DD0100122595 /* FooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA0CFA1ED7DD0100122595 /* FooterTableViewCell.swift */; };
 		6CBA0CFF1ED7E84400122595 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA0CFE1ED7E84400122595 /* SearchTableViewCell.swift */; };
+		6CC02B2C1F2E28EA0089B158 /* PrepareRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC02B2B1F2E28EA0089B158 /* PrepareRecordViewController.swift */; };
 		6CC34D801F191F0B00B9FF38 /* ProgressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC34D7F1F191F0B00B9FF38 /* ProgressTableViewCell.swift */; };
 		6CC3633E1F24288900B67222 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3633D1F24288900B67222 /* Extension.swift */; };
+		6CCA5DAB1F2B1BC30097EA35 /* up-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CCA5DAA1F2B1BC30097EA35 /* up-arrow.png */; };
+		6CCA5DAD1F2B7DDB0097EA35 /* TimeLineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA5DAC1F2B7DDB0097EA35 /* TimeLineTableViewController.swift */; };
+		6CCA5DAF1F2B8CA70097EA35 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA5DAE1F2B8CA70097EA35 /* CollectionTableViewCell.swift */; };
 		6CD8FA981EDA8CCF00116E41 /* FoodDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8FA971EDA8CCF00116E41 /* FoodDetailViewController.swift */; };
 		6CD8FA9A1EDAB43900116E41 /* FoodMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8FA991EDAB43900116E41 /* FoodMaster.swift */; };
 		6CD8FA9C1EDADFE100116E41 /* FoodDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8FA9B1EDADFE100116E41 /* FoodDetailTableViewCell.swift */; };
@@ -115,6 +130,9 @@
 		6C2AC09F1F1CF96E00F3AC91 /* ProgressPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressPhotoViewController.swift; sourceTree = "<group>"; };
 		6C2AC0A21F1D03ED00F3AC91 /* NickArrowUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NickArrowUIView.swift; sourceTree = "<group>"; };
 		6C2AC0A41F1D11B200F3AC91 /* AddWeightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWeightViewController.swift; sourceTree = "<group>"; };
+		6C2E942C1F301B76004E784E /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		6C2E94301F30D792004E784E /* ReadCollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadCollectionTableViewCell.swift; sourceTree = "<group>"; };
+		6C2E94321F30D7C8004E784E /* ReadTextViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTextViewTableViewCell.swift; sourceTree = "<group>"; };
 		6C342EB21EF3A4B1008378BF /* BodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyTableViewCell.swift; sourceTree = "<group>"; };
 		6C342EB31EF3A4B1008378BF /* BodyTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BodyTableViewCell.xib; sourceTree = "<group>"; };
 		6C345A301F1A0A6F006CAB9F /* PersonalFilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalFilesViewController.swift; sourceTree = "<group>"; };
@@ -132,9 +150,17 @@
 		6C5D602F1F16635E00FE0C85 /* AddFoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFoodViewController.swift; sourceTree = "<group>"; };
 		6C5D60311F16650E00FE0C85 /* AddFoodManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFoodManager.swift; sourceTree = "<group>"; };
 		6C5D60331F16698100FE0C85 /* AddTextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTextFieldTableViewCell.swift; sourceTree = "<group>"; };
+		6C5DCC8C1F2C2F6C00141786 /* InTableCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InTableCollectionViewCell.swift; sourceTree = "<group>"; };
+		6C5DCC8E1F2C3CFD00141786 /* TextViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewTableViewCell.swift; sourceTree = "<group>"; };
+		6C5DCC921F2CB78500141786 /* food.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = food.png; sourceTree = "<group>"; };
+		6C5DCC931F2CB78500141786 /* sport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sport.png; sourceTree = "<group>"; };
+		6C6682BB1F3154D600DE1B01 /* photo-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-camera.png"; sourceTree = "<group>"; };
 		6C7D5C2C1EED0DD400A89AE3 /* SpotsDiaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotsDiaryViewController.swift; sourceTree = "<group>"; };
 		6C8C5C941EDBF480001D9A75 /* sqlite3.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = sqlite3.sqlite; sourceTree = "<group>"; };
 		6C8D4CE81EE97C3C00A74FE6 /* CalenderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderManager.swift; sourceTree = "<group>"; };
+		6C8D5A381F2F662B00BD3033 /* ShowRecordDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRecordDetailViewController.swift; sourceTree = "<group>"; };
+		6C8D5A3A1F2F6F9B00BD3033 /* ShowRecordsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRecordsTableViewController.swift; sourceTree = "<group>"; };
+		6C8D5A3C1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRecordsTableViewCell.swift; sourceTree = "<group>"; };
 		6C8F91DA1EF6984A003FCB5E /* NickProgressUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NickProgressUIView.swift; sourceTree = "<group>"; };
 		6CA649161F1D9CF8002C31D1 /* AddWeightHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWeightHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		6CBA0CCE1ED7BBDF00122595 /* SlimmingDiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlimmingDiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,8 +176,12 @@
 		6CBA0CF61ED7CD8900122595 /* FoodDiaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDiaryViewController.swift; sourceTree = "<group>"; };
 		6CBA0CFA1ED7DD0100122595 /* FooterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FooterTableViewCell.swift; sourceTree = "<group>"; };
 		6CBA0CFE1ED7E84400122595 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		6CC02B2B1F2E28EA0089B158 /* PrepareRecordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrepareRecordViewController.swift; sourceTree = "<group>"; };
 		6CC34D7F1F191F0B00B9FF38 /* ProgressTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressTableViewCell.swift; sourceTree = "<group>"; };
 		6CC3633D1F24288900B67222 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		6CCA5DAA1F2B1BC30097EA35 /* up-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up-arrow.png"; sourceTree = "<group>"; };
+		6CCA5DAC1F2B7DDB0097EA35 /* TimeLineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeLineTableViewController.swift; sourceTree = "<group>"; };
+		6CCA5DAE1F2B8CA70097EA35 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		6CD8FA971EDA8CCF00116E41 /* FoodDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDetailViewController.swift; sourceTree = "<group>"; };
 		6CD8FA991EDAB43900116E41 /* FoodMaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodMaster.swift; sourceTree = "<group>"; };
 		6CD8FA9B1EDADFE100116E41 /* FoodDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDetailTableViewCell.swift; sourceTree = "<group>"; };
@@ -187,6 +217,8 @@
 			isa = PBXGroup;
 			children = (
 				6CBA0CD51ED7BBDF00122595 /* Main.storyboard */,
+				6C2E94321F30D7C8004E784E /* ReadTextViewTableViewCell.swift */,
+				6C2E94301F30D792004E784E /* ReadCollectionTableViewCell.swift */,
 				6C1BB3D81F11FDDB001602EF /* AdvanceImageView.swift */,
 				6C8F91DA1EF6984A003FCB5E /* NickProgressUIView.swift */,
 				6C0A12E71F10D4F9009DB12E /* NickProgress2UIView.swift */,
@@ -241,6 +273,9 @@
 		6C14D2B11EE50547007050BF /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				6C5DCC921F2CB78500141786 /* food.png */,
+				6C5DCC931F2CB78500141786 /* sport.png */,
+				6CCA5DAA1F2B1BC30097EA35 /* up-arrow.png */,
 				6CBA0CE91ED7C0C500122595 /* SQLiteConnect.swift */,
 				6C4731B81F22E33D007A048E /* GoogleService-Info.plist */,
 				6C04E67F1F22511100B5235E /* transparentCompare.png */,
@@ -283,6 +318,7 @@
 				6C46E5C31EF5574E00BED4D5 /* DetailProgressCell.swift */,
 				6CC34D7F1F191F0B00B9FF38 /* ProgressTableViewCell.swift */,
 				6C0280911F1F0C36000C171B /* ProgressPhotoCollectionViewCell.swift */,
+				6C08E8591F24C67300BC6252 /* LoginBtnTableViewCell.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -303,7 +339,6 @@
 				6C345A301F1A0A6F006CAB9F /* PersonalFilesViewController.swift */,
 				6C345A321F1A0AE2006CAB9F /* PersonalFilesManager.swift */,
 				6C08E8571F24BD8100BC6252 /* SetUpViewController.swift */,
-				6C08E8591F24C67300BC6252 /* LoginBtnTableViewCell.swift */,
 			);
 			name = PersonslFiles;
 			sourceTree = "<group>";
@@ -337,6 +372,7 @@
 				6C8F91DC1EF69F1E003FCB5E /* SpotsDiary */,
 				6C125B2C1F151259009DE10E /* WeightDiary */,
 				6CF934621EEACB520020AD87 /* Calender */,
+				6CC02B2A1F2E25E50089B158 /* Share */,
 				6C125B2A1F151191009DE10E /* View */,
 			);
 			path = SlimmingDiary;
@@ -349,6 +385,23 @@
 				A3968FF6A8C15727B75A5497 /* Pods_SlimmingDiary.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6CC02B2A1F2E25E50089B158 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				6C6682BB1F3154D600DE1B01 /* photo-camera.png */,
+				6C5DCC8E1F2C3CFD00141786 /* TextViewTableViewCell.swift */,
+				6CCA5DAC1F2B7DDB0097EA35 /* TimeLineTableViewController.swift */,
+				6CCA5DAE1F2B8CA70097EA35 /* CollectionTableViewCell.swift */,
+				6C5DCC8C1F2C2F6C00141786 /* InTableCollectionViewCell.swift */,
+				6C8D5A381F2F662B00BD3033 /* ShowRecordDetailViewController.swift */,
+				6CC02B2B1F2E28EA0089B158 /* PrepareRecordViewController.swift */,
+				6C8D5A3A1F2F6F9B00BD3033 /* ShowRecordsTableViewController.swift */,
+				6C8D5A3C1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift */,
+				6C2E942C1F301B76004E784E /* ShareViewController.swift */,
+			);
+			name = Share;
 			sourceTree = "<group>";
 		};
 		6CF934621EEACB520020AD87 /* Calender */ = {
@@ -426,6 +479,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C1442A21EF365B200AC0CE6 /* SearchTableViewCell.xib in Resources */,
+				6CCA5DAB1F2B1BC30097EA35 /* up-arrow.png in Resources */,
 				6C345A3B1F1A5337006CAB9F /* lineStar.png in Resources */,
 				6C003D871EDDB68300F1E69C /* sqlite3.sqlite in Resources */,
 				6CBA0CDC1ED7BBDF00122595 /* LaunchScreen.storyboard in Resources */,
@@ -436,11 +490,14 @@
 				6C345A3D1F1A53C0006CAB9F /* fullStar.png in Resources */,
 				6C04E6821F22511100B5235E /* compare.png in Resources */,
 				6CBA0CD91ED7BBDF00122595 /* Assets.xcassets in Resources */,
+				6C5DCC951F2CB78500141786 /* sport.png in Resources */,
+				6C5DCC941F2CB78500141786 /* food.png in Resources */,
 				6C1442A41EF3732400AC0CE6 /* HeaderTableViewCell.xib in Resources */,
 				6CBA0CD71ED7BBDF00122595 /* Main.storyboard in Resources */,
 				6C342EB51EF3A4B1008378BF /* BodyTableViewCell.xib in Resources */,
 				6C08E8621F24EB8900BC6252 /* woman.png in Resources */,
 				6C4731B91F22E33D007A048E /* GoogleService-Info.plist in Resources */,
+				6C6682BC1F3154D600DE1B01 /* photo-camera.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,13 +555,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CCA5DAD1F2B7DDB0097EA35 /* TimeLineTableViewController.swift in Sources */,
+				6C5DCC8F1F2C3CFD00141786 /* TextViewTableViewCell.swift in Sources */,
 				6C3D65D21F13D215001D4A93 /* HomePageTodayHeatViewController.swift in Sources */,
 				6C08E85A1F24C67300BC6252 /* LoginBtnTableViewCell.swift in Sources */,
+				6C8D5A391F2F662B00BD3033 /* ShowRecordDetailViewController.swift in Sources */,
 				6C1C7FC91F1E2FEC0091976C /* WeightMaster.swift in Sources */,
+				6CC02B2C1F2E28EA0089B158 /* PrepareRecordViewController.swift in Sources */,
 				6C345A331F1A0AE2006CAB9F /* PersonalFilesManager.swift in Sources */,
 				6C2DF75F1EDDA58A0018D78D /* SQLiteConnect.swift in Sources */,
 				6CC34D801F191F0B00B9FF38 /* ProgressTableViewCell.swift in Sources */,
 				6C2AC0A31F1D03ED00F3AC91 /* NickArrowUIView.swift in Sources */,
+				6C8D5A3B1F2F6F9B00BD3033 /* ShowRecordsTableViewController.swift in Sources */,
 				6C0280921F1F0C36000C171B /* ProgressPhotoCollectionViewCell.swift in Sources */,
 				6CBA0CFF1ED7E84400122595 /* SearchTableViewCell.swift in Sources */,
 				6C13ADBC1F261E010095E235 /* DataService.swift in Sources */,
@@ -514,6 +576,7 @@
 				6C1BB3DD1F126061001602EF /* NewsWebViewController.swift in Sources */,
 				6C0927E81F1B00E3004D1C0F /* CalculateBodyInformation.swift in Sources */,
 				6C2AAD681F0FB47600F3D19D /* FoodDetailManager.swift in Sources */,
+				6C2E94311F30D792004E784E /* ReadCollectionTableViewCell.swift in Sources */,
 				6CBA0CF71ED7CD8900122595 /* FoodDiaryViewController.swift in Sources */,
 				6CE7DBC91F233BFB00671169 /* LoginViewController.swift in Sources */,
 				6C1BB3D71F11E1D8001602EF /* RSSParserManager.swift in Sources */,
@@ -525,14 +588,17 @@
 				6C345A351F1A31A9006CAB9F /* DatePickerViewController.swift in Sources */,
 				6CBA0CFB1ED7DD0100122595 /* FooterTableViewCell.swift in Sources */,
 				6C2AC0A51F1D11B200F3AC91 /* AddWeightViewController.swift in Sources */,
+				6C5DCC8D1F2C2F6C00141786 /* InTableCollectionViewCell.swift in Sources */,
 				6C342EB41EF3A4B1008378BF /* BodyTableViewCell.swift in Sources */,
 				6C5D60301F16635E00FE0C85 /* AddFoodViewController.swift in Sources */,
 				6CC3633E1F24288900B67222 /* Extension.swift in Sources */,
+				6CCA5DAF1F2B8CA70097EA35 /* CollectionTableViewCell.swift in Sources */,
 				6C345A311F1A0A6F006CAB9F /* PersonalFilesViewController.swift in Sources */,
 				6C2AB8EE1F20E8CF008A095E /* WeightDiaryBodyTableViewCell.swift in Sources */,
 				6C5D602A1F15EF8000FE0C85 /* HomePageTargetWeightViewController.swift in Sources */,
 				6C0A12E61F107360009DB12E /* EnterInformationViewController.swift in Sources */,
 				6C08E8581F24BD8100BC6252 /* SetUpViewController.swift in Sources */,
+				6C2E942D1F301B76004E784E /* ShareViewController.swift in Sources */,
 				6C8D4CE91EE97C3C00A74FE6 /* CalenderManager.swift in Sources */,
 				6C8F91DB1EF6984A003FCB5E /* NickProgressUIView.swift in Sources */,
 				6C1BB3DB1F1242E8001602EF /* RssTableViewCell.swift in Sources */,
@@ -541,6 +607,7 @@
 				6C20D8141EE58CC100738606 /* CalendarViewController.swift in Sources */,
 				6C3DEB871ED9B89D00D2A31B /* MainDiaryViewController.swift in Sources */,
 				6C0A12E81F10D4F9009DB12E /* NickProgress2UIView.swift in Sources */,
+				6C2E94331F30D7C8004E784E /* ReadTextViewTableViewCell.swift in Sources */,
 				6CD8FA9C1EDADFE100116E41 /* FoodDetailTableViewCell.swift in Sources */,
 				6CBA0CD41ED7BBDF00122595 /* ViewController.swift in Sources */,
 				6C5D60321F16650E00FE0C85 /* AddFoodManager.swift in Sources */,
@@ -548,6 +615,7 @@
 				6CE6BF121EF808AD0077E304 /* ChoiceFoodViewController.swift in Sources */,
 				6CE7DBCB1F23771500671169 /* ProfileHeaderTableViewCell.swift in Sources */,
 				6C20D8161EE59B3800738606 /* CalendarCollectionViewCell.swift in Sources */,
+				6C8D5A3D1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift in Sources */,
 				6CD8FA9A1EDAB43900116E41 /* FoodMaster.swift in Sources */,
 				6C3D65D01F1399E9001D4A93 /* WeightDiaryViewController.swift in Sources */,
 				6CBA0CD21ED7BBDF00122595 /* AppDelegate.swift in Sources */,

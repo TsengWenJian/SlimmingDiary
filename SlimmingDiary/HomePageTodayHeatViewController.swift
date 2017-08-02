@@ -32,7 +32,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         
         
-        let offsety:CGFloat = 150+64
+        let offsety:CGFloat = 214
         scrollView.contentSize = CGSize(width:view.frame.width,height:offsety*2-50)
         
         
@@ -91,7 +91,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         scrollView.addSubview(rangeTextLabel)
         scrollView.addSubview(placeholderLabel)
         
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x:0,
+        let doneToolbar: UIToolbar = UIToolbar(frame:CGRect(x:0,
                                                              y:0,
                                                              width:view.frame.width,
                                                              height: 50))
@@ -120,6 +120,8 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     
     
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         
         bodyManager.setBodyData(profileManager.userHeight,
@@ -136,6 +138,11 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         resultCalorieLabel.text = "\(basic - food)"
         
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+    }
 
     
     
@@ -146,11 +153,6 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         
     }
-    
-    
-    
-    
-    
     
     func getTodayFoodCalorie()->Double{
         
@@ -168,13 +170,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
     }
     
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-    }
-    
+
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         
         scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.frame.height-50), animated: true)
@@ -206,17 +202,11 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
 
             return false
             
-            
         }
-        
-        
         
         rangeTextLabel.text = "\(countOfWords)/120"
         
 
         return true
     }
-
-    
-    
 }

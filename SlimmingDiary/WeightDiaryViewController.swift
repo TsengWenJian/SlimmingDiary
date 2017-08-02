@@ -17,6 +17,7 @@ class WeightDiaryViewController: UIViewController{
     var weightDiaryArray = [[WeightDiary]]()
     let weightMaster = WeightMaster.standard
     let bodyManager = BodyInformationManager.standard
+    let profileManager = ProfileManager.standard
     var weightView = NickProgress2UIView()
     var bodyFatView =  NickProgress2UIView()
     
@@ -34,18 +35,17 @@ class WeightDiaryViewController: UIViewController{
         
         NotificationCenter.default.addObserver(self, selector:#selector(setWeightDiary), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
         
-        
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         setWeightDiary()
         
     }
     
-    
-    
-    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+    }
     
     func setWeightDiary(){
         
@@ -69,10 +69,15 @@ class WeightDiaryViewController: UIViewController{
         guard let weight = weightMaster.getLasetWeightValue(.weight) else{
             return
         }
-        
-        bodyManager.setBodyData(ProfileManager.standard.userHeight,
+        bodyManager.setBodyData(profileManager.userHeight,
                                 weight,
-                                ProfileManager.standard.userGender)
+                                profileManager.userGender)
+        
+        
+        if bodyManager.getBmi() == weightView.getProgress(){
+            return
+            
+        }
         
         let bmi  = String(format:"%0.1f",bodyManager.getBmi())
         weightView.setTitleText(text:bodyManager.getWeightType().rawValue)
@@ -89,6 +94,11 @@ class WeightDiaryViewController: UIViewController{
             return
         }
         
+        if bodyFat == bodyFatView.getProgress(){
+            return
+        }
+    
+        
         let bodyType = bodyManager.getBodyFatType(fat: bodyFat)
         bodyFatView.setTitleText(text:bodyType.rawValue)
         bodyFatView.setTitleColor(bodyManager.getBodyFatTitleColor(type:bodyType))
@@ -98,15 +108,7 @@ class WeightDiaryViewController: UIViewController{
         
     }
     
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-    }
-    
-    
-    
+
     func sectionIsExpend(sender:UIButton){
         let section = sender.tag - 1000
         
@@ -124,36 +126,33 @@ class WeightDiaryViewController: UIViewController{
         
         let section = sender.tag - 1500
         var type:WeightDiaryType
+        
+        
         if section == 1{
-            
             type = .weight
-            
-            
+        
         } else {
-            
             type = .bodyFat
         }
+        
         let nextPage = storyboard?.instantiateViewController(withIdentifier: "AddWeightViewController") as! AddWeightViewController
-        
-        
         
         let data:Double
         
         if let value =  weightMaster.getLasetWeightValue(type){
             
             data = value
+            
         }else{
+            
             data = 15
         }
-        
         
         nextPage.type = type
         nextPage.actionType = .insert
         nextPage.weight = data
         navigationController?.showDetailViewController(nextPage, sender: self)
     }
-    
-    
 }
 
 
@@ -322,10 +321,9 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         nextPage.type = sectionTitle[indexPath.section-1]
         nextPage.weightId = weightDiaryArray[indexPath.section-1][indexPath.row].id
         
-        
     }
     
-
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
@@ -336,8 +334,8 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             weightDiaryArray[indexPath.section-1].remove(at:indexPath.row)
             weightTableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)
         }
-    
-    
+        
+        
     }
 }
 

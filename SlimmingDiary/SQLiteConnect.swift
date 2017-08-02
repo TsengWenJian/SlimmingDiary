@@ -37,7 +37,7 @@ class SQLiteConnect {
         if db == nil {
             return nil
         }
-        
+    
         
     }
     
@@ -47,7 +47,7 @@ class SQLiteConnect {
     func openDatabase(_ path :String) -> OpaquePointer? {
         var connectdb: OpaquePointer? = nil
         
-        if sqlite3_open(path, &connectdb) == SQLITE_OK {
+        if sqlite3_open(path,&connectdb) == SQLITE_OK {
             
             return connectdb!
         } else {
@@ -147,16 +147,10 @@ class SQLiteConnect {
                         value = nil
                         
                     }
-                    guard let dataName = sqlite3_column_name(statement, i) else{
+                    guard let dataName = sqlite3_column_name(statement, i),
+                          let key:String = String(validatingUTF8: dataName)else{
                         break
                     }
-                    
-                    guard let key:String = String(validatingUTF8: dataName)else{
-                        break
-                        
-                    }
-                    
-                  
                     
                     date3[key] = value
                   
@@ -166,19 +160,11 @@ class SQLiteConnect {
             }()
             
             data.append(data2)
-            
-            
-            
-            
-            
-            
-            
-            
+        
         }
         
         sqlite3_finalize(statement)
         sqlite3_close(db)
-        
         
         return data 
     }

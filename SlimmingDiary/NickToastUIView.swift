@@ -9,8 +9,9 @@
 import UIKit
 
 enum ToastType:String {
+    
     case update = "更新中.."
-    case download = "下載中.."
+    case download = "讀取中.."
     case Upload = "上傳中.."
     case logIn = "登入中.."
 }
@@ -32,16 +33,15 @@ enum ToastType:String {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        
     }
     
-    init(supView:UIView,type:ToastType) {
     
+    init(supView:UIView,type:ToastType) {
         super.init(frame: CGRect(x: 0, y: 0, width: 140, height: 140))
         supView.addSubview(self)
         
         
-        self.center = supView.center
+        self.center = CGPoint(x:supView.bounds.midX, y:supView.bounds.midY-30)
         
         backgroundColor = UIColor(red:0.99, green: 0.99, blue: 0.99, alpha: 0.99)
         layer.cornerRadius = 5
@@ -68,8 +68,6 @@ enum ToastType:String {
             ToastLabel.font = UIFont.systemFont(ofSize:20)
             self.addSubview(ToastLabel)
             
-            
-
         }else{
             
             removefromView()
@@ -80,8 +78,6 @@ enum ToastType:String {
     
     
     func removefromView(){
-        
-       
        active = nil
        removeFromSuperview()
         

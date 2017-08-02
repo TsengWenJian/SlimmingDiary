@@ -116,8 +116,6 @@ class DataService {
                                         imageURL:userPhotoURL?.absoluteString,
                                         done: { (error) in
                                             
-                                            
-                                            
                                             if let  err = error {
                                                 
                                                 done(err)
@@ -125,7 +123,7 @@ class DataService {
                                                 return
                                             }
                                             
-                                            done(nil)                                            
+                                            done(nil)
                 })
             })
             

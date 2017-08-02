@@ -12,13 +12,15 @@ import Firebase
 
 class ViewController: UIViewController{
     
-    var  pageHeightDefaultHeight:CGFloat = 150
+    var  pageHeightDefaultHeight:CGFloat = 214
     @IBOutlet weak var pageHeightConstraint: NSLayoutConstraint!{
         didSet{
             pageHeightConstraint.constant = pageHeightDefaultHeight
         }
     }
+    @IBOutlet weak var moveTopBtn: UIButton!
   
+    
     
     let newsManger = RSSParserManager()
     var TodayHeatVC:HomePageTodayHeatViewController!
@@ -33,8 +35,7 @@ class ViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "首頁"
-    
+            
         newsManger.downloadList { (error, result) in
             
             self.newsArray = result
@@ -42,11 +43,12 @@ class ViewController: UIViewController{
             DispatchQueue.main.async {
                 self.homePageTableView.reloadData()
             }
+            
         }
-        
+        print(pageHeightDefaultHeight)
 
-        homePageTableView.contentInset = UIEdgeInsetsMake(pageHeightDefaultHeight
-            ,0.0, 0.0, 0.0)
+        homePageTableView.contentInset = UIEdgeInsets(top: pageHeightDefaultHeight
+            ,left:0, bottom: 0, right: 0)
         
         var pageVC = UIPageViewController()
         pageVC = self.childViewControllers.first as! UIPageViewController
@@ -62,6 +64,14 @@ class ViewController: UIViewController{
         pageVC.setViewControllers([TodayHeatVC],direction: .forward,animated: false,completion: nil)
         
         
+//        Database.database().reference().child("group").childByAutoId().child(ProfileManager.standard.userUid!).updateChildValues(["title":"30天不喝飲料","mesage":"fff"])
+//        
+//        
+//        
+//        Database.database().reference().child("users").observe(.value, with: { (DataSnapshot) in
+//            print(DataSnapshot)
+//        })
+        
         
     }
     
@@ -70,6 +80,13 @@ class ViewController: UIViewController{
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func moveTopBtnAction(_ sender: Any) {
+    
+        let zero = IndexPath(row: 0, section: 0)
+        homePageTableView.scrollToRow(at: zero, at: .top, animated: true)
+        
+        
+    }
 }
 
 
@@ -78,11 +95,28 @@ extension ViewController:UIScrollViewDelegate{
     
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+    
+        
+        
+        
+        
         let offsetY = scrollView.contentOffset.y
         pageHeightConstraint.constant = offsetY < 0.0 ? -offsetY : 0.0
         
+        if scrollView.contentOffset.y > view.frame.height*1.5{
+            
+            moveTopBtn.isHidden = false
+        }else{
+            
+            moveTopBtn.isHidden = true
+        }
+        
     }
+    
 }
+
+
 
 //MARK: - UITableViewDelegate,UITableViewDataSource
 extension ViewController:UITableViewDelegate,UITableViewDataSource{
@@ -122,6 +156,7 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
 
 
 
+//MARK: - UIPageViewControllerDelegate,UIPageViewControllerDataSource
 extension ViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSource{
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
@@ -130,10 +165,8 @@ extension ViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSo
         if viewController.isKind(of:HomePageTodayHeatViewController.self){
             return TargetWeightVC
         }
-        
-        
+    
         return nil
-        
         
     }
     
@@ -149,8 +182,3 @@ extension ViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSo
     }
     
 }
-
-
-
-
-

@@ -5,11 +5,12 @@
 //  Created by TSENGWENJIAN on 2017/6/18.
 //  Copyright © 2017年 Nick. All rights reserved.
 //
+
+
 import Foundation
 import UIKit
 
 struct myProgress{
-    
     var progess:Int
     var color:UIColor
 
@@ -22,7 +23,10 @@ struct myProgress{
     
     
     @IBInspectable var lineWidth:CGFloat = 10
-    @IBInspectable var trackColor:UIColor = UIColor(red:(245/255.0),green:(245/255.0),blue:(245/255.0),alpha: 1.0)
+    @IBInspectable var trackColor:UIColor = UIColor(red:(245/255.0),
+                                                    green:(245/255.0),
+                                                    blue:(245/255.0),
+                                                    alpha: 1.0)
     
     @IBInspectable var anim:Bool = false
     @IBInspectable var duration:Double = 0.5
@@ -39,9 +43,7 @@ struct myProgress{
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        
-        
+    
     }
     
      override init(frame: CGRect) {
@@ -50,15 +52,11 @@ struct myProgress{
     }
     
 
-    
     override func draw(_ rect: CGRect) {
         
-        
-        
+    
         let startAngle:CGFloat = CGFloat(Double.pi * -1/2)
         let endAngle: CGFloat = CGFloat(Double.pi * 3/2)
-        
-        
         
         path.addArc(withCenter:CGPoint(x:bounds.midX, y: bounds.midY),
                     radius: bounds.size.width/2 - lineWidth,
@@ -130,12 +128,7 @@ struct myProgress{
                 pr3.add(animation, forKey: "")
                 
             }
-            
-            
-            
         }
-        
-        
     }
     
     
@@ -147,7 +140,7 @@ struct myProgress{
     func setTitleLabelText(text:String,size:CGFloat){
         
         titleLabel.text = text
-        //        titleLabel.sizeToFit()
+//        titleLabel.sizeToFit()
         titleLabel.font = UIFont.systemFont(ofSize: size)
         
     }
@@ -156,7 +149,8 @@ struct myProgress{
         
         subTitleLabel.text = text
         subTitleLabel.sizeToFit()
-        subTitleLabel.font = UIFont.systemFont(ofSize: size)        
+        subTitleLabel.font = UIFont.systemFont(ofSize: size)
+        
     }
     
     

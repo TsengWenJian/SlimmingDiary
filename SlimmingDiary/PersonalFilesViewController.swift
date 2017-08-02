@@ -21,8 +21,15 @@ class PersonalFilesViewController: UIViewController {
     
     var datePickerVC:DatePickerViewController!
     var pickerVC:PickerViewController!
+    
     var userPhoto:UIImage? = {
         return UIImage().checkUserPhoto()
+        }(){
+        didSet{ userPhotoIschanage = true}
+    }
+    
+    var userName:String? = {
+        return ProfileManager.standard.userName
     }()
     
     
@@ -38,6 +45,9 @@ class PersonalFilesViewController: UIViewController {
     var userPhotoIschanage = false
     
     
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,14 +56,14 @@ class PersonalFilesViewController: UIViewController {
         navigationItem.rightBarButtonItem = editBaritem
         
         
-        datePickerVC = storyboard?.instantiateViewController(withIdentifier: "DatePickerViewController") as! DatePickerViewController
+        datePickerVC = storyboard?.instantiateViewController(withIdentifier:"DatePickerViewController") as! DatePickerViewController
         
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as!
-        PickerViewController
+        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as! PickerViewController
+               
+
         
         datePickerVC.delegate = self
         pickerVC.delegate = self
-        
         userData = manager.getUserData()
         
     }
@@ -69,14 +79,14 @@ class PersonalFilesViewController: UIViewController {
     
     
     func showAlertError(error:String?){
-        
-        
+    
         let alert = UIAlertController(error:error)
         self.present(alert, animated: true, completion: nil)
         
     }
     
     
+
     
     func editUserData(sender:UIBarButtonItem){
         
@@ -102,7 +112,6 @@ class PersonalFilesViewController: UIViewController {
         }
         
         
-        
         //usePhoto and name is not change don't upload to service
         if !userPhotoIschanage && name == manager.userName{
             self.navigationController?.popViewController(animated:true)
@@ -116,9 +125,7 @@ class PersonalFilesViewController: UIViewController {
            let uploadData = UIImageJPEGRepresentation(finalPhoto,0.8){
             
             
-            
-            
-            
+
             let toast = NickToastUIView(supView: self.view, type:.Upload)
             
             serviceManager.uploadProfileImage(data:uploadData) { (photoURL, error) in
@@ -190,7 +197,6 @@ class PersonalFilesViewController: UIViewController {
     }
     
     
-    
     func showLifeStyleDialog(){
         
         let alert = UIAlertController(title: "請選擇生活型態", message:"", preferredStyle:.actionSheet)
@@ -213,7 +219,6 @@ class PersonalFilesViewController: UIViewController {
         
         let  cancel = UIAlertAction(title:"取消", style:.cancel, handler:nil)
         
-        
         alert.addAction(light)
         alert.addAction(middle)
         alert.addAction(heavy)
@@ -222,14 +227,12 @@ class PersonalFilesViewController: UIViewController {
         
     }
     
+    
     @IBAction func imagePickerTapAction(_ sender: Any) {
         
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) == false{
-            
             return
-            
         }
-        
         
         let picker = UIImagePickerController()
         picker.sourceType =  .photoLibrary
@@ -238,12 +241,12 @@ class PersonalFilesViewController: UIViewController {
         picker.delegate = self
         present(picker, animated: true, completion: nil)
         
-        
-        
     }
     
 }
 
+
+//MARK: - UIImagePickerControllerDelegate,UINavigationControllerDelegate
 extension PersonalFilesViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     
     
@@ -264,11 +267,10 @@ extension PersonalFilesViewController:UIImagePickerControllerDelegate,UINavigati
         
         picker.dismiss(animated: true, completion: nil)
         userPhoto = image.resizeImage(maxLength:200)
-        userPhotoIschanage = true
+        userName = userNameTextfield?.text
         personalFilesTableView.reloadData()
-        
-        
-        
+
+
     }
     
 }
@@ -276,12 +278,10 @@ extension PersonalFilesViewController:UIImagePickerControllerDelegate,UINavigati
 
 
 
-
+//MARK: - UITableViewDataSource,UITableViewDelegate
 extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
     
-    
-    
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
@@ -307,14 +307,16 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
+        
         if manager.userUid == nil{
             return nil
         }
+        
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "ProfileHeaderTableViewCell") as! ProfileHeaderTableViewCell
         
         
         
-        headerCell.userNameTextField.text = manager.userName
+        headerCell.userNameTextField.text = userName
         headerCell.userPhoto.image = userPhoto
         userNameTextfield = headerCell.userNameTextField
         userNameTextfield?.delegate = self
@@ -339,6 +341,7 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
         
         
         currentTouchRow = indexPath.row
+        
         if indexPath.row == 0{
             showGenderDialog()
             
@@ -346,12 +349,12 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
             
             numberOfRows = 300
             
-            guard  let begin = Double(userData[indexPath.row]) else{
-                return
+            if  let begin = Double(userData[indexPath.row]){
+                setSelectRowOfbegin = begin
+                pickerVC.displayPickViewDialog(present: self)
             }
             
-            setSelectRowOfbegin = begin
-            pickerVC.displayPickViewDialog(present: self)
+           
             
         }else if indexPath.row == 4 {
             
@@ -366,71 +369,40 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
     }
     
 }
+//MARK: - UITextFieldDelegate
 extension PersonalFilesViewController:UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        
-        
-        
-        
+    
         textField.resignFirstResponder()
         
         return true
     }
     
     
-    
-    
-    
 }
 
 
-
+//MARK: - DatePickerDelegate
 extension PersonalFilesViewController:DatePickerDelegate{
     
     func getSelectDate(date: Date) {
         
         let dateString =  CalenderManager.standard.dateToString(date)
-        
-        
-        
+    
         userData[currentTouchRow] = dateString
         
     }
 }
 
+//MARK: - PickerViewDelegate
 extension PersonalFilesViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double){
         
-        
-        
+    
         userData[currentTouchRow] = "\(data)"
-        
-        
-        
+    
     }
-    
-    
-    
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

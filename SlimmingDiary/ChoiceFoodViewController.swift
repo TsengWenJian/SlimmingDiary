@@ -54,13 +54,15 @@ class ChoiceFoodViewController: UIViewController{
                 
                 
             case 2:
+                
                 master.diaryType = .foodDiaryAndDetail
                 let calender = CalenderManager()
                 var newDateComponent = DateComponents()
                 newDateComponent.day = -7
                 let  calculatedDate = Calendar.current.date(byAdding:newDateComponent, to: Date())
                 let d = calender.dateToString(calculatedDate!)
-                cond = "foodDiary.food_id=foodDetails_id and date >= '\(d)' group by food_id"
+                
+                cond = "Food_Diary.food_id=foodDetails_id and date >= '\(d)' group by food_id"
                 order =  "date desc"
                 
             default:
@@ -77,6 +79,8 @@ class ChoiceFoodViewController: UIViewController{
                                                      weight:nil,
                                                      cond:cond,
                                                      order:order)
+                
+                
             }
             
             choiceFoodTableView.reloadData()
@@ -100,13 +104,10 @@ class ChoiceFoodViewController: UIViewController{
         
         navigationItem.rightBarButtonItems = [plusSum]
         
-        buttonView.layer.shadowColor = UIColor.black.cgColor
-        buttonView.layer.shadowOpacity = 0.2
-        buttonView.layer.shadowOffset = CGSize(width:0, height:1)
         
         let nib = UINib(nibName: "SearchTableViewCell", bundle: nil)
         choiceFoodTableView.register(nib, forCellReuseIdentifier: "searchCell")
-        
+        buttonSliderView.layer.cornerRadius = 1
         
         
         
@@ -146,7 +147,7 @@ class ChoiceFoodViewController: UIViewController{
         }
         
         let offset = self.view.frame.width / 3.0 * CGFloat(currentButton)
-        UIView.animate(withDuration: 0.15) {
+        UIView.animate(withDuration: 0.1) {
             self.sliderViewLeading.constant = offset
             self.view.layoutIfNeeded()
             
@@ -268,6 +269,10 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         
         
     }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0.1
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
@@ -316,7 +321,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         return false
     }
     
-
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             

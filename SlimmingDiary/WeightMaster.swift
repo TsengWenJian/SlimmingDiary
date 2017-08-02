@@ -110,7 +110,6 @@ class WeightMaster: DiaryManager {
             
         }
         
-        
         return nil
     }
     

@@ -62,8 +62,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         if delegate.numberOfComponents == 2{
             
             dotLabel.isHidden = false
-            
-            
+    
             pickerView.selectRow(Int(s), inComponent: 1, animated: true)
         }
         
@@ -139,9 +138,5 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         }
         
     }
-    
-    
-    
-    
-    
+
 }

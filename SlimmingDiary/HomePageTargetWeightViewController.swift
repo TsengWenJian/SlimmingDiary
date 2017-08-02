@@ -26,39 +26,43 @@ class HomePageTargetWeightViewController: UIViewController {
         
         
         
+        
+        
         let denominator =  fabs(manager.userWeight - manager.userTargetWeight)
         let molecular = fabs(manager.userOriginWeight - manager.userTargetWeight)
         var progress = (1-denominator/molecular)*100
         
         
-        
+        //  NaN 0.0/0.0
         if progress.isNaN {
             progress = 0
         }
         
-        let  denominatorString = String(format: "%.1f", denominator)
+        
+        
+      
+        let  denominatorString = String(format:"%.1f", denominator)
         
         if progress >= 100{
             
-            targetProgress.setTitleLabelText(text:"恭喜")
-            targetProgress.setSubTitleLabelText(text: "達成目標")
-            targetProgress.setDetailTitleLabelText(text: "")
+            targetProgress.setTitleText(text:"恭喜")
+            targetProgress.setSubTitleText(text: "達成目標")
+            targetProgress.setDetailText(text: "")
 
             
         }else{
-            targetProgress.setTitleLabelText(text:"距離目標")
-            targetProgress.setSubTitleLabelText(text:denominatorString)
-            targetProgress.setDetailTitleLabelText(text: "kg")
+            targetProgress.setTitleText(text:"距離目標")
+            targetProgress.setSubTitleText(text:denominatorString)
+            targetProgress.setDetailText(text: "kg")
             
         }
         
         
         
-        targetProgress.resetProgress(progress)
-        
-        
-        
-        
+        // if progress is not change don't again anim
+        if progress != targetProgress.getProgress(){
+             targetProgress.resetProgress(progress)
+        }
     }
     
     
@@ -67,6 +71,5 @@ class HomePageTargetWeightViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    
+
 }

@@ -348,6 +348,9 @@ import UIKit
         
         
     }
+    func getProgress()->Double{
+        return pointerProgress
+    }
     
     func resetProgress(progress:Double){
         

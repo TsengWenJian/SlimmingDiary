@@ -38,6 +38,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     override func viewWillAppear(_ animated: Bool) {
         
+        calender.resetDisplayMonth()
         MonthTotalDaysArray = calender.getMonthTotalDaysArray(type: .current)
         setTitleDate()
         
@@ -85,11 +86,8 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     }
     
     
-    
     func hideDialog() {
-        
-        
-        
+    
         self.willMove(toParentViewController: nil)
         self.view.removeFromSuperview()
         self.removeFromParentViewController()
@@ -107,12 +105,12 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         transition.subtype = transitionForm
         calendarCollectionView.layer.add(transition, forKey:nil)
         
-        let transitionLabel = CATransition()
-        transitionLabel.duration = 0.4
-        transitionLabel.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        transitionLabel.type = "push"
-        transitionLabel.subtype = transitionForm
-        titleDate.layer.add(transitionLabel, forKey:nil)
+//        let transitionLabel = CATransition()
+//        transitionLabel.duration = 0.4
+//        transitionLabel.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//        transitionLabel.type = "push"
+//        transitionLabel.subtype = transitionForm
+//        titleDate.layer.add(transitionLabel, forKey:nil)
         
     }
     
@@ -120,9 +118,6 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     func setTitleDate(){
         titleDate.text = String(calender.displayMonth.year)+"年"+String(calender.displayMonth.month)+"月"
     }
-    
-    
-    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return  2
@@ -141,10 +136,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         }
         
     }
-    
-    
-    
-    
+
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -154,8 +146,6 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         }
 
         
-        
-        
     
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CalendarCollectionViewCell
         
@@ -163,16 +153,13 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         
         if indexPath.section == 0{
-            
             cell.day.text = calender.weekArray[indexPath.row]
             cell.day.textColor = blue
             return cell
             
         }else{
             
-            
-            
-            
+        
             cell.day.text = ""
             
             if MonthTotalDaysArray[indexPath.row] != ""{
@@ -183,8 +170,6 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
                 let myDate = MyDate(year:calender.displayMonth.year, month: calender.displayMonth.month, day: day!)
                 
                 switch  calender.checkDayType(date:myDate) {
-                    
-                    
                     
                 case .displayDay:
                     
@@ -204,14 +189,10 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
                     cell.day.textColor = UIColor.black
                 }
                 
-                
             }
-            
         }
         
         return cell
-        
-        
     }
     
     
@@ -232,16 +213,16 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     }
     
     
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell =  collectionView.cellForItem(at:indexPath) as! CalendarCollectionViewCell
+        
         CalenderManager.standard.displayCalenderAction = false
         hideDialog()
-        
         if  let day = Int(cell.day.text!){
             
-            
-            let myDay = MyDate(year: calender.displayMonth.year, month: calender.displayMonth.month, day: day)
+            let myDay = MyDate(year: calender.displayMonth.year,
+                               month: calender.displayMonth.month,
+                               day: day)
             
             delegate.getCalenderSelectDate(date:myDay)
             

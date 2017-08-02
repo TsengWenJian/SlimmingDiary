@@ -19,24 +19,18 @@ class advanceImageView: UIImageView {
     
     func loadWithURL(urlString:String){
         
-      self.image = nil
-        
-        
-       let url = URL(string:urlString)
-        
+        self.image = nil
         prepareIndicatorView()
+        let url = URL(string:urlString)
         
         let hashString = "Cache_\(urlString.hash)"
         
-             let cachesURL = FileManager.default.urls(for:.cachesDirectory, in: .userDomainMask).first
+        let cachesURL = FileManager.default.urls(for:.cachesDirectory, in: .userDomainMask).first
         let fullFileImageName = cachesURL?.appendingPathComponent(hashString)
-
-        
         
         if let cachImage = UIImage.init(contentsOfFile:(fullFileImageName?.path)!){
             
             self.image = cachImage
-           
             
             return
             
@@ -82,10 +76,9 @@ class advanceImageView: UIImageView {
                 
             }
             
-            
             let nsData:NSData = myData as NSData
             nsData.write(toFile:(fullFileImageName?.path)!, atomically: true)
-           
+            
         }
         
         
@@ -98,14 +91,12 @@ class advanceImageView: UIImageView {
     
     func prepareIndicatorView(){
         
-        if (loadingView == nil){
-            loadingView = UIActivityIndicatorView()
-            
-        }else{
-            
+        
+        if loadingView != nil {
             return
         }
         
+        loadingView = UIActivityIndicatorView()
         loadingView?.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         loadingView?.color = UIColor.darkGray
         loadingView?.hidesWhenStopped = true

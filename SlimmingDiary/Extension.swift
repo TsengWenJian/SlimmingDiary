@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+let imageCach = NSCache<AnyObject, AnyObject>()
+
+
 // MARK:- UIView
 extension UIView{
     
@@ -105,19 +108,76 @@ extension UIImage{
     convenience init?(imageName:String?){
         
         
-        guard let cachesURL = FileManager.default.urls(for:.cachesDirectory,in:.userDomainMask).first else{
-            return nil
+        guard let cachesURL = FileManager.default.urls(for:.cachesDirectory,  in:.userDomainMask).first,
+            let name = imageName else{
+                return nil
         }
-        
-        guard let name = imageName else{
-            return nil
-        }
-        
         
         let fullFileImageName = cachesURL.appendingPathComponent(name)
         self.init(contentsOfFile:fullFileImageName.path)
         
     }
     
-       
+    
+    
+}
+
+
+extension UIImageView{
+    
+    func loadImageCacheWithURL(urlString:String){
+        
+        guard let url = URL(string:urlString)else{
+            
+           return
+        }
+        self.image = nil
+        
+        if let cachImage = imageCach.object(forKey: url as AnyObject){
+            self.image = cachImage as? UIImage
+            
+            return
+        }
+    
+        
+        var loadingView:UIActivityIndicatorView?
+        
+        if loadingView == nil{
+             loadingView = UIActivityIndicatorView()
+            loadingView?.frame = bounds
+            loadingView?.color = UIColor.darkGray
+            loadingView?.hidesWhenStopped = true
+            addSubview(loadingView!)
+
+        }
+        
+        
+        loadingView?.startAnimating()
+        
+        
+        
+        let config:URLSessionConfiguration = .default
+        let session = URLSession(configuration: config)
+        let task = session.dataTask(with:url) { (data, response, error) in
+            
+            if let err = error{
+                print(err)
+                return
+            }
+            
+            DispatchQueue.main.async {
+                if let  downloadImage  = UIImage(data: data!){
+                     loadingView?.stopAnimating()
+                    imageCach.setObject(downloadImage, forKey: url as AnyObject)
+                    self.image = downloadImage
+                }
+        
+                
+            }
+            
+        }
+        task.resume()
+        
+    }
+    
 }

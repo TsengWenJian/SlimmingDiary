@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 class MainDiaryViewController: UIViewController{
     @IBOutlet weak var btnBackgroundView: UIView!
     @IBOutlet weak var pageContainerView: UIView!
@@ -45,8 +43,8 @@ class MainDiaryViewController: UIViewController{
         
         didSet{
             let offset = self.view.frame.width / 3.0 * CGFloat(currentPage)
+            
             UIView.animate(withDuration: 0.2) {
-                
                 self.btnBackgroundView.frame.origin = CGPoint(x: offset, y: self.btnBackgroundView.frame.minY)
                 
             }
@@ -104,9 +102,7 @@ class MainDiaryViewController: UIViewController{
         
         pageVC.setViewControllers([foodDairyVC],direction:.forward,animated: false,completion: nil)
         
-        
-        
-        
+    
         calendarPickVC = storyboard!.instantiateViewController(withIdentifier: "CalendarViewController") as!
         CalendarViewController
         calendarPickVC.delegate = self
@@ -115,6 +111,7 @@ class MainDiaryViewController: UIViewController{
         
         pageContainerView.addGestureRecognizer(pan)
         pan.delegate = self
+        
         
         for x in pageVC.view.subviews {
             
@@ -125,6 +122,8 @@ class MainDiaryViewController: UIViewController{
             
         }
         
+      
+        
         btnBackgroundView.layer.cornerRadius = 1
         btnBackgroundView.layer.shadowOpacity = 0.2
         btnBackgroundView.layer.shadowRadius = 1
@@ -132,6 +131,11 @@ class MainDiaryViewController: UIViewController{
         btnBackgroundView.layer.shadowColor = UIColor.black.cgColor
         
         
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     
@@ -184,11 +188,14 @@ class MainDiaryViewController: UIViewController{
     }
     
     
+    
+    
     @IBAction func previousDay(_ sender:UIButton) {
         calender.changeDisplayDate(.previous)
         updateDisplayeDate()
+    
         
-    }
+          }
     
     
     @IBAction func nextDay(_ sender:UIButton) {
@@ -196,6 +203,7 @@ class MainDiaryViewController: UIViewController{
         updateDisplayeDate()
         
     }
+    
     
     
     @IBAction func calenderAction(_ sender: Any) {
@@ -213,10 +221,11 @@ class MainDiaryViewController: UIViewController{
         
     }
     
-    
     func updateDisplayeDate(){
         displayDate = calender.displayDate
     }
+    
+    
     
 }
 extension MainDiaryViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSource{
@@ -287,12 +296,6 @@ extension MainDiaryViewController:UIPageViewControllerDelegate,UIPageViewControl
         
         return nil
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 
 
@@ -322,13 +325,5 @@ extension MainDiaryViewController:UIGestureRecognizerDelegate{
         return true
         
     }
-    
-    
 }
-
-
-
-
-
-
 

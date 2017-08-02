@@ -22,7 +22,7 @@ struct foodDiary{
     init(dinnerTime:String, amount:Double,weight:Double, foodId:Int){
         
         let foodmaster = foodMaster()
-        self.date = foodmaster.getDisplayDate()
+        self.date = CalenderManager.standard.displayDateString()
         self.dinnerTime = dinnerTime
         self.amount = amount
         self.weight = weight
@@ -113,10 +113,6 @@ class DiaryManager{
     var diaryType:DiaryType = .foodDiary
     
     
-    
-    
-    
-    
     func getDiaryData(cond:String?,order:String?)->[[String:Any?]]{
         
         let db = SQLiteConnect()
@@ -161,8 +157,6 @@ class DiaryManager{
 class foodMaster:DiaryManager{
     
     
-    
-    
     static let standard = foodMaster()
     var foodDiaryArrary = [foodDiary]()
     var switchIsOn = [Int]()
@@ -176,8 +170,7 @@ class foodMaster:DiaryManager{
         
         
     }
-    
-    
+
     func getFoodDetails(_ detailType:FoodDetailtype,
                         amount:Double?,
                         weight:Double?,
@@ -216,12 +209,6 @@ class foodMaster:DiaryManager{
                 
             }
             
-            
-            
-                
-                
-            
-            
             let food = foodDetails(foodDiaryId:foodDiaryId,
                                    foodDetailId:food["foodDetails_id"] as! Int,
                                    foodClassification:food["food_classification"] as! String,
@@ -247,18 +234,6 @@ class foodMaster:DiaryManager{
         return array
     }
     
-    
-    
-    
-    func getDisplayDate()->String{
-        let calender = CalenderManager.standard
-        let displayDateString = calender.myDateToString(calender.displayDate)
-        
-        return displayDateString
-        
-    }
-    
-        
 }
 
 

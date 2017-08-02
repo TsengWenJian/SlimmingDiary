@@ -37,13 +37,13 @@ class CalenderManager{
     let weekArray = ["日", "一", "二","三", "四", "五", "六"]
     var displayDate: MyDate = MyDate(year: 2000, month: 1, day: 1){
         didSet{
-         displayMonth = displayDate
+            displayMonth = displayDate
             
-                   }
+        }
     }
     var displayMonth:MyDate = MyDate(year: 2000, month: 1, day: 1)
     var currentDate: MyDate = MyDate(year: 2000, month: 1, day: 1)
-   
+    
     var displayCalenderAction:Bool = false
     
     init() {
@@ -55,16 +55,11 @@ class CalenderManager{
         self.displayDate = MyDate(year: year, month:month, day:day)
         self.currentDate = MyDate(year: year, month:month, day:day)
         self.displayMonth = MyDate(year: year, month:month, day:1)
-   
+        
     }
     
     
-    
-    
-    
     func getFirstWeekDayInThisMonth(comp:DateComponents) -> Int {
-        
-        
         let calendar = Calendar.current
         let offset = TimeZone.current.secondsFromGMT()
         let date = Date(timeInterval:TimeInterval(offset), since: calendar.date(from:comp)!)
@@ -108,16 +103,26 @@ class CalenderManager{
     func getTotalDaysInMonth(comp:DateComponents)->Int{
         
         let calendar = Calendar.current
-        let date = calendar.date(from:comp)!
+        let offset = TimeZone.current.secondsFromGMT()
+        let date = Date(timeInterval:TimeInterval(offset), since: calendar.date(from:comp)!)
         let range = calendar.range(of:.day, in: .month, for: date)
         
-        return (range?.count)!
+        return range!.count
         
         
     }
+    
+    func resetDisplayMonth(){
+        displayMonth.year = displayDate.year
+        displayMonth.month = displayDate.month
+        displayMonth.day = 1
+    }
+    
+    
     //拿到每個月1號的datacomponent
     func getMonthComponent(_ type: MonthType) -> DateComponents {
         switch type {
+            
         case .previous:
             displayMonth.month -= 1
             if displayMonth.month <= 0 {
@@ -135,66 +140,71 @@ class CalenderManager{
             
             
         }
-       
-        var dateComponent =  myDateToDateComponet(myDate:displayMonth)
         
-      
+        var dateComponent =  DateComponents()
+        dateComponent.year = displayMonth.year
+        dateComponent.month = displayMonth.month
         dateComponent.day = 1
         return dateComponent
+        
     }
     
     
     func getMonthTotalDaysArray(type:MonthType)->[String]{
+        
+        
         let monthComponent = getMonthComponent(type)
         let firstDay:Int = getFirstWeekDayInThisMonth(comp:monthComponent)
-        let totalDay:Int = getTotalDaysInMonth(comp: monthComponent)
+        let totalDay:Int = getTotalDaysInMonth(comp:monthComponent)
+        
         let  item = Int(ceil(Double(firstDay-1+totalDay)/Double(7)))*7
         
         var myArray = [String]()
         
-        for i in 1...item{
+        for day in 1...item{
             
             
-            if i < Int(firstDay){
+            if day < Int(firstDay){
                 
                 myArray.append("")
                 
-            }else if i > totalDay + Int(firstDay-1){
+            }else if day > totalDay + Int(firstDay-1){
                 
                 myArray.append("")
+                
+                
             }else{
-                myArray.append(String(i-Int(firstDay-1)))
+                
+                myArray.append(String(day-Int(firstDay-1)))
             }
+            
         }
+        
         return myArray
     }
     
-    
-    
-       func myDateToDateComponet(myDate:MyDate)->DateComponents{
+    func StringToDate(_ date:String)->Date{
+        let formmater = DateFormatter()
+        formmater.dateFormat = "YYYY-M-dd"
+        let date = formmater.date(from: date)!
         
-        var dateComponent = DateComponents()
-        dateComponent.year = myDate.year
-        dateComponent.month = myDate.month
-        dateComponent.day = myDate.day
-        
-         return dateComponent
-        
+        return Date(timeInterval: TimeInterval(TimeZone.current.secondsFromGMT()), since: date)
     }
+    
     
     func dateToString(_ date:Date)->String{
         
         let formmater = DateFormatter()
-        formmater.dateFormat = "YYYY-MM-dd"
+        formmater.dateFormat = "YYYY-M-dd"
         
-        
+
         return formmater.string(from: date)
         
     }
     
     func displayDateString()->String{
         
-       return myDateToString(displayDate)
+        return myDateToString(displayDate)
     }
     
     func currentDateString()->String{
@@ -206,36 +216,33 @@ class CalenderManager{
         let formmater = DateFormatter()
         formmater.dateFormat = "HH:mm"
         return formmater.string(from:Date())
-
+        
         
     }
-    
-    
-    
     
     
     func myDateToString(_ myDate:MyDate)->String{
         
-    
+        
         return "\(myDate.year)-\(myDate.month)-\(myDate.day)"
         
     }
-   
+    
     
     func checkDayType(date:MyDate)->DayType{
         
         
-         if displayDate.day == date.day && date.year == displayDate.year && date.month == displayDate.month{
+        if displayDate.day == date.day && date.year == displayDate.year && date.month == displayDate.month{
             
             return DayType.displayDay
             
-         }else  if date.year == currentDate.year && currentDate.day == date.day && currentDate.month == date.month{
-                
-                return DayType.today
+        }else  if date.year == currentDate.year && currentDate.day == date.day && currentDate.month == date.month{
+            
+            return DayType.today
+            
         }else{
             
-            
-            
+    
             if isAfterCurrentDay(date:date) {
                 
                 return DayType.afterDay
@@ -262,13 +269,9 @@ class CalenderManager{
             
             return false
         }
-
         
         
     }
-    
-    
-    
     
 }
 

@@ -49,7 +49,7 @@ class LoginViewController: UIViewController {
     
     func singInWithEmail(email:String,password:String){
         
-        let toast  = NickToastUIView(supView: view, type:.logIn)
+        let toast  = NickToastUIView(supView:view, type:.logIn)
         serviceManager.singInWithEmail(email: email, password: password) { (error) in
             
             if let  err = error {
@@ -81,9 +81,6 @@ class LoginViewController: UIViewController {
                                             imageURL:photoURL,toast:toast)
                 
             })
-            
-            
-            
         }
         
     }
@@ -126,10 +123,7 @@ class LoginViewController: UIViewController {
         
         
         let toast = NickToastUIView(supView: self.view, type: .logIn)
-        
         serviceManager.longInWithFB(VC: self) { (error) in
-            
-            
             
             if let err = error{
                 toast.removefromView()
@@ -137,18 +131,13 @@ class LoginViewController: UIViewController {
                 return
             }
             
-            
-            
             let user = self.serviceManager.currentUser
             self.setDataWithUserDefault(name:user?.displayName,
                                         imageURL:user?.photoURL, toast: toast)
-            
-            
         }
         
     }
-    
-    
+
     
     func showAlertWithError(message:String){
         let alert = UIAlertController(error:message)
@@ -230,14 +219,10 @@ class LoginViewController: UIViewController {
             guard let myName = name else{
                 return
             }
-            
-            
+        
             register(name:myName,email:email,password:password)
             
         }
-        
-        
-        
     }
     
     
@@ -261,8 +246,6 @@ class LoginViewController: UIViewController {
             fbLoginBtn.isHidden = true
         }
         
-        
-        
         UIView.animate(withDuration:0.2, delay: 0, options:[.curveEaseInOut], animations: {
             self.nameTextFieldTop.constant = nameTop
             self.view.layoutIfNeeded()
@@ -273,7 +256,7 @@ class LoginViewController: UIViewController {
         })
     }
 }
-
+//MAKE: -UITextFieldDelegate
 extension LoginViewController:UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

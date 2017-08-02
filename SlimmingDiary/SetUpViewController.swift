@@ -15,20 +15,20 @@ class SetUpViewController: UIViewController {
     
     @IBOutlet weak var setUpTableView: UITableView!
     let manager = ProfileManager.standard
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         setUpTableView.reloadData()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
     
@@ -43,17 +43,19 @@ class SetUpViewController: UIViewController {
             
         }else{
             
-          DataService.standard.userLogOut()
-          manager.setUserServiceDataNill()
+            DataService.standard.userLogOut()
+            manager.setUserServiceDataNill()
         }
         
         setUpTableView.reloadData()
         
     }
     
-
+    
     
 }
+
+//MARK: - UITableViewDataSource,UITableViewDelegate
 extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
     
     
@@ -67,30 +69,30 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         
-        if section == 0 || section == 2{
-            return 1
+        if section == 1{
+            return titleArray.count
         }
         
-        return titleArray.count
+        return 1
     }
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         
-        if section == 1 || section == 2{
-            return 20
+        if section == 0 {
+            return 1
         }
         
         
-        return 1
+        return 20
     }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         
-    
+        
         if indexPath.section == 0{
             return 100
         }else if indexPath.section == 2{
@@ -101,7 +103,7 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
     }
     
     
-   
+    
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -114,38 +116,32 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
             
             if manager.userUid == nil{
                 
-                
-                
-                
-                cell.userPhoto.image = UIImage().checkUserPhoto()
                 cell.userNameTextField.text = "尚未登入"
                 cell.emailLabel.text = ""
                 
                 
-                
             }else{
                 
+                cell.userNameTextField.text = manager.userName
+                cell.emailLabel.text = manager.userEmail
                 
-            cell.userPhoto.image = UIImage().checkUserPhoto()
-            cell.userNameTextField.text = manager.userName
-            cell.emailLabel.text = manager.userEmail
-              
                 
             }
             
-          return cell
+            cell.userPhoto.image = UIImage().checkUserPhoto()
+            
+            return cell
             
             
             
         }else if indexPath.section == 2{
             let cell = tableView.dequeueReusableCell(withIdentifier: "LoginBtnTableViewCell", for: indexPath) as! LoginBtnTableViewCell
             
+            
+            
             var btnTitle:String
-            
-            
             if manager.userUid == nil{
                 btnTitle = "登入"
-                
                 
             }else{
                 
@@ -156,40 +152,32 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
             
             cell.loginBtn.setTitle(btnTitle, for: .normal)
             cell.loginBtn.addTarget(self, action: #selector(loginOrlogut), for:.touchUpInside)
-            
-            
+    
             return cell
-            
-            
         }
         
         
-         let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
-          cell.textLabel?.text = titleArray[indexPath.row]
-    
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
+        cell.textLabel?.text = titleArray[indexPath.row]
         
-         return cell
+        
+        return cell
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        
         if indexPath.section == 1{
-            
-            
             
             if indexPath.row == 2{
                 let nextPage = storyboard?.instantiateViewController(withIdentifier: "PersonalFilesViewController") as!PersonalFilesViewController
                 navigationController?.pushViewController(nextPage, animated: true)
                 
-                
-                
             }
-            
-        
-            
+    
         }
-      tableView.deselectRow(at: indexPath, animated: false)
+        tableView.deselectRow(at: indexPath, animated: false)
         
         
     }

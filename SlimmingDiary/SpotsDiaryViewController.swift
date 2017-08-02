@@ -40,13 +40,13 @@ class SpotsDiaryViewController:UIViewController{
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
+    
 
   
    
 }
 
-
+//MARK: - UITableViewDelegate,UITableViewDataSource
 extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     
     

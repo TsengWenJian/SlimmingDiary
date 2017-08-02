@@ -87,8 +87,7 @@ class ProfileManager {
     
     
     
-    //MARK : - Function setUserdata
-    
+    //MARK : - Function setUserDefault
     
     func setUserEmail(_ email:String?){
         
@@ -230,17 +229,4 @@ class ProfileManager {
         setPhotName(nil)
         setUserName(nil)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-}
+ }

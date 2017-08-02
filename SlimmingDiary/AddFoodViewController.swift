@@ -81,7 +81,7 @@ class AddFoodViewController: UIViewController {
     }
     
 }
-
+//MARK: - UITableViewDataSource,UITableViewDelegate
 extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
     
     
@@ -122,7 +122,7 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
                     rightString = addFoodManager.foodSelect[indexPath.row]
                     
                 }
-                cell.rightTextField.delegate = self
+                
                 cell.rightTextField.tag = 100+indexPath.row
                 cell.rightTextField.placeholder = rightString
                 cell.rightTextField.addTarget(self, action:#selector(textChanged(sender:)), for:.editingChanged)
@@ -152,7 +152,7 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             }
             
             
-        }else{
+        }else { //section == 1
             
             
             let cell =  tableView.dequeueReusableCell(withIdentifier:"RightDetailCell");             cell?.textLabel?.text = addFoodManager.foodTitle[indexPath.row+3]
@@ -188,34 +188,21 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
         
         
     }
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         currentTouchRow = indexPath.row
         
         
         self.view.endEditing(true)
         if indexPath.section == 0{
-            
-            
-            
+        
             if indexPath.row == 2{
                 
                 numberOfRows = 1000
                 numberOfComponents = 1
                 setSelectRowOfbegin = 1
-                
-                if let select = addFoodManager.foodSelect[currentTouchRow] {
-                    
-                    setSelectRowOfbegin = Double(select)!
-                }
-                
-            }else{
-                
-                
-                return
             }
-            
-            
-         
             
             
         }else{
@@ -224,20 +211,19 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             numberOfComponents = 2
             setSelectRowOfbegin = 1
             
-            if let select = addFoodManager.foodSelect[currentTouchRow] {
-                
-                setSelectRowOfbegin = Double(select)!
-            }
-            
-            
+        }
+        
+        
+        
+        if  let select = addFoodManager.foodSelect[currentTouchRow],
+            let doubleValue = Double(select){
+            setSelectRowOfbegin = doubleValue
         }
         
         pickerVC.displayPickViewDialog(present: self)
         
     }
    
-    
-    
     
     func textChanged(sender:UITextField){
         
@@ -246,12 +232,9 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
         if sender.text != "" {
             
             addFoodManager.foodSelect[indexPathRow] = sender.text
-            
         }else{
             
             addFoodManager.foodSelect[indexPathRow] = nil
-            
-            
         }
     
     }
@@ -280,16 +263,6 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
     
 }
 
-extension AddFoodViewController:UITextFieldDelegate{
-    
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        
-        return true
-    }
-    
-}
 
 //MARK: - PickerViewDelegate
 extension AddFoodViewController:PickerViewDelegate{
@@ -299,13 +272,11 @@ extension AddFoodViewController:PickerViewDelegate{
         
         if currentTouchRow == 2{
             
-            
             addFoodManager.foodSelect[currentTouchRow] = String((data))
             
         }else{
             
             addFoodManager.foodSelect[currentTouchRow] = String(data)
-            
             
         }
         
@@ -313,10 +284,7 @@ extension AddFoodViewController:PickerViewDelegate{
         
         
     }
-    
-    
-    
-    
+
 }
 
 

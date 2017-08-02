@@ -37,6 +37,7 @@ class EnterInformationViewController: UIViewController {
             }
         }
     }
+    
     var height:Double?
     var weight:Double?
     var birthday:String?
@@ -44,8 +45,7 @@ class EnterInformationViewController: UIViewController {
     var lifeStyle:Int? = 0
     var currentTouchBtn:Int = 0
     
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,17 +58,13 @@ class EnterInformationViewController: UIViewController {
         
         weightProgress.setSubTitleText(text: "--")
         
-        
-    
-        
+
         for myView in containerBtnView{
             addLayerShadow(myView)
         }
         addLayerShadow(targetBtn)
         
-        
-        
-        
+    
         datePickerVC = storyboard?.instantiateViewController(withIdentifier:"DatePickerViewController")
             as? DatePickerViewController
         
@@ -86,6 +82,14 @@ class EnterInformationViewController: UIViewController {
         datePickerVC = nil
         pickerVC = nil
     }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+
     
     
     func goToHomePage(){
@@ -106,9 +110,10 @@ class EnterInformationViewController: UIViewController {
         view.layer.shadowOpacity = 0.3
         view.layer.shadowRadius = 2
         view.layer.cornerRadius = 5
-        
-        
+    
     }
+    
+    
     
     @IBAction func inputDoneAction(_ sender: Any) {
         
@@ -249,11 +254,6 @@ class EnterInformationViewController: UIViewController {
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     
 }
 //MARK: - DatePickerDelegate
@@ -305,7 +305,7 @@ extension EnterInformationViewController:PickerViewDelegate{
                 return
         }
         
-        bodyManager.setBodyData(calHeight, calWeight,calGender)
+        bodyManager.setBodyData(calHeight,calWeight,calGender)
         let bmi  = String(format:"%0.1f",bodyManager.getBmi())
         
         

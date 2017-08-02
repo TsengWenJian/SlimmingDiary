@@ -46,8 +46,6 @@ import UIKit
     
     
     
-    
-    
     private var progress:Double = 0 {
         didSet{
             if progress > 100{
@@ -118,7 +116,7 @@ import UIKit
         progressLayer.lineWidth = lineWidth
         progressLayer.shadowColor = UIColor.black.cgColor
         progressLayer.shadowOffset = CGSize.zero
-        progressLayer.shadowOpacity = 0.3
+        progressLayer.shadowOpacity = 0.2
         layer.addSublayer(progressLayer)
         
         
@@ -194,12 +192,10 @@ import UIKit
         
         
         
-        
-        
+    
         addSubview(titleLabel)
         addSubview(subTitleLabel)
         addSubview(detailLabel)
-        
         
         
     }
@@ -209,7 +205,7 @@ import UIKit
     
     
     
-    func setTitleLabelText(text:String){
+    func setTitleText(text:String){
         
         titleLabel.text = text
         titleLabel.sizeToFit()
@@ -220,7 +216,7 @@ import UIKit
         
     }
     
-    func setSubTitleLabelText(text:String){
+    func setSubTitleText(text:String){
         
         subTitleLabel.text = text
         subTitleLabel.sizeToFit()
@@ -231,7 +227,7 @@ import UIKit
         
     }
     
-    func setDetailTitleLabelText(text:String){
+    func setDetailText(text:String){
         
         detailLabel.text = text
         detailLabel.sizeToFit()
@@ -273,7 +269,7 @@ import UIKit
         progressLayer.path = trackPath.cgPath
         
         
-        endDotView.layer.removeAnimation(forKey: "endDote")
+        
         let orbit = CAKeyframeAnimation(keyPath:"position")
         orbit.duration = 1
         orbit.path = trackPath.cgPath
@@ -283,7 +279,7 @@ import UIKit
         endDotView.layer.add(orbit,forKey:"endDote")
         
         
-        endDotView.layer.removeAnimation(forKey: "progressMove")
+
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.fromValue = 0
         animation.toValue = 1
@@ -293,13 +289,15 @@ import UIKit
         
     }
     
+    func getProgress()->Double{
+        return progress
+    }
+    
     
     func resetProgress(_ progress:Double){
         self.progress = progress
         setProgressAnim()
-        
-        
-        
+    
     }
 }
 
