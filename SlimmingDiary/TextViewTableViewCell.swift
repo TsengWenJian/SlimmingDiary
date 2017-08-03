@@ -74,11 +74,7 @@ class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
         textView.bounds = bounds;
         
         
-        
-        
-        
-        
-        
+    
         let tableView = self.superview?.superview as! UITableView
         tableView.beginUpdates()
         tableView.endUpdates()

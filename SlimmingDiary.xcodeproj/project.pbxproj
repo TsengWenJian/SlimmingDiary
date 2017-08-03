@@ -66,6 +66,7 @@
 		6C5DCC941F2CB78500141786 /* food.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C5DCC921F2CB78500141786 /* food.png */; };
 		6C5DCC951F2CB78500141786 /* sport.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C5DCC931F2CB78500141786 /* sport.png */; };
 		6C6682BC1F3154D600DE1B01 /* photo-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C6682BB1F3154D600DE1B01 /* photo-camera.png */; };
+		6C6682BE1F31EA3900DE1B01 /* ClipImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6682BD1F31EA3900DE1B01 /* ClipImageViewController.swift */; };
 		6C7D5C2D1EED0DD400A89AE3 /* SpotsDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7D5C2C1EED0DD400A89AE3 /* SpotsDiaryViewController.swift */; };
 		6C8D4CE91EE97C3C00A74FE6 /* CalenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D4CE81EE97C3C00A74FE6 /* CalenderManager.swift */; };
 		6C8D5A391F2F662B00BD3033 /* ShowRecordDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D5A381F2F662B00BD3033 /* ShowRecordDetailViewController.swift */; };
@@ -155,6 +156,7 @@
 		6C5DCC921F2CB78500141786 /* food.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = food.png; sourceTree = "<group>"; };
 		6C5DCC931F2CB78500141786 /* sport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sport.png; sourceTree = "<group>"; };
 		6C6682BB1F3154D600DE1B01 /* photo-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-camera.png"; sourceTree = "<group>"; };
+		6C6682BD1F31EA3900DE1B01 /* ClipImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClipImageViewController.swift; sourceTree = "<group>"; };
 		6C7D5C2C1EED0DD400A89AE3 /* SpotsDiaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotsDiaryViewController.swift; sourceTree = "<group>"; };
 		6C8C5C941EDBF480001D9A75 /* sqlite3.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = sqlite3.sqlite; sourceTree = "<group>"; };
 		6C8D4CE81EE97C3C00A74FE6 /* CalenderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderManager.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				6CBA0CD51ED7BBDF00122595 /* Main.storyboard */,
+				6C6682BD1F31EA3900DE1B01 /* ClipImageViewController.swift */,
 				6C2E94321F30D7C8004E784E /* ReadTextViewTableViewCell.swift */,
 				6C2E94301F30D792004E784E /* ReadCollectionTableViewCell.swift */,
 				6C1BB3D81F11FDDB001602EF /* AdvanceImageView.swift */,
@@ -613,6 +616,7 @@
 				6C5D60321F16650E00FE0C85 /* AddFoodManager.swift in Sources */,
 				6C125B2E1F1521EE009DE10E /* NickProgress3UIView.swift in Sources */,
 				6CE6BF121EF808AD0077E304 /* ChoiceFoodViewController.swift in Sources */,
+				6C6682BE1F31EA3900DE1B01 /* ClipImageViewController.swift in Sources */,
 				6CE7DBCB1F23771500671169 /* ProfileHeaderTableViewCell.swift in Sources */,
 				6C20D8161EE59B3800738606 /* CalendarCollectionViewCell.swift in Sources */,
 				6C8D5A3D1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift in Sources */,

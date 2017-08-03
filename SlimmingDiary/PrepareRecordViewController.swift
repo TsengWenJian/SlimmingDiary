@@ -25,6 +25,8 @@ class PrepareRecordViewController: UIViewController {
     var textFieldText:String?
     
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,6 +37,7 @@ class PrepareRecordViewController: UIViewController {
         
         pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as!PickerViewController
         pickerVC.delegate = self
+        
         
         
         
@@ -59,8 +62,9 @@ class PrepareRecordViewController: UIViewController {
         let picker = UIImagePickerController()
         picker.sourceType =  .photoLibrary
         picker.mediaTypes = ["public.image"]
-        picker.allowsEditing = true;
+        
         picker.delegate = self
+        
         present(picker, animated: true, completion: nil)
         
         
@@ -102,12 +106,12 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
             if indexPath.row == 0{
                 
                 let textFieldCell = tableView.dequeueReusableCell(withIdentifier: "AddTextFieldTableViewCell") as! AddTextFieldTableViewCell
-            
+                
                 textFieldCell.titleLabel.text = titleArray[indexPath.row]
                 textFieldCell.rightTextField.addTarget(self,action:#selector(setTitleText(sender:)), for:.editingChanged)
                 
                 
-            
+                
                 return textFieldCell
             }
             
@@ -121,8 +125,8 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
     
     
     func setTitleText(sender:UITextField){
-            
-           textFieldText = sender.text
+        
+        textFieldText = sender.text
         
     }
     
@@ -159,6 +163,9 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
         
         
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        
+    }
     
 }
 
@@ -186,25 +193,30 @@ extension PrepareRecordViewController:UIImagePickerControllerDelegate,UINavigati
         }
         
         
-        if let myImage = info[UIImagePickerControllerEditedImage] as? UIImage {
-            image = myImage
-        }
         
-        
-        picker.dismiss(animated: true, completion: nil)
-        titleImage.image = image.resizeImage(maxLength:1024)
-        prepareTableView.reloadData()
-        
-        
+           
+            let clipImageVC = self.storyboard?.instantiateViewController(withIdentifier:"ClipImageViewController") as? ClipImageViewController
+            clipImageVC?.delegate = self
+            
+            clipImageVC?.image = image
+            picker.present(clipImageVC!, animated: true, completion: nil)
+
     }
     
+}
+extension PrepareRecordViewController:clipImageVCDelegate{
+    func clipImageDone(image: UIImage) {
+        titleImage.image = image.resizeImage(maxLength: 1024)
+        dismiss(animated: false, completion: nil)
+        
+    }
 }
 
 //MARK: - PickerViewDelegate
 extension PrepareRecordViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double){
-    
+        
         detailArray[2] = "\(Int(data))"
         
     }

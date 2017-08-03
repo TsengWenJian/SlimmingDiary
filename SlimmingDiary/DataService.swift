@@ -35,9 +35,22 @@ class DataService {
         return dbBasicURL.child("users")
     }
     
+    var dbDiarysURL:DatabaseReference {
+        return dbBasicURL.child("diarys")
+    }
+    
+    var dbDiaryContentURL:DatabaseReference {
+        return dbBasicURL.child("diary-content")
+    }
+    
     var storageProfileImageURL:StorageReference {
         return Storage.storage().reference().child("profile_images")
     }
+    
+    var storageImagesURL:StorageReference {
+        return Storage.storage().reference().child("images")
+    }
+
     
     
     func userLogOut(){

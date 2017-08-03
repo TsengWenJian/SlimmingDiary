@@ -60,7 +60,7 @@ class TimeLineTableViewController: UITableViewController {
         didSet{
             
             if trackUploadImageNumber == sumItem{
-                uploadDairy(id:number)
+                uploadDairyToDB(id:number)
             }
             
             
@@ -71,6 +71,7 @@ class TimeLineTableViewController: UITableViewController {
     var day:Int?
     var beginDate:String?
     var toastView:NickToastUIView?
+    var serviceManager = DataService.standard
     
     
     
@@ -80,9 +81,13 @@ class TimeLineTableViewController: UITableViewController {
         let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
         timeLineTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
         
-        let navBarBtn = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(uploadRecords))
+        let navBarBtn = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(uploadTitleImage))
         navigationItem.rightBarButtonItem = navBarBtn
         
+        // uploadTitleImage
+        // 先上傳前面填寫封面照和標題 /diarys
+        // 在上傳全部items圖片到storage 拿到imageUrl
+        // 將data轉換為dictinoary 上傳到 firebaseDB /diary-content
         
         
         
@@ -95,15 +100,18 @@ class TimeLineTableViewController: UITableViewController {
         let calender = CalenderManager()
         var newDateComponent = DateComponents()
         newDateComponent.day = 1
+        
         data = [OneDiaryRecord]()
         
-        let beign = calender.StringToDate(beginDate!)
-        var calculatedDate = beign
-        
-        
-        guard let myDay = day else{
-            return
+        guard let myBeginDate = beginDate,
+            let myDay = day else{
+                return
         }
+        
+        
+        
+        //begin date
+        var calculatedDate = calender.StringToDate(myBeginDate)
         
         for _ in 0..<myDay{
             
@@ -134,7 +142,7 @@ class TimeLineTableViewController: UITableViewController {
             
             for item in foodDaiays{
                 let detail = String(format: "%0.1f",item.calorie)
-                let myItem = DiaryItem(image: nil, title: item.sampleName, detail:detail)
+                let myItem = DiaryItem(image:nil, title: item.sampleName, detail:detail)
                 sportItems.append(myItem)
                 
             }
@@ -150,7 +158,7 @@ class TimeLineTableViewController: UITableViewController {
     
     
     
-    func uploadAll(diary:[OneDiaryRecord]){
+    func uploadDiaryWithDay(diary:[OneDiaryRecord]){
         
         for i in diary{
             
@@ -165,13 +173,13 @@ class TimeLineTableViewController: UITableViewController {
         }
     }
     
-    func uploadRecords(){
+    func uploadTitleImage(){
         
         toastView = NickToastUIView(supView: self.view, type:.Upload)
         
         let id = NSUUID().uuidString
         number = id
-        let ref =  Database.database().reference()
+        
         
         guard let myTitleImage = titleImage?.resizeImage(maxLength: 1024),
             let dataImage = UIImageJPEGRepresentation(myTitleImage,0.8)else{
@@ -179,7 +187,7 @@ class TimeLineTableViewController: UITableViewController {
         }
         
         
-        Storage.storage().reference().child("images").child("\(id).jpg").putData(dataImage, metadata: nil) { (StorageMetadata, Error) in
+        serviceManager.storageImagesURL.child("\(id).jpg").putData(dataImage, metadata: nil) { (StorageMetadata, Error) in
             
             
             if let err = Error{
@@ -212,11 +220,11 @@ class TimeLineTableViewController: UITableViewController {
                 "timestamp":"\(Int(timestamp))"]
             
             
-            ref.child("diarys").childByAutoId().updateChildValues(dict) { (erroe, databaseReference) in
+            self.serviceManager.dbDiarysURL.childByAutoId().updateChildValues(dict) { (erroe, databaseReference) in
                 
                 
                 
-                self.uploadAll(diary:self.data!)
+                self.uploadDiaryWithDay(diary:self.data!)
                 
                 
             }
@@ -227,9 +235,11 @@ class TimeLineTableViewController: UITableViewController {
     
     func uploadImageIntoStorage(items:[DiaryItem]){
         
+        if items.count == 0{
+            trackUploadImageNumber = 0
+        }
+        
         for item in items{
-            
-            
             
             guard let myImage = item.image,
                 let data = UIImageJPEGRepresentation(myImage,0.8) else{
@@ -240,7 +250,7 @@ class TimeLineTableViewController: UITableViewController {
             
             
             
-            Storage.storage().reference().child("images").child("\(myImage.hash).jpg").putData(data, metadata: nil, completion: { (StorageMetadata,error) in
+            serviceManager.storageImagesURL.child("\(myImage.hash).jpg").putData(data, metadata: nil, completion: { (StorageMetadata,error) in
                 
                 if let err = error{
                     print(err)
@@ -259,15 +269,18 @@ class TimeLineTableViewController: UITableViewController {
     
     
     
-    func uploadDairy(id:String){
+    func uploadDairyToDB(id:String){
         
         var records = [[String:AnyObject]]()
         
         for record in data!{
-            records.append(tojson(d:record))
+            records.append(dataTurnDict(d:record))
             
         }
-        Database.database().reference().child("diary-content").child(id).updateChildValues(["disryRecords":records]) { (error, databaseReference) in
+        
+        
+        
+        serviceManager.dbDiaryContentURL.child(id).updateChildValues(["disryRecords":records]) { (error, databaseReference) in
             
             
             if let err = error{
@@ -287,13 +300,7 @@ class TimeLineTableViewController: UITableViewController {
     }
     
     
-    
-    
-    
-    
-    
-    
-    func tojson(d:OneDiaryRecord)->[String:AnyObject]{
+    func dataTurnDict(d:OneDiaryRecord)->[String:AnyObject]{
         
         
         var dit4 = [[String:String]]()
@@ -323,7 +330,6 @@ class TimeLineTableViewController: UITableViewController {
         
         
         let dict = ["foodItmes":dit4,"sportItems":dit5,"text":d.text ?? "nil"] as [String : Any]
-        
         
         return dict as [String : AnyObject]
         
@@ -426,7 +432,7 @@ class TimeLineTableViewController: UITableViewController {
         return String(format: "%1.f", sum)
         
     }
-       
+    
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
