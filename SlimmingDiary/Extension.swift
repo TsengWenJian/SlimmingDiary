@@ -49,10 +49,10 @@ extension UIImage{
             
             if manager.userGender == 0{
                 
-                image = UIImage(named:"woman.png")
+                image = UIImage(named:"woman")
                 
             }else{
-                image = UIImage(named:"man.png")
+                image = UIImage(named:"man")
                 
             }
             

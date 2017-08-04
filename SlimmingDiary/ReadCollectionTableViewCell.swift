@@ -20,6 +20,10 @@ class ReadCollectionTableViewCell: UITableViewCell {
     
     var data = [DiaryItem](){
         didSet{
+            
+            let text = shareDiaryManager.standard.calSumCalorie(items: data)
+            titleLabel.text = diaryImageType == .food ? "飲食":"運動"
+            detailLabel.text = diaryImageType == .food ? "攝取\(text)大卡":"消耗 \(text)大卡"
             collectionView.reloadData()
         }
     }

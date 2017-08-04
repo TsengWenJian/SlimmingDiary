@@ -54,6 +54,7 @@ class MainDiaryViewController: UIViewController{
             wobble.repeatCount = 2
             wobble.values = [0.0,-0.05,0.0,0.05, 0.0]
             wobble.keyTimes = [0.0, 0.25, 0.5, 0.75, 1.0]
+            
             self.btnBackgroundView.layer.add(wobble,forKey:nil)
             
             foodDiaryBtn.isSelected = false

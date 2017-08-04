@@ -10,31 +10,14 @@ import UIKit
 import Firebase
 
 
-class DiaryRecord:NSObject {
-    var diayId:String?
-    var title:String?
-    var titleImageURL:String?
-    var userId:String?
-    var beginDate:String?
-    var timestamp:String?
-    var day:String?
-    
-    
-    
-}
-
-class UserData: NSObject {
-    
-    var name:String?
-    var imageURL:String?
-    //    var email:String?
-    
-}
 
 
 class ShowRecordsTableViewController: UITableViewController {
     var recordArray = [DiaryRecord]()
     var userDict = [String:UserData]()
+    var servicManager =  DataService.standard
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,16 +25,16 @@ class ShowRecordsTableViewController: UITableViewController {
         let toastView = NickToastUIView(supView:tableView, type: .download)
         
         
-        Database.database().reference().child("diarys").observe(.childAdded, with: { (DataSnapshot) in
+        
+        
+        servicManager.dbDiarysURL.observe(.childAdded, with: { (DataSnapshot) in
             
-            if let dict = DataSnapshot.value as? [String:AnyObject] {
+                if let dict = DataSnapshot.value as? [String:AnyObject] {
                 
                 let record = DiaryRecord()
                 
                 
                 record.setValuesForKeys(dict)
-                
-                
                 
                 self.recordArray.append(record)
                 
@@ -62,7 +45,7 @@ class ShowRecordsTableViewController: UITableViewController {
                 }
                 
                 //download author image and name
-                Database.database().reference().child("users").child(userId).observeSingleEvent(of: .value, with: { (dataSnapshot) in
+                self.servicManager.dbUserURL.child(userId).observeSingleEvent(of: .value, with: { (dataSnapshot) in
                     
                     
                     self.recordArray.sort(by: { (record1, record2) -> Bool in
@@ -99,15 +82,23 @@ class ShowRecordsTableViewController: UITableViewController {
                         }
                         
                     }
-                })
+                }){ (error) in
+                     print("========================")
+                      toastView.removefromView()
+                }
                 
             }
+        }){ (error) in
+            print("========================")
             
-        })
+              toastView.removefromView()
+            
+            
+            
+        }
         
         
     }
-    
     
     
     override func didReceiveMemoryWarning() {
@@ -122,7 +113,7 @@ class ShowRecordsTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return 220
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -142,7 +133,7 @@ class ShowRecordsTableViewController: UITableViewController {
         cell.titleLabel.text = recordRow.title!
         cell.detailLabel.text = "\(recordRow.beginDate!) / \(recordRow.day!) day"
         
-         if let id = recordRow.userId,
+        if let id = recordRow.userId,
             let userData = userDict[id]{
             
             cell.userPhotoImageView.loadImageCacheWithURL(urlString:userData.imageURL!)

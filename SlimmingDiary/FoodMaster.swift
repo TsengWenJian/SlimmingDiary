@@ -21,7 +21,7 @@ struct foodDiary{
     
     init(dinnerTime:String, amount:Double,weight:Double, foodId:Int){
         
-        let foodmaster = foodMaster()
+        
         self.date = CalenderManager.standard.displayDateString()
         self.dinnerTime = dinnerTime
         self.amount = amount
@@ -165,9 +165,15 @@ class foodMaster:DiaryManager{
 
     enum FoodDetailtype {
         
-        case diaryDate
+        case diaryData
         case defaultData
         
+        
+    }
+    
+    func removeFoodDiarysAndSwitchIsON(){
+        foodDiaryArrary.removeAll()
+        switchIsOn.removeAll()
         
     }
 
@@ -189,7 +195,7 @@ class foodMaster:DiaryManager{
             
             switch detailType {
                 
-            case .diaryDate:
+            case .diaryData:
                 foodAmount = food["amount"] as! Double
                 foodWight = food["weight"] as! Double
                 foodDiaryId = food["foodDiary_id"] as! Int

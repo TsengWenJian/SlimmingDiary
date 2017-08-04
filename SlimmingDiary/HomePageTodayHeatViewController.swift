@@ -158,7 +158,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         let cond = "foodDiary.food_id=foodDetails_id and date = '\(CalenderManager.standard.dateToString(Date()))'"
         foodManager.diaryType = .foodDiaryAndDetail
-        let foodDetail = foodManager.getFoodDetails(.diaryDate, amount: nil, weight: nil, cond: cond, order: nil)
+        let foodDetail = foodManager.getFoodDetails(.diaryData, amount: nil, weight: nil, cond: cond, order: nil)
         var calorieSum:Double = 0
         for food in foodDetail{
             

@@ -9,50 +9,12 @@
 import UIKit
 import Firebase
 
-class OneDiaryRecord {
-    
-    var food:[DiaryItem]?
-    var sport:[DiaryItem]?
-    var text:String?
-    
-    init(food:[DiaryItem]?,sport:[DiaryItem]?,text:String?) {
-        self.food = food
-        self.sport = sport
-        self.text = text
-    }
-}
-
-
-class DiaryItem:NSObject {
-    
-    var image:UIImage?
-    var imageURL:String?
-    var title:String
-    var detail:String
-    
-    
-    
-    init(image:UIImage?,title:String,detail:String) {
-        self.image = image
-        self.title = title
-        self.detail = detail
-        
-    }
-    
-}
-
-
-
-let titleArray = ["飲食","運動"]
-let detailArray = ["",""]
-
-
 
 class TimeLineTableViewController: UITableViewController {
     @IBOutlet var timeLineTableView: UITableView!
     
     
-    var data:[OneDiaryRecord]?
+    var data = [OneDiaryRecord]()
     let master = foodMaster.standard
     var number = String()
     var sumItem = 0
@@ -62,10 +24,9 @@ class TimeLineTableViewController: UITableViewController {
             if trackUploadImageNumber == sumItem{
                 uploadDairyToDB(id:number)
             }
-            
-            
         }
     }
+    
     var planTitle:String?
     var titleImage:UIImage?
     var day:Int?
@@ -75,17 +36,21 @@ class TimeLineTableViewController: UITableViewController {
     
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
         timeLineTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
         
-        let navBarBtn = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(uploadTitleImage))
+        let navBarBtn = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(uploadTitleImage))
         navigationItem.rightBarButtonItem = navBarBtn
+       
+        
+        
         
         // uploadTitleImage
-        // 先上傳前面填寫封面照和標題 /diarys
+        // 先上傳前面填寫得封面照和標題等資料 /diarys
         // 在上傳全部items圖片到storage 拿到imageUrl
         // 將data轉換為dictinoary 上傳到 firebaseDB /diary-content
         
@@ -94,6 +59,7 @@ class TimeLineTableViewController: UITableViewController {
         timeLineTableView.estimatedRowHeight = 100
         timeLineTableView.rowHeight = UITableViewAutomaticDimension
         
+       
         
         
         
@@ -113,16 +79,18 @@ class TimeLineTableViewController: UITableViewController {
         //begin date
         var calculatedDate = calender.StringToDate(myBeginDate)
         
+        
         for _ in 0..<myDay{
             
             
             let d = calender.dateToString(calculatedDate)
             
+            
             master.diaryType = .foodDiaryAndDetail
             let cond = "Food_Diary.food_id=foodDetails_id and date = '\(d)'"
             
             
-            let foodDaiays = master.getFoodDetails(.diaryDate,amount:nil,weight:nil,cond: cond,order: nil)
+            let foodDaiays = master.getFoodDetails(.diaryData,amount:nil,weight:nil,cond: cond,order: nil)
             
             var foodItems = [DiaryItem]()
             
@@ -136,6 +104,8 @@ class TimeLineTableViewController: UITableViewController {
                 
                 
             }
+            
+            
             sumItem+=foodItems.count
             
             var sportItems = [DiaryItem]()
@@ -148,11 +118,30 @@ class TimeLineTableViewController: UITableViewController {
             }
             
             sumItem+=sportItems.count
-            data?.append(OneDiaryRecord(food:foodItems, sport: sportItems,text:nil))
+            data.append(OneDiaryRecord(food:foodItems,sport: sportItems,text:""))
             calculatedDate = Calendar.current.date(byAdding:newDateComponent, to: calculatedDate)!
             
         }
         
+    }
+    
+    func calSumItem()->Int{
+        
+        var sum:Int = 0
+        
+        for i in data{
+            
+            if let myFood = i.food?.count{
+                sum+=myFood
+            }
+            if let mySport = i.sport?.count{
+                sum+=mySport
+
+                
+            }
+        
+        }
+        return sum
         
     }
     
@@ -162,18 +151,54 @@ class TimeLineTableViewController: UITableViewController {
         
         for i in diary{
             
-            guard let myfood = i.food,
-                let mySport = i.sport else{
-                    continue
+            
+            if let myfood = i.food {
+                 uploadImageIntoStorage(items:myfood)
             }
             
-            uploadImageIntoStorage(items:myfood)
-            uploadImageIntoStorage(items:mySport)
             
+            if let mySport = i.sport{
+                
+                uploadImageIntoStorage(items:mySport)
+                
+            }
+
         }
     }
     
+    
+    
+    func chickIsEmpty(diary:[OneDiaryRecord])->Bool{
+        
+        var chickDiaryIsEmpty = true
+        
+        for i in diary{
+            
+            if i.food?.count != 0 || i.sport?.count != 0 || i.text != "" {
+                chickDiaryIsEmpty = false
+            }
+            
+        }
+        return chickDiaryIsEmpty
+        
+    }
+    
+    
+    
     func uploadTitleImage(){
+        
+        
+         sumItem = calSumItem()
+        
+        if chickIsEmpty(diary:data){
+        
+            let alert = UIAlertController(error: "記錄為空請填寫")
+            present(alert, animated: true, completion: nil)
+            
+            return
+            
+        }
+        
         
         toastView = NickToastUIView(supView: self.view, type:.Upload)
         
@@ -185,6 +210,8 @@ class TimeLineTableViewController: UITableViewController {
             let dataImage = UIImageJPEGRepresentation(myTitleImage,0.8)else{
                 return
         }
+        
+        
         
         
         serviceManager.storageImagesURL.child("\(id).jpg").putData(dataImage, metadata: nil) { (StorageMetadata, Error) in
@@ -220,11 +247,9 @@ class TimeLineTableViewController: UITableViewController {
                 "timestamp":"\(Int(timestamp))"]
             
             
-            self.serviceManager.dbDiarysURL.childByAutoId().updateChildValues(dict) { (erroe, databaseReference) in
+            self.serviceManager.dbDiarysURL.childByAutoId().updateChildValues(dict) { (errpr, databaseReference) in
                 
-                
-                
-                self.uploadDiaryWithDay(diary:self.data!)
+                self.uploadDiaryWithDay(diary:self.data)
                 
                 
             }
@@ -235,8 +260,9 @@ class TimeLineTableViewController: UITableViewController {
     
     func uploadImageIntoStorage(items:[DiaryItem]){
         
+        
         if items.count == 0{
-            trackUploadImageNumber = 0
+            toastView?.removefromView()
         }
         
         for item in items{
@@ -271,15 +297,19 @@ class TimeLineTableViewController: UITableViewController {
     
     func uploadDairyToDB(id:String){
         
+        
+        
         var records = [[String:AnyObject]]()
         
-        for record in data!{
+        
+        
+        for record in data{
             records.append(dataTurnDict(d:record))
             
         }
         
         
-        
+    
         serviceManager.dbDiaryContentURL.child(id).updateChildValues(["disryRecords":records]) { (error, databaseReference) in
             
             
@@ -305,7 +335,9 @@ class TimeLineTableViewController: UITableViewController {
         
         var dit4 = [[String:String]]()
         
-        for i in d.food! {
+        
+        if let myFood = d.food{
+        for i in myFood {
             
             var dit = [String:String]()
             dit["title"] = i.title
@@ -315,10 +347,11 @@ class TimeLineTableViewController: UITableViewController {
             dit4.append(dit)
         }
         
-        
+        }
         var dit5 = [[String:String]]()
-        
-        for ii in d.sport!{
+        if let mysport = d.sport{
+            
+        for ii in mysport{
             var dit = [String:String]()
             dit["title"] = ii.title
             dit["detail"] = ii.detail
@@ -328,8 +361,8 @@ class TimeLineTableViewController: UITableViewController {
             
         }
         
-        
-        let dict = ["foodItmes":dit4,"sportItems":dit5,"text":d.text ?? "nil"] as [String : Any]
+        }
+        let dict = ["foodItmes":dit4,"sportItems":dit5,"text":d.text] as [String : Any?]
         
         return dict as [String : AnyObject]
         
@@ -348,109 +381,152 @@ class TimeLineTableViewController: UITableViewController {
     }
     
     
-    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            
+            let sectionDay = data[indexPath.section]
+            if let cell = tableView.cellForRow(at: indexPath) as? CollectionTableViewCell{
+                
+                switch cell.diaryImageType {
+                    
+                    
+                case .food:
+                    sectionDay.food = nil
+                    
+                case .sport:
+                    sectionDay.sport = nil
+                    
+                    
+                }
+            }else{
+                
+                
+                sectionDay.text = nil
+                
+                
+            }
+            
+            
+            if  sectionDay.food == nil && sectionDay.sport == nil && sectionDay.text == nil{
+                data.remove(at: indexPath.section)
+            }
+            
+            tableView.reloadData()
+            
+            
+            
+        }
+    }
     
     
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return (data?.count)!
+        
+        
+        return data.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 3
+        
+        
+        var calRow = 0
+        let sectionDay = data[section]
+        if sectionDay.food != nil{calRow+=1}
+        if sectionDay.sport != nil{calRow+=1}
+        if sectionDay.text != nil{calRow+=1}
+        
+        
+
+        return calRow
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
+    
+        
+        var calRow:Int = 0
+        var foodRow:Int = 0
         
         
-        if indexPath.row == 2{
+        if data[indexPath.section].food == nil{
+            calRow += 1
+            foodRow = -1
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "TextViewTableViewCell", for: indexPath) as! TextViewTableViewCell
+        }
+        if data[indexPath.section].sport == nil{
+            calRow += 1
             
-            cell.oneDiary = data?[indexPath.section]
+        }
+        
+        
+       
+        let sportRow:Int = 1 - calRow
+        let textRow:Int = 2 - calRow
+        
+        
+        
+
+        if indexPath.row == textRow{
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier:"TextViewTableViewCell",for: indexPath) as! TextViewTableViewCell
+            
+            cell.oneDiary = data[indexPath.section]
+            
             return cell
             
         }
         
         
-        
-        
-        
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "CollectionTableViewCell", for: indexPath) as! CollectionTableViewCell
-        
-        cell.titleLabel.text = titleArray[indexPath.row]
-        
+            cell.VC = self
         
         
-        if indexPath.row == 0{
+        if indexPath.row == foodRow {
             
-            
-            
-            let text:String = calSumCalorie(items:data?[indexPath.section].food)
-            cell.detailLabel.text = "攝取\(text)大卡"
-            cell.data = (data?[indexPath.section].food)!
             cell.diaryImageType = .food
-        }
         
-        
-        
-        if indexPath.row == 1{
-            cell.diaryImageType = .sport
             
-            let text:String = calSumCalorie(items:data?[indexPath.section].sport)
-            cell.detailLabel.text = "消耗 \(text)大卡"
-            cell.data = (data?[indexPath.section].sport!)!
+        }else if indexPath.row == sportRow {
+            
+            cell.diaryImageType = .sport
+        
+            
         }
         
-        
-        cell.VC = self
-        
+         cell.allData = data[indexPath.section]
         
         
         return cell
-    }
-    
-    
-    func calSumCalorie(items:[DiaryItem]?)->String{
-        
-        var sum:Double = 0
-        guard let myItems = items else {
-            return "0"
-        }
-        
-        for i in myItems{
-            sum += Double(i.detail)!
-            
-        }
-        
-        return String(format: "%1.f", sum)
         
     }
     
-    
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
-    
+       
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as!HeaderTableViewCell
         
         headerCell.titleLabel.text = "day\(section+1)"
         
-        return headerCell
+        return headerCell.contentView
     }
+    
+    
+    
+    
+    
+    
+    
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
     }
+    
+    
+    
+    
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40

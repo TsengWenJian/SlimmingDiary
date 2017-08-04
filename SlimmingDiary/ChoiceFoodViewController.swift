@@ -15,6 +15,8 @@ class ChoiceFoodViewController: UIViewController{
     @IBOutlet weak var sliderViewLeading: NSLayoutConstraint!
     
     
+    
+    
     @IBOutlet weak var containBtnView: UIView!
     @IBOutlet weak var buttonView: UIView!
     @IBOutlet weak var addCustomBtn: UIButton!
@@ -23,14 +25,26 @@ class ChoiceFoodViewController: UIViewController{
     @IBOutlet weak var commonButton: UIButton!
     @IBOutlet weak var buttonSliderView: UIView!
     @IBOutlet weak var customBotton: UIButton!
+    
+    
+    // when actionType is update use
+    typealias selectDone = (Bool)->()
+    var selectFoodDone:selectDone?
+    var lastPageVC:ActionType?
+    
+    
+    
+    
     var dinnerTime:String?
+    
     var choiceArray = [foodDetails](){
-        didSet{
-            choiceFoodTableView.reloadData()
-        }
+        
+        didSet{ choiceFoodTableView.reloadData() }
     }
     
+    
     var currentButton:Int = 0 {
+        
         didSet{
             var cond:String?
             var order:String?
@@ -179,33 +193,49 @@ class ChoiceFoodViewController: UIViewController{
     
     func insertFoodDiary(){
         
-        master.diaryType = .foodDiary
+
         
-        for diary in  master.foodDiaryArrary{
+       
+        
+        if lastPageVC == .update{
             
             
+            selectFoodDone!(true)
             
+        }else{
             
-            master.insertDiary(rowInfo:[
-                "date":"'\(diary.date)'",
-                "time_interval":"'\(diary.dinnerTime)'",
-                "food_id":"\(diary.foodId)",
-                "amount":"\(diary.amount)",
-                "weight":"\(diary.weight)",
-                ])
-            
-            
+            for diary in  master.foodDiaryArrary{
+                
+                master.diaryType = .foodDiary
+                master.insertDiary(rowInfo:[
+                    "date":"'\(diary.date)'",
+                    "time_interval":"'\(diary.dinnerTime)'",
+                    "food_id":"\(diary.foodId)",
+                    "amount":"\(diary.amount)",
+                    "weight":"\(diary.weight)",
+                    ])
+            }
+
         }
+        
+        
         
         navigationController?.popViewController(animated: true)
         
     }
+    
+   
     
     
     func switchStats(sender:UIButton){
         
         let point = sender.convert(CGPoint.zero, to: choiceFoodTableView)
         
+        
+        
+        
+        
+       
         
         guard let myDinnerTime = dinnerTime,
             let indexPath = choiceFoodTableView.indexPathForRow(at: point),
@@ -228,7 +258,7 @@ class ChoiceFoodViewController: UIViewController{
             master.foodDiaryArrary.append(food)
             sender.isSelected = true
             
-            setNavBtnTitle()
+            
             
         }else{
             
@@ -239,18 +269,17 @@ class ChoiceFoodViewController: UIViewController{
             
             
             for (index,value) in  master.foodDiaryArrary.enumerated(){
+                
                 if value.foodId == cell.id{
                     master.foodDiaryArrary.remove(at:index)
                     
                 }
                 
                 sender.isSelected = false
-                setNavBtnTitle()
             }
         }
-        
+         setNavBtnTitle()
     }
-    
     
 }
 

@@ -60,7 +60,7 @@ class FoodDiaryViewController: UIViewController{
 
             let cond = "Food_Diary.food_id=foodDetails_id and time_interval = '\(dinnerTime[i])'and date = '\(displayDate)'"
             
-            let dinnerDiary = master.getFoodDetails(.diaryDate,amount:nil,weight:nil,cond: cond,order: nil)
+            let dinnerDiary = master.getFoodDetails(.diaryData,amount:nil,weight:nil,cond: cond,order: nil)
             sectionArray.append(dinnerDiary)
         }
         

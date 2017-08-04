@@ -7,38 +7,68 @@
 //
 
 import UIKit
+import Foundation
 
 enum DiaryImageType:String{
     case food = "food"
     case sport = "sport"
+    
 }
 
 class CollectionTableViewCell:UITableViewCell{
     
     
-    var VC:TimeLineTableViewController?
-    var diaryImageType:DiaryImageType = .food
     
+    
+    
+    @IBOutlet weak var editBtn: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var data = [DiaryItem](){
+    var isEdit = false
+    var currentTapItem = 0
+    var VC:TimeLineTableViewController?
+    var diaryImageType:DiaryImageType = .food
+    
+    var allData = OneDiaryRecord(food:nil,sport:nil,text:nil){
+        
         didSet{
+            
+            if let mydata = diaryImageType == .food ? allData.food:allData.sport {
+                
+                data = mydata
+                
+            }
+        }
+    }
+    var data = [DiaryItem](){
+        
+        didSet{
+            
+            if diaryImageType == .food{
+                
+                 allData.food = data
+            }else{
+                
+                allData.sport = data
+            }
+            
+            
+            let text = shareDiaryManager.standard.calSumCalorie(items: data)
+            titleLabel.text = diaryImageType == .food ? "飲食":"運動"
+            detailLabel.text = diaryImageType == .food ? "攝取\(text)大卡":"消耗 \(text)大卡"
             collectionView.reloadData()
         }
     }
-    var current = 0
-    
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-
+        
+        
         
     }
     
@@ -47,8 +77,28 @@ class CollectionTableViewCell:UITableViewCell{
         super.setSelected(selected, animated: animated)
         
         
+    }
+    @IBAction func editBtnAction(_ sender: Any) {
+        
+        
+        var btnTitle:String
+        
+        if isEdit{
+            
+            btnTitle = "Edit"
+            isEdit = false
+            
+        }else{
+            
+            btnTitle = "Done"
+            isEdit = true
+        }
+        
+        editBtn.setTitle(btnTitle, for: .normal)
+        collectionView.reloadData()
         
     }
+    
     
     
     
@@ -60,6 +110,7 @@ extension CollectionTableViewCell:UIImagePickerControllerDelegate,UINavigationCo
         
         var  finalImage = UIImage()
         
+        
         if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage{
             finalImage = photo
             
@@ -67,12 +118,13 @@ extension CollectionTableViewCell:UIImagePickerControllerDelegate,UINavigationCo
         if let myImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             finalImage = myImage
         }
-        data[current].image = finalImage.resizeImage(maxLength:1024)
+        
+        data[currentTapItem].image = finalImage.resizeImage(maxLength:1024)
         collectionView.reloadData()
         VC?.dismiss(animated: true, completion: nil)
         
     }
-
+    
     
     func launchImagePickerWithSourceType(type:UIImagePickerControllerSourceType){
         
@@ -101,12 +153,16 @@ extension CollectionTableViewCell:UIImagePickerControllerDelegate,UINavigationCo
 
 extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDelegate{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return  1
+        return  2
         
     }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if section == 0{
+            return 1
+        }
         
         return  data.count
     }
@@ -115,33 +171,116 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InTableCollectionViewCell",for: indexPath) as! InTableCollectionViewCell
-        let rowData = data[indexPath.row]
         
         
-        
-        let defaultImage = UIImage(named:diaryImageType.rawValue)
-        let myImage = rowData.image != nil ? rowData.image:defaultImage
-        
-        
-        cell.imageView.image = myImage
-        cell.titleLabel.text = rowData.title
-        cell.detailLabel.text = "\(rowData.detail)大卡"
+        if indexPath.section == 0{
+            
+            
+            cell.imageView.image = UIImage(named: "add")
+            cell.titleLabel.text = ""
+            cell.detailLabel.text = ""
+            cell.isBeginEdit = false
+            
+            
+            
+            
+        }else if indexPath.section == 1{
+            
+            
+            
+            if isEdit{
+                
+                let wobble = CAKeyframeAnimation(keyPath: "transform.rotation")
+                wobble.duration = 0.2
+                wobble.repeatCount = MAXFLOAT
+                
+                wobble.values = [-0.05,0.05,-0.05]
+                wobble.isRemovedOnCompletion = false
+                cell.layer.add(wobble,forKey:"cellRotato")
+                
+                
+            }else{
+                
+                cell.layer.removeAnimation(forKey: "cellRotato")
+                
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            let rowData = data[indexPath.row]
+            let defaultImage = UIImage(named:diaryImageType.rawValue)
+            let myImage = rowData.image != nil ? rowData.image:defaultImage
+            
+            
+            cell.imageView.image = myImage
+            cell.titleLabel.text = rowData.title
+            cell.detailLabel.text = "\(rowData.detail)大卡"
+            cell.isBeginEdit = isEdit
+            cell.deleteBtnAction.addTarget(self, action: #selector(deleteItem(_:)), for: .touchUpInside)
+            cell.deleteBtnAction.tag = 1000 + indexPath.row
+            
+            
+        }
         return cell
         
         
     }
     
-    
-    
-    
-    
-    
-    
-    
+    func deleteItem(_ sender:UIButton){
+        
+        let tag = sender.tag - 1000
+        data.remove(at:tag)
+        
+        
+        
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        current = indexPath.row
+        currentTapItem = indexPath.row
+        
+        if indexPath.section == 0{
+            
+            let nextPage = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChoiceFoodViewController") as! ChoiceFoodViewController
+            nextPage.lastPageVC = .update
+            nextPage.dinnerTime = ""
+            
+            
+            nextPage.selectFoodDone = {(done)->()in
+                
+                for i in foodMaster.standard.foodDiaryArrary{
+                    let detail = foodDetailManager().getFoodDataArray(.insert,
+                                                                      foodDiaryId:nil,
+                                                                      foodId:i.foodId,
+                                                                      amount:i.amount,
+                                                                      weight:i.weight)
+                    
+                    let item:DiaryItem =  DiaryItem(image:nil,
+                                                    title:detail[0],
+                                                    detail:detail[3])
+                    self.data.append(item)
+                    
+                }
+                
+                
+                
+                
+            }
+            
+            
+            VC?.navigationController?.pushViewController(nextPage, animated: true)
+            return
+            
+        }
+        
+        
+        
         
         let alertVC = UIAlertController(title:"選擇照片", message:"", preferredStyle:.actionSheet)
         
@@ -165,7 +304,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
         
     }
     
-
+    
 }
 
 

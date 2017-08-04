@@ -11,6 +11,7 @@ import Foundation
 enum ActionType{
     case update
     case insert
+    
 
 }
 
@@ -40,14 +41,17 @@ class foodDetailManager {
         foodDataArray.removeAll()
         let master = foodMaster.standard
         
+        //check is collection?
         master.diaryType = .foodDetail
         let cond =  "foodDetails_id = '\(foodId!)' and collection = '1'"
         let detailArray =  master.getDiaryData(cond:cond, order: nil)
+        
         
         if detailArray.count >= 1{
             isCollection = 1
             
         }
+        
         
         if(lastPageVC == .insert){
             
@@ -65,15 +69,15 @@ class foodDetailManager {
             
             let cond = "Food_Diary.food_id = foodDetails_id and foodDiary_id = \(foodDiaryId!)"
             master.diaryType = .foodDiaryAndDetail
-            
-            foodDetail = master.getFoodDetails(.diaryDate,
+            foodDetail = master.getFoodDetails(.diaryData,
                                                amount:amount,
                                                weight:weight,
                                                cond:cond,
                                                order:nil)[0]
         }
-        foodUnit[1] = foodDetail.foodUnit
         
+        
+        foodUnit[1] = foodDetail.foodUnit
         
         total =  foodDetail.protein+foodDetail.carbohydrate+foodDetail.crudeFat
         

@@ -185,7 +185,7 @@ class CalenderManager{
     
     func StringToDate(_ date:String)->Date{
         let formmater = DateFormatter()
-        formmater.dateFormat = "YYYY-M-dd"
+        formmater.dateFormat = "YYYY-M-d"
         let date = formmater.date(from: date)!
         
         return Date(timeInterval: TimeInterval(TimeZone.current.secondsFromGMT()), since: date)
@@ -195,7 +195,7 @@ class CalenderManager{
     func dateToString(_ date:Date)->String{
         
         let formmater = DateFormatter()
-        formmater.dateFormat = "YYYY-M-dd"
+        formmater.dateFormat = "YYYY-M-d"
         
 
         return formmater.string(from: date)

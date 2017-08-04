@@ -10,11 +10,10 @@ import UIKit
 import Firebase
 
 class ShowRecordDetailViewController: UIViewController {
-    var diaryID:String?
-     var data:[OneDiaryRecord]?
+     var diaryID:String?
+     var diarys = [OneDiaryRecord]()
     
-    let titleArray = ["飲食","運動"]
-    let detailArray = ["",""]
+   
 
     @IBOutlet weak var recordsDetailTableView: UITableView!
 
@@ -36,17 +35,19 @@ class ShowRecordDetailViewController: UIViewController {
         Database.database().reference().child("diary-content").child(myDiaryID).observe(.childAdded, with: { (DataSnapshot) in
             
             
-            self.data = [OneDiaryRecord]()
-            let diary =  DataSnapshot.value as![[String:AnyObject]]
+            self.diarys = [OneDiaryRecord]()
+            let diaryDictArray =  DataSnapshot.value as! [[String:AnyObject]]
             
-            for i in diary{
+            for diary in diaryDictArray{
                 
-                let food = i["foodItmes"] as![[String:String]]
-                let sport = i["sportItems"] as![[String:String]]
-                let text = i["text"] as! String
+                let foodItems = diary["foodItmes"] as?[[String:String]]
+                let sportItems = diary["sportItems"] as?[[String:String]]
+                let text = diary["text"] as? String
                 
-                let da = OneDiaryRecord(food:   self.diaryItem(dict: food), sport:   self.diaryItem(dict: sport), text: text)
-                self.data?.append(da)
+                let da = OneDiaryRecord(food:self.dictArrayTurnDiaryItem(dict: foodItems),
+                                        sport:self.dictArrayTurnDiaryItem(dict: sportItems),
+                                        text: text)
+                self.diarys.append(da)
                 
                 
             }
@@ -68,18 +69,23 @@ class ShowRecordDetailViewController: UIViewController {
     }
     
     
-    func diaryItem(dict:[[String:String]])->[DiaryItem]{
+    func dictArrayTurnDiaryItem(dict:[[String:String]]?)->[DiaryItem]?{
+        
+        
+        guard let mydict = dict else{
+            return nil
+        }
         
         var items = [DiaryItem]()
-        for item in dict {
+        
+        for item in mydict {
             
             let diary = DiaryItem(image: nil, title: item["title"]!, detail: item["detail"]!)
             diary.imageURL = item["imageURL"]
+            
             items.append(diary)
         
         }
-        
-        
         return items
         
     }
@@ -95,14 +101,23 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
     
      func numberOfSections(in tableView: UITableView) -> Int {
         
-        return data == nil ? 0:(data?.count)!
+        
+        return diarys.count
         
         
     }
     
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 3
+        var calRow = 0
+        let sectionDay = diarys[section]
+        if sectionDay.food != nil{calRow+=1}
+        if sectionDay.sport != nil{calRow+=1}
+        if sectionDay.text != nil{calRow+=1}
+        
+
+        
+        return calRow
     }
     
     
@@ -111,83 +126,63 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
         
         
         
-        if indexPath.row == 2{
+        var calRow:Int = 0
+        var foodRow:Int = 0
+        
+        
+        if diarys[indexPath.section].food == nil{
+            calRow += 1
+            foodRow = -1
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ReadTextViewTableViewCell", for: indexPath) as! ReadTextViewTableViewCell
-             cell.textView.text = data?[indexPath.section].text
+        }
+        if diarys[indexPath.section].sport == nil{
+            calRow += 1
+            
+        }
+        
+        
+        
+        let sportRow:Int = 1 - calRow
+        let textRow:Int = 2 - calRow
+        
+        
+        
+        
+        if indexPath.row == textRow{
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier:"ReadTextViewTableViewCell",for: indexPath) as! ReadTextViewTableViewCell
+            
+            cell.textView.text = diarys[indexPath.section].text
             
             return cell
             
         }
         
         
-        
-        
-        
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReadCollectionTableViewCell", for: indexPath) as! ReadCollectionTableViewCell
         
-        cell.titleLabel.text = titleArray[indexPath.row]
+        
+
         
         
-        
-        if indexPath.row == 0{
+        if indexPath.row == foodRow {
             
-            
-            
-            let text:String = calSumCalorie(items:data?[indexPath.section].food)
-            cell.detailLabel.text = "攝取\(text)大卡"
-            cell.data = (data?[indexPath.section].food)!
             cell.diaryImageType = .food
-        }
-        
-        
-        
-        if indexPath.row == 1{
-            cell.diaryImageType = .sport
+            cell.data = diarys[indexPath.section].food!
             
-            let text:String = calSumCalorie(items:data?[indexPath.section].sport)
-            cell.detailLabel.text = "消耗 \(text)大卡"
-            cell.data = (data?[indexPath.section].sport!)!
+            
+        }else if indexPath.row == sportRow {
+            
+            cell.diaryImageType = .sport
+            cell.data = diarys[indexPath.section].sport!
+            
+            
         }
-        
-        
-//        cell.VC = self
-        
-        
-        
+    
         return cell
     }
     
     
-    func calSumCalorie(items:[DiaryItem]?)->String{
-        
-        var sum:Double = 0
-        guard let myItems = items else {
-            return "0"
-        }
-        
-        for i in myItems{
-            sum += Double(i.detail)!
-            
-        }
-        
-        return String(format: "%1.f", sum)
-        
-    }
-    
-    
-    
-    
- 
-        
-        
-    
-    
-//     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableViewAutomaticDimension
-//    }
-//    
     
     
      func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -198,9 +193,12 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
         return headerCell
     }
     
+    
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
     }
+    
+    
     
      func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
