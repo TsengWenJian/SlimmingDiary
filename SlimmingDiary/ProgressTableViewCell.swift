@@ -71,27 +71,26 @@ class ProgressTableViewCell: UITableViewCell{
         page1View.addSubview(weightProgress)
         page2View.addSubview(fatProgress)
         
-        let stringOrigin = CGPoint(x: 10, y: 10)
+        let stringOrigin = CGPoint(x:page1View.bounds.maxX-45, y: 10)
         
-        let weightLabel = UILabel()
-        weightLabel.text = "體重"
-        weightLabel.textColor = blue
-        weightLabel.font = UIFont.systemFont(ofSize: 20)
-        weightLabel.frame.origin = stringOrigin
-        weightLabel.sizeToFit()
+        let weightImage = UIImageView()
+        weightImage.image = UIImage(named: "dumbbell-training")
+        weightImage.frame.origin = stringOrigin
+        weightImage.frame.size = CGSize(width: 40, height:40)
         
         
         let fatLabel = UILabel()
         fatLabel.text = "體脂"
         fatLabel.textColor = blue
 
-        fatLabel.font = UIFont.systemFont(ofSize: 20)
+        let fatImage = UIImageView()
+        fatImage.image = UIImage(named: "sumo-fighter")
+        fatImage.frame.origin = stringOrigin
+        fatImage.frame.size = CGSize(width: 40, height:40)
 
-        fatLabel.frame.origin = stringOrigin
-        fatLabel.sizeToFit()
 
-        page1View.addSubview(weightLabel)
-        page2View.addSubview(fatLabel)
+        page1View.addSubview(weightImage)
+        page2View.addSubview(fatImage)
 
         
     }

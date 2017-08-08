@@ -136,7 +136,7 @@ class ProgressPhotoViewController:UIViewController{
         var count = 0
         timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { (Timer) in
             
-            self.displayImageView.image = UIImage(imageName:self.weightArray[count].photo)
+            self.displayImageView.image = UIImage(imageName:self.weightArray[count].photo,search:.documentDirectory)
             
             
             count+=1
@@ -187,12 +187,12 @@ class ProgressPhotoViewController:UIViewController{
                 
                 date2Label.text = date
                 kg2Label.text = kg
-                displayPlayPhoto2.image = UIImage(imageName:weightArray[imageNumber].photo)
+                displayPlayPhoto2.image = UIImage(imageName:weightArray[imageNumber].photo,search:.documentDirectory)
                 
                 return
             }
             
-            displayImageView.image =  UIImage(imageName:weightArray[imageNumber].photo)
+            displayImageView.image =  UIImage(imageName:weightArray[imageNumber].photo,search:.documentDirectory)
             dateLabel.text = date
             kgLabel.text = kg
             
@@ -253,7 +253,7 @@ extension ProgressPhotoViewController:UICollectionViewDelegate,UICollectionViewD
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProgressPhotoCollectionViewCell",for: indexPath)
             as! ProgressPhotoCollectionViewCell
-        cell.photoImageView.image = UIImage(imageName:weightArray[indexPath.row].photo)
+        cell.photoImageView.image = UIImage(imageName:weightArray[indexPath.row].photo,search:.documentDirectory)
         
         
         return cell

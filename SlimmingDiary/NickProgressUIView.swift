@@ -31,7 +31,7 @@ struct myProgress{
     @IBInspectable var anim:Bool = false
     @IBInspectable var duration:Double = 0.5
     
-    private let trackLayer = CAShapeLayer()
+    private var trackLayer:CAShapeLayer?
     private let path = UIBezierPath()
     private let titleLabel = UILabel()
     private let subTitleLabel = UILabel()
@@ -54,6 +54,14 @@ struct myProgress{
 
     override func draw(_ rect: CGRect) {
         
+        
+        
+        if trackLayer == nil{
+            trackLayer = CAShapeLayer()
+        }else{
+            
+            return
+        }
     
         let startAngle:CGFloat = CGFloat(Double.pi * -1/2)
         let endAngle: CGFloat = CGFloat(Double.pi * 3/2)
@@ -62,12 +70,12 @@ struct myProgress{
                     radius: bounds.size.width/2 - lineWidth,
                     startAngle:startAngle, endAngle:endAngle, clockwise: true)
         
-        trackLayer.frame = bounds
-        trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.strokeColor = trackColor.cgColor
-        trackLayer.lineWidth = lineWidth
-        trackLayer.path = path.cgPath
-        layer.addSublayer(trackLayer)
+        trackLayer?.frame = bounds
+        trackLayer?.fillColor = UIColor.clear.cgColor
+        trackLayer?.strokeColor = trackColor.cgColor
+        trackLayer?.lineWidth = lineWidth
+        trackLayer?.path = path.cgPath
+        layer.addSublayer(trackLayer!)
         
         
         addProgressLayerArray()
@@ -79,7 +87,7 @@ struct myProgress{
         addSubview(titleLabel)
         
         subTitleLabel.sizeToFit()
-        subTitleLabel.center = CGPoint(x:bounds.midX,y:titleLabel.frame.maxY+bounds.height/10)
+        subTitleLabel.center = CGPoint(x:bounds.midX,y:titleLabel.frame.maxY+(bounds.height/10)*2)
         addSubview(subTitleLabel)
         
         
@@ -140,7 +148,6 @@ struct myProgress{
     func setTitleLabelText(text:String,size:CGFloat){
         
         titleLabel.text = text
-//        titleLabel.sizeToFit()
         titleLabel.font = UIFont.systemFont(ofSize: size)
         
     }

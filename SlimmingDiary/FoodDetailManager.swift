@@ -7,10 +7,13 @@
 //
 
 import Foundation
+import UIKit
 
 enum ActionType{
     case update
     case insert
+    case delete
+    case search
     
 
 }
@@ -27,7 +30,7 @@ class foodDetailManager {
     
     
     var total:Double = 0
-    
+    var foodImage:UIImage?
     var isCollection:Int = 0
     
     
@@ -67,6 +70,7 @@ class foodDetailManager {
             
         }else{
             
+            
             let cond = "Food_Diary.food_id = foodDetails_id and foodDiary_id = \(foodDiaryId!)"
             master.diaryType = .foodDiaryAndDetail
             foodDetail = master.getFoodDetails(.diaryData,
@@ -80,6 +84,7 @@ class foodDetailManager {
         foodUnit[1] = foodDetail.foodUnit
         
         total =  foodDetail.protein+foodDetail.carbohydrate+foodDetail.crudeFat
+        foodImage = UIImage(imageName: foodDetail.imageName, search: .documentDirectory)
         
         
         foodDataArray.append(String(foodDetail.sampleName))

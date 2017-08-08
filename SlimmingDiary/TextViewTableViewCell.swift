@@ -35,7 +35,6 @@ class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
         
         
         var items = [UIBarButtonItem]()
-        
         items.append(flexSpace)
         items.append(doneBtn)
         doneToolbar.items = items

@@ -64,8 +64,6 @@ class LoginViewController: UIViewController {
                 
                 
                 guard let dict = dataDict else{
-                    
-                    
                     return
                 }
                 
@@ -160,6 +158,7 @@ class LoginViewController: UIViewController {
         self.manager.setUid(user.uid)
         self.manager.setUserName(name)
         self.manager.setUserEmail(user.email)
+        self.serviceManager.isLogin = true
         
         if let url = imageURL {
             

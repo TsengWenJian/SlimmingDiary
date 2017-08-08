@@ -16,12 +16,11 @@ class FooterTableViewCell: UITableViewCell {
        override func awakeFromNib() {
         
         super.awakeFromNib()
-        // Initialization code
         
-        shadowView.layer.cornerRadius = 1
-        shadowView.layer.shadowOpacity = 0.3
-        shadowView.layer.shadowOffset = CGSize(width:1, height: 1)
-        shadowView.layer.shadowColor = UIColor.black.cgColor
+        
+        
+        
+        shadowView.setShadowView(1,0.3,CGSize(width: 1, height: 1))
 
     }
 

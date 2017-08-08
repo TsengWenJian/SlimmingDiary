@@ -16,10 +16,10 @@ class SQLiteConnect {
 
     init?() {
         
-        
+        print(path)
         let fileManager = FileManager()
         let originalPath = Bundle.main.path(forResource: "sqlite3", ofType: "sqlite")
-//        print(path)
+        
         
         
         if !fileManager.fileExists(atPath:path){

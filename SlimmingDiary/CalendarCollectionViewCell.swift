@@ -14,7 +14,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        shadowView.layer.cornerRadius = shadowView.frame.width/2
+        shadowView.layer.cornerRadius = UIScreen.main.bounds.width/7*0.9/2
                
         
     }

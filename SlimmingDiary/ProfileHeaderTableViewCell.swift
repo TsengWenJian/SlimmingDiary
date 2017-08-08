@@ -11,10 +11,9 @@ import UIKit
 class ProfileHeaderTableViewCell: UITableViewCell {
    
     @IBOutlet weak var emailLabel: UILabel!
-
     @IBOutlet weak var userNameTextField: UITextField!
-    
     @IBOutlet weak var userPhoto: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
          userPhoto.layer.cornerRadius = userPhoto.frame.height/2

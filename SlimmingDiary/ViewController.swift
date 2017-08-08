@@ -35,7 +35,9 @@ class ViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-            
+        
+        
+              
         newsManger.downloadList { (error, result) in
             
             self.newsArray = result
@@ -45,7 +47,7 @@ class ViewController: UIViewController{
             }
             
         }
-        print(pageHeightDefaultHeight)
+        
 
         homePageTableView.contentInset = UIEdgeInsets(top: pageHeightDefaultHeight
             ,left:0, bottom: 0, right: 0)
@@ -64,13 +66,6 @@ class ViewController: UIViewController{
         pageVC.setViewControllers([TodayHeatVC],direction: .forward,animated: false,completion: nil)
         
         
-//        Database.database().reference().child("group").childByAutoId().child(ProfileManager.standard.userUid!).updateChildValues(["title":"30天不喝飲料","mesage":"fff"])
-//        
-//        
-//        
-//        Database.database().reference().child("users").observe(.value, with: { (DataSnapshot) in
-//            print(DataSnapshot)
-//        })
         
         
     }
@@ -96,13 +91,9 @@ extension ViewController:UIScrollViewDelegate{
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-    
-        
-        
-        
-        
+
         let offsetY = scrollView.contentOffset.y
-        pageHeightConstraint.constant = offsetY < 0.0 ? -offsetY : 0.0
+         pageHeightConstraint.constant = offsetY < 0.0 ? -offsetY : 0.0
         
         if scrollView.contentOffset.y > view.frame.height*1.5{
             

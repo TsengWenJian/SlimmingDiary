@@ -88,13 +88,23 @@ class FoodDiaryViewController: UIViewController{
         let  diary = sectionArray[indexPath.section][indexPath.row]
         cell.titleLabel.text = diary.sampleName
         
-        cell.bodyLabel.text = String(format:"%0.1f",diary.amount) + diary.foodUnit + "(" + String(Int(diary.weight)) + "克" + ")"
+        cell.bodyLabel.text = "\(diary.amount)" + diary.foodUnit + "(" + String(Int(diary.weight)) + "克" + ")"
         cell.rightLabel.text = String(Int(diary.calorie))
+        
+        if diary.imageName == nil{
+            cell.leftImageView.image = UIImage(named: "food")
+            
+        }else{
+            cell.leftImageView.image = UIImage(imageName: diary.imageName, search: .documentDirectory)
+            
+        }
         
         
         
         return cell
     }
+    
+    
     
     
     
@@ -121,7 +131,8 @@ class FoodDiaryViewController: UIViewController{
             if section == i{
                 let nextPage = storyboard?.instantiateViewController(withIdentifier: "ChoiceFoodViewController") as! ChoiceFoodViewController
                 nextPage.dinnerTime = dinnerTime[section]
-                nextPage.hidesBottomBarWhenPushed = true
+                nextPage.diaryType = .food
+                
                 navigationController?.pushViewController(nextPage,animated: true)
             }
             
@@ -135,7 +146,7 @@ class FoodDiaryViewController: UIViewController{
 extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 80
     }
     
     
@@ -173,11 +184,12 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         
         if  let nextPage = storyboard?.instantiateViewController(withIdentifier: "FoodDetailViewController") as? FoodDetailViewController{
 
-            nextPage.foodId = sectionArray[indexPath.section][indexPath.row].foodDiaryId
+            
+            
+            nextPage.foodId = sectionArray[indexPath.section][indexPath.row].foodDetailId
             nextPage.foodDiaryId = sectionArray[indexPath.section][indexPath.row].foodDiaryId
             nextPage.dinnerTime = dinnerTime[indexPath.section]
             nextPage.lastPageVC = .update
-            
             
             navigationController?.pushViewController(nextPage, animated: true)
             
@@ -194,6 +206,7 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             master.diaryType = .foodDiary
             master.deleteDiary(cond: cond)
             sectionArray[indexPath.section].remove(at:indexPath.row)
+            master.deleteImage(imageName:sectionArray[indexPath.section][indexPath.row].imageName)
             
 
             diaryTableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)

@@ -11,12 +11,14 @@ import UIKit
 class HeaderTableViewCell: UITableViewCell {
    
 
+    @IBOutlet weak var rightLabel: UILabel!
     @IBOutlet weak var expendBtn: UIButton!
     @IBOutlet weak var totalCalorieLebel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    
        override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
         self.contentView.layer.cornerRadius = 2
     }
 

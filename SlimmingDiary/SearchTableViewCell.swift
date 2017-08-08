@@ -11,6 +11,8 @@ import UIKit
 class SearchTableViewCell: UITableViewCell {
     var id:Int?
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var switchButton: UIButton!
+    @IBOutlet weak var bodyLabel: UILabel!
    
     override func awakeFromNib() {
       
@@ -18,9 +20,7 @@ class SearchTableViewCell: UITableViewCell {
         // Initialization code
     }
     
-    @IBOutlet weak var switchButton: UIButton!
-
-    @IBOutlet weak var bodyLabel: UILabel!
+   
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

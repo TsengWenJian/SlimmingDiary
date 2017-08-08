@@ -40,6 +40,14 @@ class PrepareRecordViewController: UIViewController {
         
     }
     
+    func touchesBegan(){
+        
+        self.view.endEditing(true)
+        
+        
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -201,7 +209,7 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
             
         }else{
             
-            let nextPage = segue.destination as! TimeLineTableViewController
+            let nextPage = segue.destination as! MakeShareDiaryTableViewController
 
             
             nextPage.titleImage = titleImage.image

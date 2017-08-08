@@ -28,10 +28,10 @@ class CollectionTableViewCell:UITableViewCell{
     
     var isEdit = false
     var currentTapItem = 0
-    var VC:TimeLineTableViewController?
+    var VC:MakeShareDiaryTableViewController?
     var diaryImageType:DiaryImageType = .food
     
-    var allData = OneDiaryRecord(food:nil,sport:nil,text:nil){
+    var allData = OneDiaryRecord(food:nil,sport:nil,text:nil, date: ""){
         
         didSet{
             
@@ -42,13 +42,14 @@ class CollectionTableViewCell:UITableViewCell{
             }
         }
     }
+    
     var data = [DiaryItem](){
         
         didSet{
             
             if diaryImageType == .food{
                 
-                 allData.food = data
+                allData.food = data
             }else{
                 
                 allData.sport = data
@@ -61,6 +62,8 @@ class CollectionTableViewCell:UITableViewCell{
             collectionView.reloadData()
         }
     }
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -78,6 +81,8 @@ class CollectionTableViewCell:UITableViewCell{
         
         
     }
+    
+    
     @IBAction func editBtnAction(_ sender: Any) {
         
         
@@ -188,15 +193,13 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
             
         }else if indexPath.section == 1{
             
-            
-            
             if isEdit{
                 
                 let wobble = CAKeyframeAnimation(keyPath: "transform.rotation")
                 wobble.duration = 0.2
                 wobble.repeatCount = MAXFLOAT
                 
-                wobble.values = [-0.05,0.05,-0.05]
+                wobble.values = [-0.08,0.08,-0.08]
                 wobble.isRemovedOnCompletion = false
                 cell.layer.add(wobble,forKey:"cellRotato")
                 
@@ -208,12 +211,6 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
             }
             
             
-            
-            
-            
-            
-            
-            
             let rowData = data[indexPath.row]
             let defaultImage = UIImage(named:diaryImageType.rawValue)
             let myImage = rowData.image != nil ? rowData.image:defaultImage
@@ -223,7 +220,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
             cell.titleLabel.text = rowData.title
             cell.detailLabel.text = "\(rowData.detail)大卡"
             cell.isBeginEdit = isEdit
-            cell.deleteBtnAction.addTarget(self, action: #selector(deleteItem(_:)), for: .touchUpInside)
+            cell.deleteBtnAction.addTarget(self,action: #selector(deleteItem(_:)), for: .touchUpInside)
             cell.deleteBtnAction.tag = 1000 + indexPath.row
             
             
@@ -248,11 +245,15 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
         if indexPath.section == 0{
             
             let nextPage = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChoiceFoodViewController") as! ChoiceFoodViewController
+            
             nextPage.lastPageVC = .update
+            nextPage.diaryType = diaryImageType
             nextPage.dinnerTime = ""
             
             
             nextPage.selectFoodDone = {(done)->()in
+                
+                if self.diaryImageType == .food{
                 
                 for i in foodMaster.standard.foodDiaryArrary{
                     let detail = foodDetailManager().getFoodDataArray(.insert,
@@ -261,15 +262,40 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
                                                                       amount:i.amount,
                                                                       weight:i.weight)
                     
-                    let item:DiaryItem =  DiaryItem(image:nil,
+                    let item:DiaryItem =  DiaryItem(image:i.image,
                                                     title:detail[0],
                                                     detail:detail[3])
                     self.data.append(item)
                     
                 }
-                
-                
-                
+                    
+                }else{
+                    
+                    
+                    for i in SportMaster.standard.sportDiaryArrary{
+                        
+                        print(i)
+                        SportMaster.standard.diaryType = .sportDiaryAndDetail
+                       let cond = "Sport_Diary.SportDiary_DetailId=SportDetail_Id"
+
+                       let detail = SportMaster.standard.getSportDetails(.defaultData,
+                                                                         minute:i.minute,
+                                                                         cond: cond,
+                                                                         order:nil).first
+                        
+                        
+                        guard let firDetail = detail else{
+                            continue
+                        }
+                        
+                        
+                        let item:DiaryItem =  DiaryItem(image:i.image,
+                                                        title:firDetail.sampleName,
+                                                        detail:"\(firDetail.calories)")
+                        self.data.append(item)
+
+                    }
+                }
                 
             }
             

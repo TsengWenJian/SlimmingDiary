@@ -13,18 +13,22 @@ class FoodDetailViewController: UIViewController{
     @IBOutlet weak var collectBtn: UIButton!
     let detailManager = foodDetailManager()
     var pickerVC = PickerViewController()
-    var lastPageVC:ActionType!
+    var lastPageVC:ActionType = .insert
     var foodTitleArray = [String]()
     var foodDataArray = [String]()
     var foodUnitArray = [String]()
-    var amount:Double?
-    var weight:Double?
     var foodDiaryId:Int?
     var foodId:Int?
     var dinnerTime:String?
     var numberOfRows:Int = 0
     var numberOfComponents:Int = 0
     var setSelectRowOfbegin:Double = 0
+    var correntRow:Int = 0
+    var selectImage:UIImage?{
+        didSet{
+            foodDetailsTableView.reloadData()
+        }
+    }
     let master = foodMaster.standard
     
     
@@ -42,8 +46,8 @@ class FoodDetailViewController: UIViewController{
         foodDataArray = detailManager.getFoodDataArray(lastPageVC,
                                                        foodDiaryId:foodDiaryId,
                                                        foodId:foodId,
-                                                       amount:amount,
-                                                       weight:weight)
+                                                       amount:nil,
+                                                       weight:nil)
         
         
         foodTitleArray = detailManager.foodTitle
@@ -54,7 +58,7 @@ class FoodDetailViewController: UIViewController{
         }
         
         
-        
+        selectImage = detailManager.foodImage
         
         navigationItem.title = "食物資料"
         
@@ -88,7 +92,7 @@ class FoodDetailViewController: UIViewController{
         
         
         
-        if(lastPageVC == ActionType.insert){
+        if lastPageVC == ActionType.insert{
             
             guard let myAmount = Double(foodDataArray[1]),
                 let myWeight = Double(foodDataArray[2]),
@@ -98,13 +102,17 @@ class FoodDetailViewController: UIViewController{
                     return
             }
             
-            let diary = foodDiary(dinnerTime:myDinnerTime,
+            var diary = foodDiary(dinnerTime:myDinnerTime,
                                   amount:myAmount,
                                   weight:myWeight,
                                   foodId:myFoodId)
             
+            diary.image = selectImage
+            
+        
+            
             if let index =  master.switchIsOn.index(of:myFoodId){
-                master.switchIsOn.remove(at:index)
+                 master.switchIsOn.remove(at:index)
                  master.foodDiaryArrary.remove(at:index)
             }
             
@@ -118,11 +126,22 @@ class FoodDetailViewController: UIViewController{
             
             
             let cond = "foodDiary_id=\(foodDiaryId!)"
+            var dict = [String:String]()
+            
+            dict = ["amount":"\(foodDataArray[1])",
+                    "weight":"\(foodDataArray[2])"]
+            
+            if let image = selectImage{
+                
+                let selectImageHash  = "food_\(image.hash)"
+                dict["FoodDiary_ImageName"] = "'\(selectImageHash)'"
+                image.writeToFile(imageName: selectImageHash, search: .documentDirectory)
+                
+            }
+
             
             master.diaryType = .foodDiary
-            master.updataDiary(cond:cond,
-                               rowInfo:["amount":"\(foodDataArray[1])",
-                                "weight":"\(foodDataArray[2])"])
+            master.updataDiary(cond:cond,rowInfo:dict)
             
             
         }
@@ -160,32 +179,85 @@ class FoodDetailViewController: UIViewController{
         
     }
     
-    
-    
-    func changeData(sender:UIButton){
-        
-        let point = sender.convert(CGPoint.zero, to:foodDetailsTableView)
-        let indexPath = foodDetailsTableView.indexPathForRow(at: point)
-        let cell = foodDetailsTableView.cellForRow(at:indexPath!) as! FoodDetailTableViewCell
+    func launchImagePickerWithSourceType(type:UIImagePickerControllerSourceType){
         
         
-        if indexPath?.row == 0{
-            numberOfRows = 30
-            numberOfComponents = 2
-            setSelectRowOfbegin = Double(cell.dataLabel.text!)!
-            
-        }else{
-            numberOfRows = 2000
-            numberOfComponents = 1
-            setSelectRowOfbegin = Double(cell.dataLabel.text!)!
-            
+        if UIImagePickerController.isSourceTypeAvailable(type) == false{
+            return
             
         }
         
-        pickerVC.displayPickViewDialog(present: self)
+        let picker = UIImagePickerController()
+        picker.sourceType =  type
+        picker.delegate = self
         
+        if type == .camera{
+            picker.mediaTypes = ["public.image"]
+            
+        }else{
+            picker.allowsEditing = true;
+            
+        }
+        present(picker, animated: true, completion: nil)
         
     }
+   
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0{
+            let alertVC = UIAlertController(title:"選擇照片", message:"", preferredStyle:.actionSheet)
+            
+            let camera = UIAlertAction(title: "拍照", style: .default, handler: { (UIAlertAction) in
+                self.launchImagePickerWithSourceType(type:.camera)
+            })
+            
+            
+            let library = UIAlertAction(title: "相簿", style: .default, handler: { (UIAlertAction) in
+                self.launchImagePickerWithSourceType(type:.photoLibrary)
+            })
+            
+            
+            let cancel = UIAlertAction(title: "取消", style:.cancel, handler:nil)
+            
+            
+            alertVC.addAction(camera)
+            alertVC.addAction(library)
+            alertVC.addAction(cancel)
+            present(alertVC, animated: true, completion: nil)
+
+        }else if indexPath.section == 1{
+            
+            correntRow = indexPath.row
+            
+            if indexPath.row < 2{
+                
+                if indexPath.row == 0{
+                    
+                    numberOfRows = 30
+                    numberOfComponents = 2
+                    
+                
+                }else{
+                    
+                    numberOfRows = 2000
+                    numberOfComponents = 1
+                    
+            
+                    
+                }
+                
+                if let baginData =  Double(foodDataArray[indexPath.row+1]){
+                    setSelectRowOfbegin = baginData
+                }
+                
+                pickerVC.displayPickViewDialog(present: self)
+
+            }
+        }
+    }
+    
+    
+    
+
     
     
     
@@ -202,44 +274,74 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as!HeaderTableViewCell
-        if section == 0{
+         headerCell.contentView.layer.cornerRadius = 0
+         headerCell.rightLabel.text = ""
+        
+        if section == 1{
+            
+           
             headerCell.titleLabel.text = dinnerTime
-            headerCell.totalCalorieLebel.text = "-"+foodDataArray[0]
+            headerCell.totalCalorieLebel.text = foodDataArray[0]
             return headerCell
             
-        }else{
+        }else if section == 2{
             
             headerCell.titleLabel.text = "營養標示"
             return headerCell
             
         }
         
+        return nil
+        
     }
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
+        if section == 0{
+            return 0.1
+        }
         return 44
+        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 2 && indexPath.section == 0{
-            return 200
+        
+        if indexPath.section == 0{
+            return 180
+        }
+        
+        
+        if indexPath.row == 2 && indexPath.section == 1{
+            return 180
         }
         return 44
     }
     
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0{
+            return 0.1
+        }
+        return 20
+    }
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if section == 0{
-            return 3
-        }else{
-            return foodTitleArray.count-3
+            return 1
             
+        }else if section == 1{
+            
+            return 3
+            
+        }else{
+              return foodTitleArray.count-3
         }
         
     }
@@ -250,25 +352,38 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
         
         if indexPath.section == 0{
             
+            let cell  = tableView.dequeueReusableCell(withIdentifier: "DetailImageTableViewCell", for: indexPath) as! DetailImageTableViewCell
+            
+            
+            if selectImage != nil{
+                
+            cell.selectImageView.image = selectImage
+                
+            }
+            
+            return cell
+            
+        }else if indexPath.section == 1{
+            
             if indexPath.row <= 1{
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as!FoodDetailTableViewCell
                 cell.title.text = foodTitleArray[indexPath.row+1]
                 cell.dataLabel.text = foodDataArray[indexPath.row+1]
                 cell.unit.text = foodUnitArray[indexPath.row+1]
-                cell.dataButton.addTarget(self, action:#selector(changeData), for:.touchUpInside)
+                
                 
                 
                 return cell
                 
-            }else{
+            }else {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProgressCell") as!DetailProgressCell
                 
                 
                 var total = detailManager.total
                 
-                if total == 0.0{
+                if total.isNaN{
                     total = 1
                 }
                 
@@ -279,7 +394,7 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                 
                 
                 
-                cell.circleProgressRate.setTitleLabelText(text: foodDataArray[3], size: 25)
+                cell.circleProgressRate.setTitleLabelText(text:foodDataArray[3], size: 25)
                 cell.circleProgressRate.setSubTitleLabelText(text:"kcal", size: 18)
                 cell.circleProgressRate.setProgress(pro: [pro,pro2,pro3])
                 
@@ -289,7 +404,6 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                 
                 cell.proteinLabel.text = "蛋白質 " + String(Int(round((Double(foodDataArray[4])!/total)*100))) + "%"
                 cell.fatLabel.text = "脂肪 " + String(Int(round((Double(foodDataArray[5])!/total)*100))) + "%"
-                
                 cell.carbohydrateLabel.text = "碳水化合物 " + String(Int(round((Double(foodDataArray[8])!/total)*100))) + "%"
                 
                 
@@ -322,6 +436,32 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
 }
+
+extension FoodDetailViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        selectImage = UIImage()
+        
+        if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage{
+            selectImage = photo
+            
+        }
+        if let myImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+            selectImage = myImage
+        }
+        
+        selectImage = selectImage?.resizeImage(maxLength: 1024)
+
+
+        dismiss(animated: true, completion: nil)
+        
+    
+        
+    }
+
+}
+
 //MARK: - PickerViewDelegate
 extension FoodDetailViewController:PickerViewDelegate{
     
@@ -329,16 +469,20 @@ extension FoodDetailViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double) {
         
+        print(correntRow)
         
+        guard var amount = Double(foodDataArray[1]),
+              var weight = Double(foodDataArray[2]) else{
+                return
+        }
         
-    
-        if numberOfRows == 30{
+        if correntRow == 0{
             
-            amount = Double(data)
+            amount = data
             
-        }else{
+        }else {
             
-            weight = Double(data)
+            weight = data
         }
         
         foodDataArray = detailManager.getFoodDataArray(lastPageVC,

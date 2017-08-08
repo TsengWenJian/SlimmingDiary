@@ -32,7 +32,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
     @IBOutlet weak var dotLabel: UILabel!
     @IBOutlet weak var pickerView: UIPickerView!
     
-    var delegate:PickerViewDelegate!
+    var delegate:PickerViewDelegate?
     var interger:Double = 1
     var point:Double = 0
     var didSelectRowNumber:Double = 1.0
@@ -49,8 +49,12 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         pickerView.reloadAllComponents()
         dotLabel.isHidden = true
         
-        interger = floor(delegate.setSelectRowOfbegin)
-        point = (delegate.setSelectRowOfbegin - interger)*10
+        guard let de = delegate else{
+            return
+        }
+        
+        interger = floor(de.setSelectRowOfbegin)
+        point = (de.setSelectRowOfbegin - interger)*10
         //有bug double 轉int 2.0->結果是1 暫時用先轉float
         let s  = Float(point)
         
@@ -59,7 +63,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         pickerView.selectRow(Int(interger-1), inComponent: 0, animated: true)
         
         
-        if delegate.numberOfComponents == 2{
+        if delegate?.numberOfComponents == 2{
             
             dotLabel.isHidden = false
     
@@ -91,7 +95,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
     @IBAction func comfirmButton(_ sender: Any) {
         
         didSelectRowNumber = interger+point
-        delegate.getSelectRow(data:didSelectRowNumber)
+        delegate?.getSelectRow(data:didSelectRowNumber.roundTo(places: 1))
         hideDialog()
         
         
@@ -101,7 +105,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         
         
         if  component == 0{
-            return delegate.numberOfRows
+            return delegate!.numberOfRows
             
         }
         return 10
@@ -121,7 +125,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
     
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return  delegate.numberOfComponents
+        return  delegate!.numberOfComponents
     }
     
     

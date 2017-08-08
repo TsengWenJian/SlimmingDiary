@@ -15,13 +15,11 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     @IBOutlet weak var resultCalorieLabel: UILabel!
     @IBOutlet weak var sportCalorieLabel: UILabel!
     @IBOutlet weak var basicCalorieLabel: UILabel!
-    
-    
-    
-    
+
     let bodyManager = BodyInformationManager.standard
     let profileManager = ProfileManager.standard
     let foodManager = foodMaster.standard
+    let sportMaster = SportMaster.standard
     let textView = UITextView()
     let rangeTextLabel = UILabel()
     let placeholderLabel = UILabel()
@@ -29,8 +27,6 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         
         let offsety:CGFloat = 214
         scrollView.contentSize = CGSize(width:view.frame.width,height:offsety*2-50)
@@ -43,23 +39,15 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         textView.delegate = self
         
-        
-        
-        
         let embraveText = profileManager.userEmbraveText
         
         if embraveText == nil || (embraveText?.isEmpty)! {
-            
-            
             placeholderLabel.text = "請輸入激勵語..."
             
         }else{
             
             textView.text = embraveText
-            
-            
         }
-        
         
         
         placeholderLabel.frame.origin = CGPoint(x: 15, y:offsety-35)
@@ -120,8 +108,6 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     
     
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         
         bodyManager.setBodyData(profileManager.userHeight,
@@ -131,10 +117,12 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         let basic = Int(bodyManager.getDailyCaloriesRequired())
         let food = Int(getTodayFoodCalorie())
+        let sport = Int(getTodaySportCaloree())
         
         
         basicCalorieLabel.text = "\(basic)"
         foodCalorieLabel.text = "\(food)"
+        sportCalorieLabel.text = "\(sport)"
         resultCalorieLabel.text = "\(basic - food)"
         
     }
@@ -143,9 +131,27 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         super.didReceiveMemoryWarning()
         
     }
+    
+    
+    func getTodaySportCaloree()->Double{
+        
+        let cond = "Sport_Diary.SportDiary_DetailId=SportDetail_Id and SportDiary_Date = '\(CalenderManager.standard.currentDateString())'"
+        
+        
+        sportMaster.diaryType = .sportDiaryAndDetail
+        let sportDetail = sportMaster.getSportDetails(.diaryData, minute: nil, cond: cond, order: nil)
+        
+        var calorieSum:Double = 0
+        for sport in sportDetail{
+            
+            calorieSum += sport.calories
+            
+        }
 
-    
-    
+        return calorieSum
+        
+    }
+
     
     func doneBtnAction() {
         textView.resignFirstResponder()
@@ -156,7 +162,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     func getTodayFoodCalorie()->Double{
         
-        let cond = "foodDiary.food_id=foodDetails_id and date = '\(CalenderManager.standard.dateToString(Date()))'"
+        let cond = "Food_Diary.food_id=foodDetails_id and date = '\(CalenderManager.standard.currentDateString())'"
         foodManager.diaryType = .foodDiaryAndDetail
         let foodDetail = foodManager.getFoodDetails(.diaryData, amount: nil, weight: nil, cond: cond, order: nil)
         var calorieSum:Double = 0
@@ -165,12 +171,9 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
             calorieSum += food.calorie
             
         }
-        
         return calorieSum
-        
     }
     
-
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         
         scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.frame.height-50), animated: true)
@@ -184,8 +187,6 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         let countOfWords = text.characters.count + textView.text.characters.count - range.length
         
         
-        
-          
         if countOfWords > 0{
             
             placeholderLabel.isHidden = true
@@ -206,7 +207,6 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         rangeTextLabel.text = "\(countOfWords)/120"
         
-
         return true
     }
 }

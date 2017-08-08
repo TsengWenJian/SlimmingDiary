@@ -9,6 +9,7 @@
 import UIKit
 
 class DetailProgressCell: UITableViewCell {
+    
     @IBOutlet weak var circleProgressRate: NickProgressUIView!
     @IBOutlet weak var proteinLabel: UILabel!
     @IBOutlet weak var fatLabel: UILabel!
@@ -16,7 +17,7 @@ class DetailProgressCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

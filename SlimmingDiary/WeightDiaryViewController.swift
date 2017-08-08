@@ -218,7 +218,8 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             
         }
         
-        cell.photoImageView.image = UIImage(imageName:diary[indexPath.row].photo)
+        
+        cell.photoImageView.image = UIImage(imageName:diary[indexPath.row].photo,search:.documentDirectory)
         
         return cell
     }
@@ -332,6 +333,7 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             weightMaster.diaryType = .weightDiary
             weightMaster.deleteDiary(cond: cond)
             weightDiaryArray[indexPath.section-1].remove(at:indexPath.row)
+            weightMaster.deleteImage(imageName:weightDiaryArray[indexPath.section-1][indexPath.row].photo)
             weightTableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)
         }
         

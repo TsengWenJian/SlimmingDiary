@@ -15,7 +15,7 @@ import UIKit
     @IBInspectable var trackColor:UIColor = UIColor(red:(245/255.0),
                                                     green:(245/255.0),
                                                     blue:(245/255.0),
-                                                    alpha: 1.0)
+                                                    alpha: 0.95)
     
     
     
@@ -114,9 +114,6 @@ import UIKit
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.strokeColor = trackColor.cgColor
         progressLayer.lineWidth = lineWidth
-        progressLayer.shadowColor = UIColor.black.cgColor
-        progressLayer.shadowOffset = CGSize.zero
-        progressLayer.shadowOpacity = 0.2
         layer.addSublayer(progressLayer)
         
         

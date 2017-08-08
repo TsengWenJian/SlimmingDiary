@@ -21,7 +21,7 @@ import UIKit
     @IBInspectable var anim:Bool = false
     @IBInspectable var duration:Double = 0.5
     @IBInspectable var titleTextSize:CGFloat = 18
-    @IBInspectable var subTitleTextSize:CGFloat = 20
+    @IBInspectable var subTitleTextSize:CGFloat = 18
     @IBInspectable var detailTextSize:CGFloat = 14
     
     
@@ -298,7 +298,7 @@ import UIKit
         
         detailLabel.text = text
         detailLabel.sizeToFit()
-        detailLabel.center = CGPoint(x:insiderLayer.position.x,y:bounds.height - detailLabel.frame.height)
+        detailLabel.center = CGPoint(x:insiderLayer.position.x,y:bounds.height - detailLabel.frame.height/2)
         
         
     }
@@ -355,7 +355,6 @@ import UIKit
     func resetProgress(progress:Double){
         
         pointerProgress = progress
-        
         setProgressAnim()
         
     }

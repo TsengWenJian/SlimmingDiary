@@ -11,7 +11,7 @@ import UIKit
 class ReadCollectionTableViewCell: UITableViewCell {
 
     
-    var VC:TimeLineTableViewController?
+    var VC:ShowRecordDetailViewController?
     var diaryImageType:DiaryImageType = .food
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -95,22 +95,26 @@ extension ReadCollectionTableViewCell: UICollectionViewDataSource,UICollectionVi
     }
     
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
-//        
-//        let width = self.frame.width/3
-//        return CGSize(width: width, height:width)
-//    }
-    
-    
-    
-    
-    
-    
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        currentTapRow = indexPath.row
+       let nextPage = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier:"ShowDiaryImageViewController") as! ShowDiaryImageViewController
+       
         
+       let filterData =  data.filter { (item) -> Bool in
+            
+           if item.imageURL != nil {
+                return true
+            }else{
+                return false
+            }
+        }
+        
+        if filterData.count > 1{
+        
+        
+        nextPage.diaryItems = data
+        VC?.navigationController?.pushViewController(nextPage, animated: true)
+    }
     
-}
+   }
 }
 

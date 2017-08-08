@@ -189,7 +189,14 @@ class ProfileManager {
         userArray.append(String(userHeight))
         userArray.append(String(userWeight))
         userArray.append(String(userTargetWeight))
-        userArray.append(userBirthday!)
+        
+        if let bir = userBirthday{
+            
+            userArray.append(bir)
+        }else{
+             userArray.append("2001-01-01")
+        }
+        
         userArray.append(liftStyleArray[userLifeStyle])
         userArray.append(String(userHeight))
         

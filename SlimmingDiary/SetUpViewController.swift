@@ -11,7 +11,8 @@ import Firebase
 import FBSDKLoginKit
 class SetUpViewController: UIViewController {
     
-    var titleArray = ["五星鼓勵","建議與問題回報","編輯個人資料"]
+    var titleArray = ["五星鼓勵","建議與問題回報","編輯個人資料","清除緩存"]
+    var cachesSize:Double = 0
     
     @IBOutlet weak var setUpTableView: UITableView!
     let manager = ProfileManager.standard
@@ -19,10 +20,11 @@ class SetUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        actionCaches(action:.search)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        actionCaches(action:.search)
         setUpTableView.reloadData()
     }
     
@@ -34,7 +36,7 @@ class SetUpViewController: UIViewController {
     
     func  loginOrlogut(sender:UIButton){
         
-        if sender.title(for: .normal) == "登入"{
+        if manager.userUid == nil{
             
             let nextPage = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             navigationController?.pushViewController(nextPage, animated: true)
@@ -45,11 +47,59 @@ class SetUpViewController: UIViewController {
             
             DataService.standard.userLogOut()
             manager.setUserServiceDataNill()
+            
         }
         
         setUpTableView.reloadData()
         
     }
+    
+    func actionCaches(action:ActionType){
+        
+        
+        guard let cachPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else{
+            return
+        }
+        
+        let fileArray = FileManager.default.subpaths(atPath:cachPath.path)
+        var allSize:Double = 0
+        
+        guard let fileNameArray = fileArray else{
+            return
+        }
+        
+        for name in fileNameArray{
+            
+            if name.contains("Cache_"){
+                
+                
+                
+                let url = cachPath.appendingPathComponent(name)
+                
+                if action == .delete{
+                    
+                    if let _ = try? FileManager.default.removeItem(at:url){
+                        
+                        
+                    }
+                }else{
+                    
+                    
+                    if let folder = try? FileManager.default.attributesOfItem(atPath:url.path){
+                        
+                        allSize += folder[.size] as! Double
+                        
+                    }
+                }
+                
+                
+            }
+        }
+        
+        cachesSize = (allSize/1024/1024)
+        
+    }
+    
     
     
     
@@ -140,28 +190,30 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
             
             
             var btnTitle:String
-            if manager.userUid == nil{
-                btnTitle = "登入"
-                
-            }else{
-                
-                btnTitle = "登出"
-                
-            }
-            
-            
+            btnTitle = manager.userUid == nil ? "登入":"登出"
             cell.loginBtn.setTitle(btnTitle, for: .normal)
             cell.loginBtn.addTarget(self, action: #selector(loginOrlogut), for:.touchUpInside)
-    
+            
             return cell
         }
         
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
-        cell.textLabel?.text = titleArray[indexPath.row]
-        
-        
-        return cell
+        if indexPath.row <= 2{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
+            cell.textLabel?.text = titleArray[indexPath.row]
+    
+            return cell
+            
+        }else{
+            
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell",for:indexPath)
+            cell.textLabel?.text = titleArray[indexPath.row]
+            cell.detailTextLabel?.text = "\(cachesSize.roundTo(places:1))MB"
+            
+            return cell
+            
+        }
         
     }
     
@@ -174,9 +226,27 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
                 let nextPage = storyboard?.instantiateViewController(withIdentifier: "PersonalFilesViewController") as!PersonalFilesViewController
                 navigationController?.pushViewController(nextPage, animated: true)
                 
+            }else if indexPath.row == 3{
+                
+                let alert = UIAlertController(title: "清除", message: "確定要清除緩存？", preferredStyle:.alert)
+            
+                let action = UIAlertAction(title: "確定", style:.default, handler: { (UIAlertAction) in
+                    
+                    self.actionCaches(action:.delete)
+                    self.setUpTableView.reloadData()
+                    
+                })
+              
+                let cancel = UIAlertAction(title:"取消", style: .cancel, handler: nil)
+                alert.addAction(action)
+                alert.addAction(cancel)
+                present(alert, animated: true, completion: nil)
+                
+                
             }
-    
+            
         }
+        
         tableView.deselectRow(at: indexPath, animated: false)
         
         

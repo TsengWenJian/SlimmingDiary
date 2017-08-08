@@ -19,22 +19,28 @@ class advanceImageView: UIImageView {
     
     func loadWithURL(urlString:String){
         
-        self.image = nil
+        
+        
+        image = nil
         prepareIndicatorView()
         let url = URL(string:urlString)
-        
         let hashString = "Cache_\(urlString.hash)"
         
         let cachesURL = FileManager.default.urls(for:.cachesDirectory, in: .userDomainMask).first
-        let fullFileImageName = cachesURL?.appendingPathComponent(hashString)
+        guard let fullFileImageName = cachesURL?.appendingPathComponent(hashString) else{
+            return
+        }
         
-        if let cachImage = UIImage.init(contentsOfFile:(fullFileImageName?.path)!){
+        
+        
+        if let cachImage = UIImage(contentsOfFile:fullFileImageName.path){
             
             self.image = cachImage
             
             return
             
         }
+        
         
         if existTask != nil{
             existTask?.cancel()
@@ -43,7 +49,7 @@ class advanceImageView: UIImageView {
         }
         
         loadingView?.startAnimating()
-        let config = URLSessionConfiguration.default
+        let config = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: config)
         
         existTask = nil
@@ -56,6 +62,7 @@ class advanceImageView: UIImageView {
             DispatchQueue.main.async {
                 
                 self.loadingView?.stopAnimating()
+                self.loadingView = nil
             }
             
             if error != nil{
@@ -77,7 +84,7 @@ class advanceImageView: UIImageView {
             }
             
             let nsData:NSData = myData as NSData
-            nsData.write(toFile:(fullFileImageName?.path)!, atomically: true)
+            nsData.write(toFile:fullFileImageName.path, atomically: true)
             
         }
         
@@ -92,15 +99,20 @@ class advanceImageView: UIImageView {
     func prepareIndicatorView(){
         
         
-        if loadingView != nil {
-            return
+        if loadingView == nil {
+            
+            loadingView = UIActivityIndicatorView()
+            
+            DispatchQueue.main.async {
+                self.loadingView?.frame = self.bounds
+            }
+            loadingView?.color = UIColor.darkGray
+            loadingView?.hidesWhenStopped = true
+            addSubview(loadingView!)
+
+            
         }
         
-        loadingView = UIActivityIndicatorView()
-        loadingView?.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
-        loadingView?.color = UIColor.darkGray
-        loadingView?.hidesWhenStopped = true
-        addSubview(loadingView!)
         
     }
 }

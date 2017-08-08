@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct foodDiary{
     
@@ -16,6 +17,7 @@ struct foodDiary{
     let amount:Double
     let weight:Double
     let foodId:Int
+    var image:UIImage?
     
     
     
@@ -55,6 +57,7 @@ struct foodDetails{
     let potassium:Double
     let calcium:Double
     let cholesterol:Double
+    var imageName:String?
     
     
     
@@ -63,7 +66,7 @@ struct foodDetails{
     init(foodDiaryId:Int,foodDetailId:Int,foodClassification:String,sampleName:String,foodUnit:String,amount:Double,
          weight:Double, calorie:Double, protein:Double, crudeFat:Double, saturatedFat:Double,
          transFats:Double,carbohydrate:Double, dietaryFiber:Double, totalSugar:Double,
-         sodium:Double, potassium:Double, calcium:Double,cholesterol:Double){
+         sodium:Double, potassium:Double, calcium:Double,cholesterol:Double,imageName:String?){
         
         
         
@@ -72,7 +75,7 @@ struct foodDetails{
         self.amount = amount
         self.weight = weight
         self.foodUnit = foodUnit
-        let percentage = weight/100*amount
+        let percentage = weight/100*amount.roundTo(places: 1)
         self.foodClassification = foodClassification
         self.sampleName = sampleName
         self.calorie = calorie*percentage
@@ -87,6 +90,7 @@ struct foodDetails{
         self.potassium = potassium*percentage
         self.calcium = calcium*percentage
         self.cholesterol = cholesterol*percentage
+        self.imageName = imageName
         
         
     }
@@ -99,8 +103,12 @@ enum DiaryType:String {
     
     case foodDetail = "Food_Detail"
     case foodDiary = "Food_Diary"
+    case sportDetail = "Sport_Detail"
+    case sportDiary = "Sport_Diary"
+    case sportDiaryAndDetail = "Sport_Diary,Sport_Detail"
     case foodDiaryAndDetail = "Food_Diary,Food_Detail"
     case weightDiary = "Weight_Diary"
+    
     
     
 }
@@ -149,6 +157,20 @@ class DiaryManager{
         let _ = db?.insert(diaryType.rawValue,rowInfo:rowInfo)
         
     }
+    func deleteImage(imageName:String?){
+        
+        guard let name = imageName else{
+            return
+        }
+        let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        
+        guard let imageURL = documentURL?.appendingPathComponent(name) else{
+            return
+        }
+        
+        let _ = try? FileManager.default.removeItem(at: imageURL)
+        
+    }
     
     
     
@@ -171,7 +193,7 @@ class foodMaster:DiaryManager{
         
     }
     
-    func removeFoodDiarysAndSwitchIsON(){
+    func removeFoodDiarysAndSwitch(){
         foodDiaryArrary.removeAll()
         switchIsOn.removeAll()
         
@@ -233,7 +255,8 @@ class foodMaster:DiaryManager{
                                    sodium:food["sodium"] as! Double,
                                    potassium:food["potassium"] as! Double,
                                    calcium:food["calcium"] as! Double,
-                                   cholesterol:food["cholesterol"] as! Double)
+                                   cholesterol:food["cholesterol"] as! Double,
+                                   imageName:food["FoodDiary_ImageName"] as? String)
             array.append(food)
             
         }

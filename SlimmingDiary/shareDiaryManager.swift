@@ -15,11 +15,13 @@ class OneDiaryRecord:NSObject{
     var food:[DiaryItem]?
     var sport:[DiaryItem]?
     var text:String?
+    var date:String
     
-    init(food:[DiaryItem]?,sport:[DiaryItem]?,text:String?) {
+    init(food:[DiaryItem]?,sport:[DiaryItem]?,text:String?,date:String) {
         self.food = food
         self.sport = sport
         self.text = text
+        self.date = date
     }
 }
 
@@ -33,6 +35,7 @@ class DiaryItem {
     
     
     
+    
     init(image:UIImage?,title:String,detail:String) {
         self.image = image
         self.title = title
@@ -42,16 +45,16 @@ class DiaryItem {
     
 }
 
-class DiaryRecord:NSObject {
-    var diayId:String?
+class ShareDiary:NSObject {
+    
+    var diaryId:String?
     var title:String?
     var titleImageURL:String?
     var userId:String?
     var beginDate:String?
-    var timestamp:String?
-    var day:String?
-    
-    
+    var timestamp:NSNumber?
+    var day:NSNumber?
+    var open:String?
     
 }
 

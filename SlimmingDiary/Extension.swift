@@ -24,6 +24,16 @@ extension UIView{
     }
 }
 
+extension Double{
+    
+    func toString()->String{
+        
+        return String(format: "%.1f",self)
+    }
+    
+    
+}
+
 // MARK:- UIAlertController
 extension UIAlertController{
     
@@ -57,7 +67,8 @@ extension UIImage{
             }
             
         }else{
-            image = UIImage(imageName: manager.userPhotoName)
+            image = UIImage(imageName: manager.userPhotoName, search:.cachesDirectory)
+            
             
         }
         
@@ -92,7 +103,6 @@ extension UIImage{
             UIGraphicsBeginImageContext(targetSize);
             draw(in: CGRect(x: 0, y: 0,width:targetSize.width,height: targetSize.height))
             
-            
             finalImage = UIGraphicsGetImageFromCurrentImageContext()!;
             UIGraphicsEndImageContext();    // Important!!!
         }
@@ -105,25 +115,46 @@ extension UIImage{
     
     
     
-    convenience init?(imageName:String?){
+    convenience init?(imageName:String?,search:FileManager.SearchPathDirectory){
         
         
-        guard let cachesURL = FileManager.default.urls(for:.cachesDirectory,  in:.userDomainMask).first,
-            let name = imageName else{
+        guard let cachesURL = FileManager.default.urls(for:search,in:.userDomainMask).first,
+        let name = imageName else{
                 return nil
         }
+        
+        
         
         let fullFileImageName = cachesURL.appendingPathComponent(name)
         self.init(contentsOfFile:fullFileImageName.path)
         
     }
     
+    func writeToFile(imageName:String,search:FileManager.SearchPathDirectory){
+        
+        let cachesURL = FileManager.default.urls(for:search,in:.userDomainMask).first
+        let fullFileImageName = cachesURL?.appendingPathComponent(imageName)
+        let imageData = UIImageJPEGRepresentation(self,1)
+        
+        guard let _ = try? imageData?.write(to:fullFileImageName!,options: [.atomic]) else{
+            print("寫入照片失敗")
+            return
+        }
+
+    }
+}
+extension Double{
     
-    
+    func roundTo(places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        
+        return (self * divisor).rounded() / divisor
+    }
 }
 
 
 extension UIImageView{
+    
     
     func loadImageCacheWithURL(urlString:String){
         
@@ -143,11 +174,19 @@ extension UIImageView{
         var loadingView:UIActivityIndicatorView?
         
         if loadingView == nil{
-             loadingView = UIActivityIndicatorView()
-            loadingView?.frame = bounds
-            loadingView?.color = UIColor.darkGray
+            
+    
+            
+            loadingView = UIActivityIndicatorView()
+
+            DispatchQueue.main.async {
+             loadingView?.frame = self.bounds
+            }
+        
+            loadingView?.color = UIColor.gray
             loadingView?.hidesWhenStopped = true
             addSubview(loadingView!)
+
 
         }
         
@@ -162,13 +201,19 @@ extension UIImageView{
             
             if let err = error{
                 print(err)
+                
+                DispatchQueue.main.async {
+                    loadingView?.stopAnimating()
+                    self.image = nil
+                    
+                }
                 return
             }
             
             DispatchQueue.main.async {
                 if let  downloadImage  = UIImage(data: data!){
                      loadingView?.stopAnimating()
-                    imageCach.setObject(downloadImage, forKey: url as AnyObject)
+                    imageCach.setObject(downloadImage,forKey: url as AnyObject)
                     self.image = downloadImage
                 }
         
@@ -179,5 +224,4 @@ extension UIImageView{
         task.resume()
         
     }
-    
 }

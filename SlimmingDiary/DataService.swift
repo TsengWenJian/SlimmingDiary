@@ -14,13 +14,25 @@ typealias Done = (Error?)->()
 typealias DoneUserData = ([String:AnyObject]?) ->()
 typealias DoneUploadProfileImage = (String?,Error?)->()
 
+
+
 class DataService {
     
     static  let standard = DataService()
     
     
+    
+    
     var currentUser:User?{
         return Auth.auth().currentUser
+    }
+    
+    var isLogin:Bool = {return Auth.auth().currentUser == nil ? false :true }(){
+        
+        didSet{
+            NotificationCenter.default.post(name:NSNotification.Name(rawValue: "loginStatus"),
+                                            object: nil)
+        }
     }
     
     var userUid:String? {
@@ -50,13 +62,16 @@ class DataService {
     var storageImagesURL:StorageReference {
         return Storage.storage().reference().child("images")
     }
-
+    
+    
     
     
     func userLogOut(){
         
         try? Auth.auth().signOut()
         FBSDKLoginManager().logOut()
+        isLogin = false
+       
         
     }
     
@@ -102,9 +117,10 @@ class DataService {
                 return
             }
             
+            
             guard let accessToken = FBSDKAccessToken.current() else {
                 print("Fail get access token")
-                done(nil)
+                done(NSError(domain:"", code: 0, userInfo: nil))
                 return
             }
             
@@ -118,6 +134,7 @@ class DataService {
                 
                 
                 if let  err = error {
+                    print(err)
                     done(err)
                     return
                 }
@@ -157,9 +174,10 @@ class DataService {
                 
                 done(dict)
                 
+                
             }else{
                 
-                done(nil)
+                 done(nil)
                 
             }
         })
@@ -273,7 +291,6 @@ class DataService {
         }
         
         task.resume()
-        
         
     }
     

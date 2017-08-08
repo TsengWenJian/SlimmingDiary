@@ -47,6 +47,7 @@ class AddWeightViewController: UIViewController{
             as? PickerViewController
         
         
+        
         pickerVC?.delegate = self
         titleArray[0] = type.rawValue
         detailArray[0] = "\(weight)"
@@ -72,17 +73,8 @@ class AddWeightViewController: UIViewController{
         if let myImage = image{
             
             
-            let hashString = "Cache_\(myImage.hash)"
-            let cachesURL = FileManager.default.urls(for:.cachesDirectory,in:.userDomainMask).first
-            let fullFileImageName = cachesURL?.appendingPathComponent(hashString)
-            
-            let imageData = UIImageJPEGRepresentation(myImage,1)
-            
-            guard let _ = try? imageData?.write(to:fullFileImageName!,options: [.atomic]) else{
-                print("寫入照片失敗")
-                return
-            }
-            
+            let hashString = "WeightProgress_\(myImage.hash)"
+            myImage.writeToFile(imageName: hashString, search: .documentDirectory)
             imageName = hashString
             
         }
@@ -97,7 +89,7 @@ class AddWeightViewController: UIViewController{
                 let cond = "Weight_Id = '\(id)'"
                 
                 weightMaster.updataDiary(cond:cond,
-                                         rowInfo:["Weight_Photo":"'\(imageName ?? "No_Image")'",
+                                         rowInfo:["Weight_Photo":"'\(imageName ??       "No_Image")'",
                                             "Weight_Value":"'\(weight)'"])
             }
             
@@ -106,8 +98,12 @@ class AddWeightViewController: UIViewController{
         }else{
             
             let calender = CalenderManager.standard
+            
             if calender.displayDateString() == calender.currentDateString() || calender.isAfterCurrentDay(date:calender.displayDate){
+                
+                if titleArray[0] == "體重"{
                 proFileManager.setUserWeight(weight)
+                }
                 
             }
             
@@ -189,6 +185,9 @@ extension AddWeightViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "AddWeightHeaderTableViewCell") as! AddWeightHeaderTableViewCell
         
+        var title:String
+        title = actionType == .insert ? "新增紀錄":"修改記錄"
+        headerCell.TitleLabel.text = title
         headerCell.cancelBtn.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         headerCell.confirmBtn.addTarget(self, action: #selector(confirmAction), for: .touchUpInside)
         

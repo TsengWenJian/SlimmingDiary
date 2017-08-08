@@ -29,16 +29,18 @@ class AddFoodViewController: UIViewController {
         PickerViewController
         pickerVC.delegate = self
         
-        let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
+        let nibHeader = UINib(nibName: "HeaderTableViewCell",bundle: nil)
         addFoodTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
         
         let insertItem = UIBarButtonItem(title:"加入", style: .done, target: self, action: #selector(insertFoodDetail))
         navigationItem.rightBarButtonItems = [insertItem]
-        
+        navigationItem.title = "新食物"
         
         
         
     }
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -64,7 +66,6 @@ class AddFoodViewController: UIViewController {
         if isWriteDone{
             
             addFoodManager.insertFoodDetail()
-            
             navigationController?.popViewController(animated: true)
             return
         }
@@ -196,12 +197,17 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
         
         self.view.endEditing(true)
         if indexPath.section == 0{
+            
+            
         
             if indexPath.row == 2{
                 
                 numberOfRows = 1000
                 numberOfComponents = 1
                 setSelectRowOfbegin = 1
+            }else{
+                
+                return
             }
             
             
@@ -245,7 +251,8 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
         
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as!HeaderTableViewCell
         headerCell.titleLabel.text = addFoodManager.sectionTitle[section]
-        headerCell.totalCalorieLebel.text = ""
+        headerCell.totalCalorieLebel.text = nil
+        headerCell.rightLabel.text = nil
         
         
         return headerCell.contentView
