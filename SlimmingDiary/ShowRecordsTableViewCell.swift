@@ -10,7 +10,7 @@ import UIKit
 
 class ShowRecordsTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var titleImageView: UIImageView!
+    @IBOutlet weak var titleImageView:AdvanceImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var userPhotoImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -22,10 +22,6 @@ class ShowRecordsTableViewCell: UITableViewCell {
         
         
         userPhotoImageView.layer.borderColor = UIColor.white.cgColor
-        userPhotoImageView.layer.borderWidth = 1
-        
-        
-        userPhotoImageView.layer.cornerRadius = 20
         titleImageView.layer.cornerRadius = 5
         shadowView.layer.cornerRadius = 5
         

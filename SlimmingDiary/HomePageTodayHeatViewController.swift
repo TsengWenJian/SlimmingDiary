@@ -18,11 +18,11 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
 
     let bodyManager = BodyInformationManager.standard
     let profileManager = ProfileManager.standard
-    let foodManager = foodMaster.standard
+    let foodManager = FoodMaster.standard
     let sportMaster = SportMaster.standard
     let textView = UITextView()
     let rangeTextLabel = UILabel()
-    let placeholderLabel = UILabel()
+    
     
     
     override func viewDidLoad() {
@@ -41,8 +41,8 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         let embraveText = profileManager.userEmbraveText
         
-        if embraveText == nil || (embraveText?.isEmpty)! {
-            placeholderLabel.text = "請輸入激勵語..."
+        if embraveText == nil  {
+            textView.text = "請輸入激勵語..."
             
         }else{
             
@@ -50,13 +50,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         }
         
         
-        placeholderLabel.frame.origin = CGPoint(x: 15, y:offsety-35)
-        placeholderLabel.font = UIFont.systemFont(ofSize: 18)
-        placeholderLabel.sizeToFit()
-        placeholderLabel.textColor = UIColor.white
-        
-        
-        textView.frame = CGRect(x: 10, y:offsety-45,
+        textView.frame = CGRect(x:10,y:offsety-45,
                                 width:shadowView.frame.size.width-10,
                                 height:shadowView.frame.height)
 
@@ -77,7 +71,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         scrollView.addSubview(shadowView)
         scrollView.addSubview(textView)
         scrollView.addSubview(rangeTextLabel)
-        scrollView.addSubview(placeholderLabel)
+        
         
         let doneToolbar: UIToolbar = UIToolbar(frame:CGRect(x:0,
                                                              y:0,
@@ -135,7 +129,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     func getTodaySportCaloree()->Double{
         
-        let cond = "Sport_Diary.SportDiary_DetailId=SportDetail_Id and SportDiary_Date = '\(CalenderManager.standard.currentDateString())'"
+        let cond = "Sport_Diary.\(SPORTYDIARY_DETAILID)=\(SPORTDETAIL_ID) and \(SPORTYDIARY_DATE) = '\(CalenderManager.standard.currentDateString())'"
         
         
         sportMaster.diaryType = .sportDiaryAndDetail
@@ -162,7 +156,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     func getTodayFoodCalorie()->Double{
         
-        let cond = "Food_Diary.food_id=foodDetails_id and date = '\(CalenderManager.standard.currentDateString())'"
+        let cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DATE) = '\(CalenderManager.standard.currentDateString())'"
         foodManager.diaryType = .foodDiaryAndDetail
         let foodDetail = foodManager.getFoodDetails(.diaryData, amount: nil, weight: nil, cond: cond, order: nil)
         var calorieSum:Double = 0
@@ -180,23 +174,28 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         return true
     }
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        if textView.text == "請輸入激勵語..."{
+            textView.text = ""
+        }
+        
+        
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty{
+            textView.text = "請輸入激勵語..."
+        }
+    }
+    
     
     //range 即將被取代文字  text將輸入的文字
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
         let countOfWords = text.characters.count + textView.text.characters.count - range.length
         
-        
-        if countOfWords > 0{
-            
-            placeholderLabel.isHidden = true
-            
-        }else{
-            
-            placeholderLabel.isHidden = false
-            
-        }
-        
+    
         if countOfWords > 120{
             
             profileManager.setUserEmbrave(textView.text)

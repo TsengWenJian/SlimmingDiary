@@ -34,7 +34,7 @@ class AddSportTableViewController: UITableViewController {
         
     }
     
-  override  func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override  func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
@@ -42,11 +42,8 @@ class AddSportTableViewController: UITableViewController {
         
         var isWriteDone:Bool = true
         
-        
-        
-        
-        for i in detailArray{
-            if i == "" || textFieldText == nil{
+        for detail in detailArray{
+            if detail == "" || textFieldText == nil{
                 isWriteDone = false
                 break
             }
@@ -56,25 +53,18 @@ class AddSportTableViewController: UITableViewController {
             
             let master = SportMaster.standard
             
-            
-            
             guard let cal = Double(detailArray[2]),
-                  let minute = Double(detailArray[1]) else{
+                let minute = Double(detailArray[1]) else{
                     return
             }
             let emts = cal * (60/minute) / ProfileManager.standard.userWeight
+            master.diaryType = .sportDetail
+            master.insertDiary(rowInfo: [SPORTDETAIL_CLASSIFICATION:"'自訂'",
+                                         SPORTDETAIL_SAMPLENAME:"'\(detailArray[0])'",
+                                         SPORTDETAIL_EMTS:"'\(emts.roundTo(places: 1))'"])
             
             
-         master.diaryType = .sportDetail
-            
-            master.insertDiary(rowInfo: ["SportDetail_Classification":"'自訂'",
-                                         "SportDetail_SampleName":"'\(detailArray[0])'",
-                                         "SportDetail_Emts":"'\(emts.toString())'"])
-            
-                     
-        navigationController?.popViewController(animated: true)
-            
-            
+            navigationController?.popViewController(animated: true)
             
             return
             
@@ -83,17 +73,16 @@ class AddSportTableViewController: UITableViewController {
         let alert = UIAlertController(error: "請輸入完整")
         present(alert, animated: true, completion: nil)
         
-    
+        
     }
     
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
     // MARK: - Table view data source
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -125,7 +114,6 @@ class AddSportTableViewController: UITableViewController {
             setSelectRowOfbegin = 200
         }
         
-        
         pickerVC.displayPickViewDialog(present: self)
         
     }
@@ -136,23 +124,15 @@ class AddSportTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TextFieldCell",for: indexPath) as! AddTextFieldTableViewCell
             
             cell.titleLabel.text = titleArray[indexPath.row]
-            
             cell.rightTextField.addTarget(self, action: #selector(textChange(_:)), for: .editingChanged)
             
             return cell
+            
         }else{
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell", for: indexPath)
             cell.textLabel?.text = titleArray[indexPath.row]
-            
-            var text:String
-            
-            if detailArray[indexPath.row] == ""{
-                text = "必填"
-            }else{
-                text = detailArray[indexPath.row]
-            }
-            cell.detailTextLabel?.text = text
+            cell.detailTextLabel?.text = detailArray[indexPath.row] == "" ?"必填":detailArray[indexPath.row]
             return cell
             
         }
@@ -160,17 +140,11 @@ class AddSportTableViewController: UITableViewController {
     
     func textChange(_ sender:UITextField){
         
-        
         textFieldText = sender.text
         
-        if let text = sender.text
-        {
+        if let text = sender.text {
             detailArray[0] = text
-            
         }
-        
-        
-        
     }
     
     

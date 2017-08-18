@@ -26,8 +26,6 @@ class InTableCollectionViewCell: UICollectionViewCell {
    
     override func awakeFromNib() {
         
-       
-        
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         shadowView.layer.cornerRadius = 5

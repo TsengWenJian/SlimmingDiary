@@ -33,7 +33,7 @@ class RSSParserManager:NSObject,XMLParserDelegate {
         let config = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: config)
         
-        let url = URL(string:"http://www.everydayhealth.com.tw/upload/all_rss.xml")
+        let url = URL(string:"https://www.everydayhealth.com.tw/upload/all_rss.xml")
         let task = session.dataTask(with:url!) { (data, respone, error) in
             
             if error != nil{
@@ -54,29 +54,8 @@ class RSSParserManager:NSObject,XMLParserDelegate {
         }
         
         task.resume()
-        
-        
-        
-        
+
     }
-    
-//    
-//    func f(str:String){
-//        
-//        let dateformatter = DateFormatter()
-//        dateformatter.dateFormat = "EEE, dd MMM YYYY HH:mm:ss "
-//        dateformatter.locale = Locale(identifier: "en_US")
-////      dateformatter.timeZone = TimeZone(abbreviation: "GMT")
-//        
-//        
-//        let offset = TimeZone.current.secondsFromGMT()
-//        let date = Date(timeInterval:TimeInterval(offset), since:dateformatter.date(from: str)!)
-//        print(Calendar.current.dateComponents([.year,.month,.day], from: date))
-//        
-//    }
-    
-    
-    
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         

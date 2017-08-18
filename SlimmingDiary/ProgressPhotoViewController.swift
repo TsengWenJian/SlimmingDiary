@@ -56,8 +56,8 @@ class ProgressPhotoViewController:UIViewController{
         imageScrollView2Trailing.constant = -view.frame.width/2
         
         weightMaster.diaryType = .weightDiary
-        let cond = "Weight_Photo != 'No_Image' and Weight_Type = '\(myType)'"
-        let order = "Weight_Date asc"
+        let cond = "\(WEIGHTDIARY_PHOTO) != 'No_Image' and \(WEIGHTDIARY_TYPE) = '\(myType)'"
+        let order = "\(WEIGHTDIARY_DATE) asc"
         weightArray = weightMaster.getWeightDiary(cond:cond,order:order)
         imageNumber = 0
         
@@ -79,7 +79,8 @@ class ProgressPhotoViewController:UIViewController{
         
         imageScrollView.maximumZoomScale = 3.0
         imageScrollView.minimumZoomScale = 1.0
-        imageScrollView.zoomScale = 1.1
+        imageScrollView.zoomScale = 1.0
+        imageScrollView.contentInset = UIEdgeInsets(top:100,left:0,bottom:100,right: 100)
         
         
         
@@ -87,7 +88,8 @@ class ProgressPhotoViewController:UIViewController{
         imageScrollView2.tag = 200
         imageScrollView2.maximumZoomScale = 3.0
         imageScrollView2.minimumZoomScale = 1.0
-        imageScrollView2.zoomScale = 1.1
+        imageScrollView2.zoomScale = 1.0
+        imageScrollView2.contentInset = UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100)
         
         
         for (index,value) in weightArray.enumerated(){
@@ -136,7 +138,7 @@ class ProgressPhotoViewController:UIViewController{
         var count = 0
         timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { (Timer) in
             
-            self.displayImageView.image = UIImage(imageName:self.weightArray[count].photo,search:.documentDirectory)
+            self.displayImageView.image = UIImage(imageName:self.weightArray[count].imageName,search:.documentDirectory)
             
             
             count+=1
@@ -187,12 +189,12 @@ class ProgressPhotoViewController:UIViewController{
                 
                 date2Label.text = date
                 kg2Label.text = kg
-                displayPlayPhoto2.image = UIImage(imageName:weightArray[imageNumber].photo,search:.documentDirectory)
+                displayPlayPhoto2.image = UIImage(imageName:weightArray[imageNumber].imageName,search:.documentDirectory)
                 
                 return
             }
             
-            displayImageView.image =  UIImage(imageName:weightArray[imageNumber].photo,search:.documentDirectory)
+            displayImageView.image =  UIImage(imageName:weightArray[imageNumber].imageName,search:.documentDirectory)
             dateLabel.text = date
             kgLabel.text = kg
             
@@ -253,7 +255,7 @@ extension ProgressPhotoViewController:UICollectionViewDelegate,UICollectionViewD
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProgressPhotoCollectionViewCell",for: indexPath)
             as! ProgressPhotoCollectionViewCell
-        cell.photoImageView.image = UIImage(imageName:weightArray[indexPath.row].photo,search:.documentDirectory)
+        cell.photoImageView.image = UIImage(imageName:weightArray[indexPath.row].imageName,search:.documentDirectory)
         
         
         return cell
@@ -286,7 +288,7 @@ extension ProgressPhotoViewController:UIScrollViewDelegate{
         //  container photo scrollView
         if scrollView.tag == 100 || scrollView.tag == 200{
             
-            scrollView.contentSize = CGSize(width: 500, height: 500)
+            
            
             return
         }

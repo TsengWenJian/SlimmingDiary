@@ -38,7 +38,7 @@ class SportDetailViewController: UIViewController {
                     return
                 }
                 
-                print(myDetail)
+                
                 
                 self.calorieLabel.text = "消耗  \(myDetail.calories.toString()) 卡"
                 self.selectMinuteBtn.setTitle("\(myDetail.minute) 分鐘", for: .normal)
@@ -59,7 +59,7 @@ class SportDetailViewController: UIViewController {
         super.viewDidLoad()
         
         
-        calorieLabel.setShadowView(0, 0.1, CGSize.zero)
+        calorieLabel.setShadowView(0,0.1,CGSize.zero)
         pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController")
             as? PickerViewController
         pickerVC?.delegate = self
@@ -74,20 +74,9 @@ class SportDetailViewController: UIViewController {
         }
  
        
+         navigationItem.rightBarButtonItem?.title = lastPageVC.rawValue
+         navigationItem.title = "\(lastPageVC.rawValue)運動"
         
-        
-        if  lastPageVC == .insert{
-            navigationItem.rightBarButtonItem?.title = "新增"
-            navigationItem.title  = "新增運動"
-            
-            
-            
-            
-        }else{
-            navigationItem.title  = "修改運動"
-            navigationItem.rightBarButtonItem?.title = "修改"
-            
-        }
         
         
         
@@ -128,7 +117,7 @@ class SportDetailViewController: UIViewController {
         }else{
             
             
-            let cond = "SportDiary_Id = '\(myDetail.diaryId)'"
+            let cond = "\(SPORTYDIARY_ID) = '\(myDetail.diaryId)'"
             master.diaryType = .sportDiary
     
             var dict = [String:String]()
@@ -136,29 +125,23 @@ class SportDetailViewController: UIViewController {
             if let image = selectImage{
                 
                  let selectImageHash  = "sport_\(image.hash)"
-                dict["SportDiary_ImageName"] = "'\(selectImageHash)'"
+                dict[SPORTYDIARY_IMAGENAME] = "'\(selectImageHash)'"
                 image.writeToFile(imageName: selectImageHash, search: .documentDirectory)
                 
             }
             
-            dict["SportDiary_Minute"] = "'\(Int(myDetail.minute))'"
-            dict["SportDiary_Calorie"] = "'\(myDetail.calories)'"
+            dict[SPORTYDIARY_MINUTE] = "'\(Int(myDetail.minute))'"
+            dict[SPORTYDIARY_CALORIE] = "'\(myDetail.calories)'"
             
             
             
             master.updataDiary(cond:cond, rowInfo:dict)
-            
-            
-            
-            
+        
         }
         
         
         navigationController?.popViewController(animated: true)
-        
-        
-        
-        
+    
     }
     
     
@@ -187,8 +170,7 @@ class SportDetailViewController: UIViewController {
         
     }
     
-   
-    
+
     
     @IBAction func collectionBtnAction(_ sender: Any) {
         
@@ -199,6 +181,7 @@ class SportDetailViewController: UIViewController {
         
         var iscollect:Int
         master.diaryType = .sportDetail
+        
         if collectionBtn.isSelected{
             
             iscollect = 0
@@ -211,12 +194,10 @@ class SportDetailViewController: UIViewController {
             
         }
         
-       master.updataDiary(cond: "SportDetail_Id = '\(myDetail.detailId)' ",
-       rowInfo: ["SportDetail_Collection" :"'\(iscollect)'"])
+       master.updataDiary(cond: "\(SPORTYDIARY_DETAILID) = '\(myDetail.detailId)' ",
+       rowInfo: [SPORTDETAIL_COLLECTION :"'\(iscollect)'"])
         
-        
-        
-        
+    
     }
     
     
@@ -252,10 +233,12 @@ class SportDetailViewController: UIViewController {
         
         
         
-        
     }
     
+    
 }
+
+//MARK: - UIImagePickerControllerDelegate,UINavigationControllerDelegate
 extension SportDetailViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -275,17 +258,9 @@ extension SportDetailViewController:UIImagePickerControllerDelegate,UINavigation
         
         dismiss(animated: true, completion: nil)
         
-        
-        
-        
-        
-        
+
     }
-    
-    
-    
-    
-    
+
 }
 
 extension SportDetailViewController:PickerViewDelegate{

@@ -86,12 +86,18 @@ class ShareViewController: UIViewController {
     }
     
     func loginStatusIsChange(){
+        
+        
         if currnetPage == 1{
-        addDiaryBtn.isHidden = DataService.standard.currentUser == nil ? true:false
+            
+            
+            addDiaryBtn.isHidden = !DataService.standard.isLogin
             
         }else{
             addDiaryBtn.isHidden = true
         }
+        
+        
         
         
     }

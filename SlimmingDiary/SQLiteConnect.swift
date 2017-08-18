@@ -13,17 +13,28 @@ class SQLiteConnect {
     var db :OpaquePointer? = nil
     let path :String = NSHomeDirectory() + "/Documents/sqlite3.sqlite"
     
-
+    
+    
+    
     init?() {
         
-        print(path)
+        checkDBisExist()
+        db = openDatabase(path)
+        if db == nil {
+            return nil
+        }
+    
+        
+    }
+    
+    func checkDBisExist(){
+        
+        
         let fileManager = FileManager()
         let originalPath = Bundle.main.path(forResource: "sqlite3", ofType: "sqlite")
         
-        
-        
         if !fileManager.fileExists(atPath:path){
-            
+       
             do{
                 try fileManager.copyItem(atPath:originalPath!, toPath: path)
             }catch{
@@ -31,13 +42,6 @@ class SQLiteConnect {
             }
         }
 
-        
-        db = openDatabase(path)
-        
-        if db == nil {
-            return nil
-        }
-    
         
     }
     

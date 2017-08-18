@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 struct myProgress{
-    var progess:Int
+    var progess:Double
     var color:UIColor
 
 }
@@ -99,7 +99,7 @@ struct myProgress{
     //根據progressArray 來增加CAShapeLayer
     fileprivate func addProgressLayerArray(){
         
-        var start = 0
+        var start:Double = 0
         
         for i in 0..<progressArray.count{
             

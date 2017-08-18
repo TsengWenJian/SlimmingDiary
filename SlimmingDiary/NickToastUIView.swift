@@ -22,12 +22,12 @@ enum ToastType:String {
     var supUIView:UIView?
     
     
-   
+    
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,36 +37,42 @@ enum ToastType:String {
     
     
     init(supView:UIView,type:ToastType) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 140, height: 140))
+        super.init(frame: supView.frame)
+        
         supView.addSubview(self)
         
         
-        self.center = CGPoint(x:supView.bounds.midX, y:supView.bounds.midY-30)
+        //        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        backgroundColor = UIColor(red:0.99, green: 0.99, blue: 0.99, alpha: 0.99)
-        layer.cornerRadius = 5
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize.zero
-        layer.shadowOpacity = 0.2
+        
+        self.backgroundColor = UIColor(red:0, green: 0, blue: 0, alpha:0.5)
+        
+        let toastView = UIView(frame: CGRect(x:0, y:0, width:140, height: 140))
+        toastView.center = CGPoint(x:supView.bounds.midX, y:supView.bounds.midY-30)
+        
+        toastView.backgroundColor = UIColor(red:0.99, green: 0.99, blue: 0.99, alpha: 0.99)
+        toastView.setShadowView(5, 0.2,CGSize.zero )
         active = UIActivityIndicatorView(frame:CGRect(x: 0,
                                                       y: 0,
-                                                      width:bounds.width,
-                                                      height:bounds.height*0.66))
+                                                      width:toastView.bounds.width,
+                                                      height:toastView.bounds.height*0.66))
         active?.tintColor = UIColor.lightGray
         active?.color = UIColor.black
         active?.transform = CGAffineTransform.init(scaleX:1.5, y:1.5)
+        addSubview(toastView)
         
         if let myActive = active{
-             addSubview(myActive)
+            
+            toastView.addSubview(myActive)
             
             active?.startAnimating()
             let ToastLabel = UILabel()
-            ToastLabel.frame = CGRect(x: 0, y:myActive.bounds.maxY-10, width: bounds.width, height: bounds.height*0.33)
+            ToastLabel.frame = CGRect(x: 0,y:myActive.bounds.maxY-10, width:toastView.bounds.width, height:toastView.bounds.height*0.33)
             ToastLabel.text = type.rawValue
             ToastLabel.textColor = UIColor.gray
             ToastLabel.textAlignment = .center
             ToastLabel.font = UIFont.systemFont(ofSize:20)
-            self.addSubview(ToastLabel)
+            toastView.addSubview(ToastLabel)
             
         }else{
             
@@ -76,10 +82,24 @@ enum ToastType:String {
     }
     
     
-    
     func removefromView(){
-       active = nil
-       removeFromSuperview()
+        
+        //UIApplication.shared.endIgnoringInteractionEvents()
+        
+        active = nil
+        
+        UIView.animate(withDuration:0.3,delay:0, options: [.curveEaseInOut], animations: {
+            
+            self.alpha = 0
+            self.backgroundColor = UIColor.white
+            
+        }) { (done) in
+            if done{
+                
+                self.removeFromSuperview()
+            }
+        }
+        
         
     }
     

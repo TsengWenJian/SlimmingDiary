@@ -11,20 +11,18 @@ import UIKit
 class WeightDiaryBodyTableViewCell: UITableViewCell {
 
     @IBOutlet weak var shadowView: UIView!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        
-        shadowView.backgroundColor = UIColor.white
-        shadowView.layer.shadowOpacity = 0.3
-        shadowView.layer.shadowOffset = CGSize(width: 1, height: 1)
-        shadowView.layer.shadowColor = UIColor.black.cgColor
-
-    }
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var photoImageView: UIImageView!
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        shadowView.setShadowView(0, 0.3, CGSize(width: 1, height: 1))
+        
+     
+    }
+   
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

@@ -10,12 +10,12 @@ import UIKit
 
 class SpotsDiaryViewController:UIViewController{
     @IBOutlet weak var spotsDiaryTableView: UITableView!
-    let dinnerTime = ["運動"]
+    
     var isExpend:Bool = false
     var sportItems = [sportDetail](){
         didSet{spotsDiaryTableView.reloadData()}
     }
-    let master = SportMaster.standard
+    let sportMaster = SportMaster.standard
     
     
     
@@ -31,6 +31,9 @@ class SpotsDiaryViewController:UIViewController{
         let nibFooter = UINib(nibName: "FooterTableViewCell", bundle: nil)
         spotsDiaryTableView.register(nibFooter, forCellReuseIdentifier: "footerCell")
         
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshSectionArray), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
+
+        
     
         
     }
@@ -40,15 +43,14 @@ class SpotsDiaryViewController:UIViewController{
     
     func refreshSectionArray(){
         
-        
+        sportItems.removeAll()
         
         let displayDate =  CalenderManager.standard.displayDateString()
+    
+        sportMaster.diaryType = .sportDiaryAndDetail
+        let cond = "Sport_Diary.\(SPORTYDIARY_DETAILID)=\(SPORTDETAIL_ID) and \(SPORTYDIARY_DATE) = '\(displayDate)'"
         
-        
-        master.diaryType = .sportDiaryAndDetail
-        let cond = "Sport_Diary.SportDiary_DetailId=SportDetail_Id and SportDiary_Date = '\(displayDate)'"
-        
-        let items = master.getSportDetails(.diaryData, minute: nil, cond: cond, order: nil)
+        let items = sportMaster.getSportDetails(.diaryData, minute: nil, cond: cond, order: nil)
         sportItems = items
         
     
@@ -57,12 +59,7 @@ class SpotsDiaryViewController:UIViewController{
     
     func sectionIsExpend(sender:UIButton){
         
-        
-        if isExpend{
-            isExpend = false
-        } else {
-            isExpend = true
-        }
+        isExpend = !isExpend
         spotsDiaryTableView.reloadSections(IndexSet(integer:0), with: .automatic)
     }
     
@@ -95,19 +92,15 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+    
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         
         
-        if isExpend {
-            return sportItems.count
-        }
         
-        return 0
+        return isExpend == true ?sportItems.count:0
     }
     
     
@@ -117,13 +110,11 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         let item = sportItems[indexPath.row]
         cell.titleLabel.text = item.sampleName
         cell.bodyLabel.text = "\(item.minute)分"
-        cell.rightLabel.text = String(Int(item.calories))
+        cell.rightLabel.text = "\(Int(item.calories))"
         
         let image = item.imageName == nil ? UIImage(named: "sport"): UIImage(imageName:item.imageName,
                                                                              search:.documentDirectory)
         cell.leftImageView.image = image
-        
-        
         
         
         return cell
@@ -132,25 +123,16 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as!HeaderTableViewCell
-        headerCell.titleLabel.text = dinnerTime[section]
+        headerCell.titleLabel.text = "運動"
         
         headerCell.totalCalorieLebel.text = {
             
-            
             var calorieSum:Double = 0
             
-            for i in sportItems{
-                
-                calorieSum += i.calories
+            for item in sportItems{
+                calorieSum += item.calories
             }
-            
-            
-            if calorieSum == 0.0{
-                return ""
-            }else{
-                return "- "+String(Int(calorieSum))+" 大卡"
-                
-            }
+            return calorieSum == 0.0 ?"":"\(Int(calorieSum)) 大卡"
         }()
         
         
@@ -169,22 +151,11 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
         let footerCell = tableView.dequeueReusableCell(withIdentifier: "footerCell") as!FooterTableViewCell
-        if sportItems.count == 0{
-            
-            footerCell.titleLabel.text = "尚未添加運動"
-            
-        }else{
-            footerCell.titleLabel.text = String(sportItems.count) + "項"
-        }
-        
-        
-        
+        footerCell.titleLabel.text = sportItems.count == 0 ?"尚未添加運動":"\(sportItems.count) 項"
         footerCell.footerButton.addTarget(self, action: #selector(plusFood(sender:)), for: .touchUpInside)
-        
-        
-        
-        
+    
         return footerCell.contentView
     }
     
@@ -200,9 +171,6 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         nextPage.lastPageVC = .update
         navigationController?.pushViewController(nextPage, animated: true)
         
-        
-        
-        
     }
     
     
@@ -213,10 +181,10 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             
             
             let id = sportItems[indexPath.row].diaryId
-            let cond =  "SportDiary_Id = \(id)"
-            master.diaryType = .sportDiary
-            master.deleteDiary(cond: cond)
-            master.deleteImage(imageName:sportItems[indexPath.row].imageName)
+            let cond =  "\(SPORTYDIARY_ID) = \(id)"
+            sportMaster.diaryType = .sportDiary
+            sportMaster.deleteDiary(cond: cond)
+            sportMaster.deleteImage(imageName:sportItems[indexPath.row].imageName)
             sportItems.remove(at:indexPath.row)
             
             

@@ -53,7 +53,7 @@ class MainDiaryViewController: UIViewController{
             wobble.duration = 0.2
             wobble.repeatCount = 2
             wobble.values = [0.0,-0.05,0.0,0.05, 0.0]
-            wobble.keyTimes = [0.0, 0.25, 0.5, 0.75, 1.0]
+            
             
             self.btnBackgroundView.layer.add(wobble,forKey:nil)
             
@@ -82,8 +82,7 @@ class MainDiaryViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+               
         displayDateBtn.setTitle(calender.myDateToString(displayDate), for: .normal)
         
         
@@ -103,7 +102,7 @@ class MainDiaryViewController: UIViewController{
         
         pageVC.setViewControllers([foodDairyVC],direction:.forward,animated: false,completion: nil)
         
-    
+        
         calendarPickVC = storyboard!.instantiateViewController(withIdentifier: "CalendarViewController") as!
         CalendarViewController
         calendarPickVC.delegate = self
@@ -120,16 +119,11 @@ class MainDiaryViewController: UIViewController{
             pageContainerView.addGestureRecognizer(pan)
             
             
-            
         }
         
-      
         
-        btnBackgroundView.layer.cornerRadius = 1
-        btnBackgroundView.layer.shadowOpacity = 0.2
+        btnBackgroundView.setShadowView(1, 0.2,CGSize.zero)
         btnBackgroundView.layer.shadowRadius = 1
-        btnBackgroundView.layer.shadowOffset = CGSize(width:0, height: 0)
-        btnBackgroundView.layer.shadowColor = UIColor.black.cgColor
         
         
     }
@@ -152,8 +146,6 @@ class MainDiaryViewController: UIViewController{
             currentPage = 0
             direction = .reverse
             currentPageVC = foodDairyVC
-            
-            
             lastPage = 1
             
         }else if btnTag == 1{
@@ -161,17 +153,15 @@ class MainDiaryViewController: UIViewController{
             if currentPage == 2{
                 lastPage = 2
                 direction = .reverse
-                currentPageVC = sportsDiaryVC
                 
                 
             }else{
                 lastPage = 0
                 direction = .forward
-                currentPageVC = sportsDiaryVC
-                
                 
             }
             
+            currentPageVC = sportsDiaryVC
             currentPage = 1
             
         }else{
@@ -179,7 +169,6 @@ class MainDiaryViewController: UIViewController{
             currentPage = 2
             direction = .forward
             currentPageVC = weightDiaryVC
-            
             lastPage = 1
             
         }
@@ -194,9 +183,9 @@ class MainDiaryViewController: UIViewController{
     @IBAction func previousDay(_ sender:UIButton) {
         calender.changeDisplayDate(.previous)
         updateDisplayeDate()
-    
         
-          }
+        
+    }
     
     
     @IBAction func nextDay(_ sender:UIButton) {
@@ -234,7 +223,7 @@ extension MainDiaryViewController:UIPageViewControllerDelegate,UIPageViewControl
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
-
+        
         if !completed {
             currentPage = lastPage
         }
@@ -249,12 +238,7 @@ extension MainDiaryViewController:UIPageViewControllerDelegate,UIPageViewControl
         if  pendingVC.isKind(of:SpotsDiaryViewController.self){
             
             
-            if currentPage == 2{
-                lastPage = 2
-            }else{
-                
-                lastPage = 0
-            }
+            lastPage = currentPage == 2 ? 2:0
             currentPage = 1
             
             
@@ -299,7 +283,7 @@ extension MainDiaryViewController:UIPageViewControllerDelegate,UIPageViewControl
     }
 }
 
-
+//MARK: - CalendarPickDelegate
 extension MainDiaryViewController:CalendarPickDelegate{
     
     func getCalenderSelectDate(date:MyDate) {
@@ -309,7 +293,7 @@ extension MainDiaryViewController:CalendarPickDelegate{
     }
     
 }
-
+//MARK: - UIGestureRecognizerDelegate
 extension MainDiaryViewController:UIGestureRecognizerDelegate{
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

@@ -38,24 +38,27 @@ class BodyInformationManager {
     var weight:Double = 0
     var gender:Int = 0
     
-
+    
     func setBodyData(_ he:Double,_ we:Double, _ ge:Int) {
         height = he
         weight = we
         gender = ge
         
     }
-
+    
     
     func getBmi()->Double{
         
         let bmi = weight/pow((height/100),2)
+        if bmi.isNaN{
+            return 1
+        }
         return bmi
         
     }
     
     
-
+    
     func getStandardWeight()->Double{
         
         var weight:Double
@@ -83,7 +86,7 @@ class BodyInformationManager {
         let maxWeight = standardWeight * (1+0.1)
         
         
-       
+        
         return "\(String(format:"%0.1f", minWeight))~\(String(format:"%0.1f",maxWeight))"
         
     }
@@ -91,24 +94,23 @@ class BodyInformationManager {
     
     func getWeightType()->WeightType{
         
-        
-        
-        let standardWeight = getStandardWeight()
-        
-        if weight <= standardWeight * 0.9{
+        let bmi = getBmi()
+
+        if bmi < 18.5 {
+            
             return .tooLight
-        }
-        
-        if weight >= standardWeight * 1.2{
-            return .obesity
-        }
-        
-        if weight >= standardWeight * 1.1{
+            
+        }else  if bmi >= 18.5 && bmi <= 24{
+            return .standard
+            
+        }else if bmi >= 24 && bmi <= 27{
             
             return .tooHeay
         }
+        else{
+            return .obesity
+        }
         
-        return .standard
         
     }
     
@@ -124,14 +126,14 @@ class BodyInformationManager {
             
         case .tooHeay:
             
-             color = gold
+            color = gold
             
         case .tooLight:
             
-             color = mediumseagreen
+            color = mediumseagreen
             
         case .obesity:
-             color = orangered
+            color = orangered
             
         }
         return color
@@ -164,7 +166,7 @@ class BodyInformationManager {
             
         }
         return color
-
+        
         
     }
     
@@ -200,7 +202,7 @@ class BodyInformationManager {
                 
                 return .tooHeight
             }
-        
+            
             
         }else{
             
@@ -216,7 +218,7 @@ class BodyInformationManager {
             }else if  fat >= 14 && fat <= 17{
                 
                 return .standard
-
+                
                 
             }else{
                 

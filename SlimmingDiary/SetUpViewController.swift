@@ -9,9 +9,11 @@
 import UIKit
 import Firebase
 import FBSDKLoginKit
+import MessageUI
+
 class SetUpViewController: UIViewController {
     
-    var titleArray = ["五星鼓勵","建議與問題回報","編輯個人資料","清除緩存"]
+    var titleArray = ["建議與問題回報","編輯個人資料","清除緩存"]
     var cachesSize:Double = 0
     
     @IBOutlet weak var setUpTableView: UITableView!
@@ -105,6 +107,29 @@ class SetUpViewController: UIViewController {
     
 }
 
+//MARK: - MFMailComposeViewControllerDelegate
+extension SetUpViewController:MFMailComposeViewControllerDelegate{
+    
+   
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?)
+    {
+        controller.dismiss(animated: true, completion: nil)
+
+    }
+    
+    
+    func configureMessage()->MFMailComposeViewController{
+        let messageVC = MFMailComposeViewController()
+        messageVC.mailComposeDelegate = self
+        messageVC.setSubject("App問題回報")
+        messageVC.setToRecipients(["TSENGWENJIAN@gmail.com"])
+        messageVC.setMessageBody("iPhone機型：\niOS:版本號：\n回報問題：", isHTML: false)
+        return messageVC
+        
+    }
+    
+}
+
 //MARK: - UITableViewDataSource,UITableViewDelegate
 extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
     
@@ -190,7 +215,7 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
             
             
             var btnTitle:String
-            btnTitle = manager.userUid == nil ? "登入":"登出"
+            btnTitle = DataService.standard.userUid == nil ? "登入":"登出"
             cell.loginBtn.setTitle(btnTitle, for: .normal)
             cell.loginBtn.addTarget(self, action: #selector(loginOrlogut), for:.touchUpInside)
             
@@ -198,10 +223,12 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
         }
         
         
-        if indexPath.row <= 2{
+        
+        
+        if indexPath.row <= 1{
             let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
             cell.textLabel?.text = titleArray[indexPath.row]
-    
+            
             return cell
             
         }else{
@@ -222,21 +249,38 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
         
         if indexPath.section == 1{
             
-            if indexPath.row == 2{
+            
+            if indexPath.row == 0{
+                let emailVC = configureMessage()
+                
+                if MFMailComposeViewController.canSendMail() {
+                    present(emailVC, animated: true, completion: nil)
+                }else{
+                    
+                    
+                }
+                
+                
+                
+                
+            }else if indexPath.row == 1{
                 let nextPage = storyboard?.instantiateViewController(withIdentifier: "PersonalFilesViewController") as!PersonalFilesViewController
                 navigationController?.pushViewController(nextPage, animated: true)
                 
-            }else if indexPath.row == 3{
+                
+                
+                
+            }else if indexPath.row == 2{
                 
                 let alert = UIAlertController(title: "清除", message: "確定要清除緩存？", preferredStyle:.alert)
-            
+                
                 let action = UIAlertAction(title: "確定", style:.default, handler: { (UIAlertAction) in
                     
                     self.actionCaches(action:.delete)
                     self.setUpTableView.reloadData()
                     
                 })
-              
+                
                 let cancel = UIAlertAction(title:"取消", style: .cancel, handler: nil)
                 alert.addAction(action)
                 alert.addAction(cancel)

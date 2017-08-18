@@ -99,7 +99,7 @@ extension ReadCollectionTableViewCell: UICollectionViewDataSource,UICollectionVi
        let nextPage = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier:"ShowDiaryImageViewController") as! ShowDiaryImageViewController
        
         
-       let filterData =  data.filter { (item) -> Bool in
+       let filterData =  data.filter { (item) -> Bool in 
             
            if item.imageURL != nil {
                 return true
@@ -108,10 +108,10 @@ extension ReadCollectionTableViewCell: UICollectionViewDataSource,UICollectionVi
             }
         }
         
-        if filterData.count > 1{
+        if filterData.count >= 1{
         
         
-        nextPage.diaryItems = data
+        nextPage.diaryItems = filterData
         VC?.navigationController?.pushViewController(nextPage, animated: true)
     }
     

@@ -16,7 +16,7 @@ class AddWeightViewController: UIViewController{
     var type = WeightDiaryType.weight
     
     
-    var detailArray = ["","加入"]{
+    var detailArray = ["體重","加入"]{
         didSet{
             addPhotoTableView.reloadData()
         }
@@ -86,11 +86,11 @@ class AddWeightViewController: UIViewController{
             
             
             if let id = weightId {
-                let cond = "Weight_Id = '\(id)'"
+                let cond = "\(WEIGHTDIARY_ID) = '\(id)'"
                 
                 weightMaster.updataDiary(cond:cond,
-                                         rowInfo:["Weight_Photo":"'\(imageName ??       "No_Image")'",
-                                            "Weight_Value":"'\(weight)'"])
+                                         rowInfo:[WEIGHTDIARY_PHOTO:"'\(imageName ?? "No_Image")'",
+                                                  WEIGHTDIARY_VALUE:"'\(weight)'"])
             }
             
             
@@ -112,7 +112,7 @@ class AddWeightViewController: UIViewController{
                                     time:calender.getCurrentTime(),
                                     type:titleArray[0],
                                     value:weight,
-                                    photo:imageName)
+                                    imageName:imageName)
             
             weightMaster.insertWeightDiary(diary)
             

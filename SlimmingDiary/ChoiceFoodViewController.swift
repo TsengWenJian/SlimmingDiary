@@ -25,6 +25,7 @@ class ChoiceFoodViewController: UIViewController{
     @IBOutlet weak var commonButton: UIButton!
     @IBOutlet weak var buttonSliderView: UIView!
     @IBOutlet weak var customBotton: UIButton!
+    var sumLabel = UILabel()
     
     
     
@@ -32,7 +33,6 @@ class ChoiceFoodViewController: UIViewController{
     // when actionType is update use
     typealias selectDone = (Bool)->()
     var selectFoodDone:selectDone?
-    
     
     
     
@@ -63,71 +63,52 @@ class ChoiceFoodViewController: UIViewController{
             tableViewButtomConstraint.constant = 0
             
             
-            
-            
             switch currentButton {
                 
             case 0:
                 
                 
-                master.diaryType = .foodDetail
+                foodMaster.diaryType = .foodDetail
                 sportMaster.diaryType = .sportDetail
-                cond = "collection = '1'"
-                
-                if diaryType == .food{
-                    
-                    cond = "collection = '1'"
-                    
-                }else{
-                    cond = "SportDetail_Collection = '1'"
-                    
-                }
-                
+                cond = diaryType == .food ? "\(FOODDETAIL_COLLECTION) = '1'":"\(SPORTDETAIL_COLLECTION) = '1'"
                 
             case 1:
-                master.diaryType = .foodDetail
+                foodMaster.diaryType = .foodDetail
                 sportMaster.diaryType = .sportDetail
                 addCustomBtn.isHidden = false
                 tableViewButtomConstraint.constant = addCustomBtn.frame.height
-                
-                
-                
-                if diaryType == .food{
-                    
-                    cond = "food_classification = '自訂'"
-                    
-                }else{
-                    cond = "SportDetail_Classification = '自訂'"
-                    
-                }
+                cond = diaryType == .food ?"\(FOODDETAIL_CLASSIFICATION) = '自訂'":"\(SPORTDETAIL_CLASSIFICATION) = '自訂'"
                 
                 
             case 2:
                 
-                master.diaryType = .foodDiaryAndDetail
-                
+                foodMaster.diaryType = .foodDiaryAndDetail
                 sportMaster.diaryType = .sportDiaryAndDetail
                 
                 
                 let calender = CalenderManager()
                 var newDateComponent = DateComponents()
                 newDateComponent.day = -7
-                let  calculatedDate = Calendar.current.date(byAdding:newDateComponent, to: Date())
-                let d = calender.dateToString(calculatedDate!)
-                
-                
-                if diaryType == .food{
+                let offset = TimeZone.current.secondsFromGMT()
+                let date = Date(timeInterval:TimeInterval(offset), since:Date())
+                if  let  calculatedDate = Calendar.current.date(byAdding:newDateComponent,to:date){
+                    let calDateString = calender.dateToString(calculatedDate)
                     
-                    cond = "Food_Diary.food_id=foodDetails_id and date >= '\(d)' group by food_id"
-                    order =  "date desc"
                     
-                }else{
-                    cond = "Sport_Diary.SportDiary_DetailId=SportDetail_Id and SportDiary_Date >= '\(d)' group by SportDiary_DetailId"
-                    order =  "SportDiary_Date desc"
+                    if diaryType == .food{
+                        
+                        cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DATE) >= '\(calDateString)' group by \(FOODDIARY_DETAILID)"
+                        order =  "\(FOODDIARY_DATE) desc"
+                        
+                    }else{
+                        cond = "Sport_Diary.\(SPORTYDIARY_DETAILID)=\(SPORTDETAIL_ID) and \(SPORTYDIARY_DATE) >= '\(calDateString)' group by \(SPORTYDIARY_DETAILID)"
+                        
+                        order =  "\(SPORTYDIARY_DATE) desc"
+                    }
                 }
                 
-                
             default:
+                
                 break
                 
                 
@@ -135,27 +116,13 @@ class ChoiceFoodViewController: UIViewController{
             if currentButton < 3{
                 if diaryType == .food{
                     
-                    
-                    
-                    
-                    choiceArray =  master.getFoodDetails(.defaultData,
-                                                         amount:nil,
-                                                         weight:nil,
-                                                         cond:cond,
-                                                         order:order)
-                    
+                    choiceArray =  foodMaster.getFoodDetails(.defaultData,amount:nil,
+                                                             weight:nil,cond:cond,order:order)
                 }else{
                     
-                    sportItemsArray = sportMaster.getSportDetails(.defaultData,
-                                                                  minute:nil,
-                                                                  cond:cond,
-                                                                  order:order)
-                    
-                    
-                    
+                    sportItemsArray = sportMaster.getSportDetails(.defaultData,minute:nil,
+                                                                  cond:cond,order:order)
                 }
-                
-                
             }
             
             choiceFoodTableView.reloadData()
@@ -165,31 +132,34 @@ class ChoiceFoodViewController: UIViewController{
     
     var lastPage = 0
     var isSerach:Bool = false
-    let master = foodMaster.standard
+    let foodMaster = FoodMaster.standard
     let sportMaster = SportMaster.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        master.foodDiaryArrary.removeAll()
-        master.switchIsOn.removeAll()
-        sportMaster.sportDiaryArrary.removeAll()
-        sportMaster.switchIsOn.removeAll()
+        
+        foodMaster.removeFoodDiarysAndSwitch()
+        sportMaster.removeSportDiarysAndSwitchIsOn()
+        
+        navigationItem.title = diaryType == .food ? "搜尋食物":"搜尋運動"
         
         
-        if diaryType == .food{
-            navigationItem.title = "搜尋食物"
-        }else{
-            
-            
-            navigationItem.title = "搜尋運動"
-            
-        }
+        let plusSum = UIBarButtonItem(title:"加入", style: .done, target: self, action: #selector(insertDiary))
         
-        let plusSum = UIBarButtonItem(title:"加入", style: .done, target: self, action: #selector( insertFoodDiary))
         
-        navigationItem.rightBarButtonItems = [plusSum]
+        let customView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        customView.backgroundColor = coral
+        let p = UIBarButtonItem(customView:customView)
+        navigationItem.rightBarButtonItems = [p,plusSum]
+        sumLabel.textAlignment = .center
+        sumLabel.frame = customView.bounds
+        sumLabel.textColor = UIColor.white
+        sumLabel.font = UIFont.systemFont(ofSize: 12)
+        customView.layer.cornerRadius = 10
+        customView.addSubview(sumLabel)
+        
         
         
         let nib = UINib(nibName: "SearchTableViewCell", bundle: nil)
@@ -198,35 +168,33 @@ class ChoiceFoodViewController: UIViewController{
         
         
     }
+    
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         
         let last =  currentButton
         currentButton = last
-        
-        
-        for i in sportMaster.sportDiaryArrary{
-            print(i)
-        }
-        
-        setNavBtnTitle()
-        
+        setNavSelectSum()
         
     }
     
     //MARK: - IBAction
     @IBAction func choicePageButton(_ sender: UIButton) {
-        let buttonTitle = sender.titleLabel?.text
+        
         
         commonButton.isSelected = false
         recentlyButton.isSelected = false
         customBotton.isSelected = false
         
+        let currentPage = sender.tag
         
-        if buttonTitle == "常用"{
+        if currentPage == 100 {
+            
             currentButton = 0
             commonButton.isSelected = true
             
-        }else if buttonTitle == "自訂"{
+        }else if currentPage == 101 {
             
             currentButton = 1
             customBotton.isSelected = true
@@ -277,17 +245,16 @@ class ChoiceFoodViewController: UIViewController{
     
     
     //MARK: - Fucction
-    func setNavBtnTitle(){
+    func setNavSelectSum(){
         
-        
-        if diaryType == .food{
-            navigationItem.rightBarButtonItems?[0].title = "加入(\(master.switchIsOn.count))"
-        }else{
-            
-            
-            navigationItem.rightBarButtonItems?[0].title = "加入(\(sportMaster.switchIsOn.count))"
-            
-        }
+        let count = diaryType == .food ? foodMaster.switchIsOn.count:sportMaster.switchIsOn.count
+        let scale = CABasicAnimation(keyPath: "transform.scale")
+        scale.duration = 0.1
+        scale.fromValue = 1
+        scale.toValue = 1.6
+        scale.autoreverses = true
+        sumLabel.text = "\(count)"
+        navigationItem.rightBarButtonItems?[0].customView?.layer.add(scale, forKey: nil)
         
         
     }
@@ -295,10 +262,7 @@ class ChoiceFoodViewController: UIViewController{
     
     
     
-    func insertFoodDiary(){
-        
-        
-        
+    func insertDiary(){
         
         
         if lastPageVC == .update{
@@ -306,69 +270,28 @@ class ChoiceFoodViewController: UIViewController{
             
             selectFoodDone!(true)
             
-        }else{
             
+            
+        }else{
             
             if diaryType == .food{
                 
-                for diary in  master.foodDiaryArrary{
+                for diary in  foodMaster.foodDiaryArrary{
                     
-                    master.diaryType = .foodDiary
+                    foodMaster.insertFoodDiary(diary: diary)
                     
-                    var dict = [String:String]()
-                    
-                    dict = [
-                        "date":"'\(diary.date)'",
-                        "time_interval":"'\(diary.dinnerTime)'",
-                        "food_id":"\(diary.foodId)",
-                        "amount":"\(diary.amount)",
-                        "weight":"\(diary.weight)",
-                    ]
-                    
-                    if let image = diary.image {
-                       
-                         let imageName = "food_\(image.hash)"
-                         image.writeToFile(imageName: imageName, search: .documentDirectory)
-                         dict["FoodDiary_ImageName"] = "'\(imageName)'"
-                        
-                    }
-                    
-                    master.insertDiary(rowInfo:dict)
                 }
                 
             }else{
                 
                 for diary in sportMaster.sportDiaryArrary{
                     
-                    sportMaster.diaryType = .sportDiary
-                    
-                    
-                    var dict = ["SportDiary_Date":"'\(diary.date)'",
-                        "SportDiary_Minute":"'\(diary.minute)'",
-                        "SportDiary_DetailId":"'\(diary.sportId)'",
-                        "SportDiary_Calorie":"'\(diary.calories)'"]
-                    
-                    
-                    
-                    if let photo = diary.image{
-                        let finalImageName = "sport_\(photo.hash)"
-                        photo.writeToFile(imageName:finalImageName, search: .documentDirectory)
-                        dict["SportDiary_ImageName"] = "'\(finalImageName)'"
-                        
-                        
-                    }
-                    
-                    
-                    sportMaster.insertDiary(rowInfo:dict)
+                    sportMaster.insertWeightDiary(diary:diary)
                 }
-                
             }
-            
-
+        
         }
-        
-        
-        
+
         navigationController?.popViewController(animated: true)
         
     }
@@ -392,37 +315,32 @@ class ChoiceFoodViewController: UIViewController{
             }
             
             
-            
             if !sender.isSelected{
                 
                 
-                master.switchIsOn.append(cellFoodId)
+                foodMaster.switchIsOn.append(cellFoodId)
                 let  food = foodDiary(dinnerTime:myDinnerTime,
                                       amount:choiceArray[(indexPath.row)].amount,
                                       weight:choiceArray[indexPath.row].weight,
                                       foodId:cellFoodId)
-                master.foodDiaryArrary.append(food)
+                foodMaster.foodDiaryArrary.append(food)
                 sender.isSelected = true
                 
                 
                 
             }else{
                 
-                guard let index = master.switchIsOn.index(of:cellFoodId) else{
+                guard let index = foodMaster.switchIsOn.index(of:cellFoodId) else{
                     return
                 }
-                master.switchIsOn.remove(at:index)
+                foodMaster.switchIsOn.remove(at:index)
                 sender.isSelected = false
-                master.foodDiaryArrary.remove(at:index)
+                foodMaster.foodDiaryArrary.remove(at:index)
                 
             }
             
             
         }else{
-            
-            
-            
-            
             
             guard let indexPath = choiceFoodTableView.indexPathForRow(at: point),
                 let cell = choiceFoodTableView.cellForRow(at:indexPath) as? SearchTableViewCell,
@@ -437,7 +355,7 @@ class ChoiceFoodViewController: UIViewController{
                 
                 
                 sportMaster.switchIsOn.append(cellId)
-                let  sport = sportDiary(minute:30,sportId:cellId,calories:sportItemsArray[indexPath.row].calories)
+                let sport = sportDiary(minute:30,sportId:cellId,calories:sportItemsArray[indexPath.row].calories)
                 sportMaster.sportDiaryArrary.append(sport)
                 sender.isSelected = true
                 
@@ -453,12 +371,10 @@ class ChoiceFoodViewController: UIViewController{
                 sender.isSelected = false
                 
                 
-                
-                
             }
             
         }
-        setNavBtnTitle()
+        setNavSelectSum()
     }
     
 }
@@ -509,7 +425,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             searchCell.bodyLabel.text = "1\(foodDetails.foodUnit)(\(Int(foodDetails.weight))克)"
             
             
-            if master.switchIsOn.contains(choiceArray[indexPath.row].foodDetailId){
+            if foodMaster.switchIsOn.contains(choiceArray[indexPath.row].foodDetailId){
                 
                 searchCell.switchButton.isSelected = true
                 
@@ -591,18 +507,23 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             
             if currentButton == 1{
                 
-                
-                let id = choiceArray[indexPath.row].foodDetailId
-                let cond =  "foodDetails_id = \(id)"
-                master.diaryType = .foodDetail
-                
-                master.deleteDiary(cond: cond)
-                choiceArray.remove(at:indexPath.row)
-                
-                
-                
-                
-                
+                if diaryType == .food{
+                    
+                    let id = choiceArray[indexPath.row].foodDetailId
+                    let cond =  "\(FOODDETAIL_Id) = \(id)"
+                    foodMaster.diaryType = .foodDetail
+                    foodMaster.deleteDiary(cond: cond)
+                    choiceArray.remove(at:indexPath.row)
+                    
+                }else{
+                    
+                    let id = sportItemsArray[indexPath.row].detailId
+                    let cond =  "\(SPORTDETAIL_ID) = \(id)"
+                    sportMaster.diaryType = .sportDetail
+                    sportItemsArray.remove(at: indexPath.row)
+                    sportMaster.deleteDiary(cond: cond)
+                    
+                }
                 
             }
             
@@ -634,18 +555,18 @@ extension ChoiceFoodViewController:UISearchBarDelegate{
         
         
         if diaryType == .food{
-            let cond = "sample_name like'%"+searchText+"%'"
-            master.diaryType = .foodDetail
-            choiceArray = master.getFoodDetails(.defaultData,
-                                                amount:nil,
-                                                weight:nil,
-                                                cond:cond,
-                                                order: nil)
+            let cond = "\(FOODDETAIL_SAMPLENAME) like'%"+searchText+"%'"
+            foodMaster.diaryType = .foodDetail
+            choiceArray = foodMaster.getFoodDetails(.defaultData,
+                                                    amount:nil,
+                                                    weight:nil,
+                                                    cond:cond,
+                                                    order: nil)
             
         }else{
             
-            let cond = "SportDetail_SampleName like'%"+searchText+"%'"
-            master.diaryType = .sportDetail
+            let cond = "\(SPORTDETAIL_SAMPLENAME) like'%"+searchText+"%'"
+            sportMaster.diaryType = .sportDetail
             sportItemsArray = sportMaster.getSportDetails(.defaultData, minute: nil, cond: cond, order: nil)
             
             

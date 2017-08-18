@@ -59,8 +59,8 @@ class PersonalFilesViewController: UIViewController {
         datePickerVC = storyboard?.instantiateViewController(withIdentifier:"DatePickerViewController") as! DatePickerViewController
         
         pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as! PickerViewController
-               
-
+        
+        
         
         datePickerVC.delegate = self
         pickerVC.delegate = self
@@ -78,15 +78,16 @@ class PersonalFilesViewController: UIViewController {
     
     
     
-    func showAlertError(error:String?){
     
+    func showAlertError(error:String?){
+        
         let alert = UIAlertController(error:error)
         self.present(alert, animated: true, completion: nil)
         
     }
     
     
-
+    
     
     func editUserData(sender:UIBarButtonItem){
         
@@ -96,12 +97,11 @@ class PersonalFilesViewController: UIViewController {
         
         
         // is not log in
-        if manager.userUid == nil{
+        if serviceManager.currentUser == nil{
             self.navigationController?.popViewController(animated:true)
             
             return
         }
-        
         
         userNameTextfield?.resignFirstResponder()
         let name = userNameTextfield?.text
@@ -122,16 +122,28 @@ class PersonalFilesViewController: UIViewController {
         
         // upload userPhoto to storage and update name and photoUrl to firDB
         if let finalPhoto = userPhoto,
-           let uploadData = UIImageJPEGRepresentation(finalPhoto,0.8){
+            let uploadData = UIImageJPEGRepresentation(finalPhoto,0.8){
+            
+            var toast:NickToastUIView?
+            
+            if let navView = navigationController?.view {
+                
+                toast = NickToastUIView(supView:navView, type:.update)
+                
+                
+            }
             
             
-
-            let toast = NickToastUIView(supView: self.view, type:.Upload)
+            if serviceManager.isConnectDBURL == false{
+                showAlertError(error:NO_CONNECTINTENTER)
+                toast?.removefromView()
+                return
+            }
             
             serviceManager.uploadProfileImage(data:uploadData) { (photoURL, error) in
                 
                 if error != nil{
-                    toast.removefromView()
+                    toast?.removefromView()
                     self.showAlertError(error:error?.localizedDescription)
                     return
                 }
@@ -140,7 +152,7 @@ class PersonalFilesViewController: UIViewController {
                 
                 self.serviceManager.uploadUserDataToDB(userName:name,imageURL:photoURL,done: { (error) in
                     
-                    toast.removefromView()
+                    toast?.removefromView()
                     
                     if error != nil {
                         self.showAlertError(error:error?.localizedDescription)
@@ -154,10 +166,7 @@ class PersonalFilesViewController: UIViewController {
                     
                     self.manager.setPhotName("Profile_\(uid)")
                     self.manager.setUserName(name)
-                    let cachesURL = FileManager.default.urls(for:.cachesDirectory, in: .userDomainMask).first
-                    let fullFileImageName = cachesURL?.appendingPathComponent("Profile_\(uid)")
-                    try?uploadData.write(to: fullFileImageName!)
-                
+                    finalPhoto.writeToFile(imageName:"Profile_\(uid)", search: .cachesDirectory)
                     self.navigationController?.popViewController(animated:true)
                     
                     
@@ -269,8 +278,8 @@ extension PersonalFilesViewController:UIImagePickerControllerDelegate,UINavigati
         userPhoto = image.resizeImage(maxLength:200)
         userName = userNameTextfield?.text
         personalFilesTableView.reloadData()
-
-
+        
+        
     }
     
 }
@@ -281,7 +290,7 @@ extension PersonalFilesViewController:UIImagePickerControllerDelegate,UINavigati
 //MARK: - UITableViewDataSource,UITableViewDelegate
 extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
     
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
@@ -354,7 +363,7 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
                 pickerVC.displayPickViewDialog(present: self)
             }
             
-           
+            
             
         }else if indexPath.row == 4 {
             
@@ -373,7 +382,7 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
 extension PersonalFilesViewController:UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    
+        
         textField.resignFirstResponder()
         
         return true
@@ -389,7 +398,7 @@ extension PersonalFilesViewController:DatePickerDelegate{
     func getSelectDate(date: Date) {
         
         let dateString =  CalenderManager.standard.dateToString(date)
-    
+        
         userData[currentTouchRow] = dateString
         
     }
@@ -400,9 +409,9 @@ extension PersonalFilesViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double){
         
-    
+        
         userData[currentTouchRow] = "\(data)"
-    
+        
     }
 }
 

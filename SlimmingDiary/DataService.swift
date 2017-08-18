@@ -10,9 +10,16 @@ import Foundation
 import Firebase
 import FBSDKLoginKit
 
+
+
+
 typealias Done = (Error?)->()
 typealias DoneUserData = ([String:AnyObject]?) ->()
 typealias DoneUploadProfileImage = (String?,Error?)->()
+let fireBaseDBURL = "https://simmingdiary-75e3b.firebaseio.com"
+let NO_CONNECTINTENTER = "無法取的網際網路"
+var reachability = Reachability(hostName:fireBaseDBURL)
+
 
 
 
@@ -22,6 +29,12 @@ class DataService {
     
     
     
+    var isConnectDBURL:Bool{
+        guard let reach = reachability else{
+            return false
+        }
+        return reach.checkInternetFunction()
+    }
     
     var currentUser:User?{
         return Auth.auth().currentUser
@@ -29,10 +42,12 @@ class DataService {
     
     var isLogin:Bool = {return Auth.auth().currentUser == nil ? false :true }(){
         
+        
         didSet{
+        
             NotificationCenter.default.post(name:NSNotification.Name(rawValue: "loginStatus"),
                                             object: nil)
-        }
+          }
     }
     
     var userUid:String? {
@@ -55,6 +70,11 @@ class DataService {
         return dbBasicURL.child("diary-content")
     }
     
+    var dbUserDiaryURL:DatabaseReference {
+        return dbBasicURL.child("user-diary")
+    }
+    
+    
     var storageProfileImageURL:StorageReference {
         return Storage.storage().reference().child("profile_images")
     }
@@ -62,16 +82,22 @@ class DataService {
     var storageImagesURL:StorageReference {
         return Storage.storage().reference().child("images")
     }
+    var storageTitleImagesURL:StorageReference {
+        return Storage.storage().reference().child("titleImage")
+    }
     
     
     
     
     func userLogOut(){
         
+        if let uid = userUid{
+            dbUserDiaryURL.child(uid).removeAllObservers()
+        }
         try? Auth.auth().signOut()
         FBSDKLoginManager().logOut()
         isLogin = false
-       
+        
         
     }
     
@@ -177,7 +203,7 @@ class DataService {
                 
             }else{
                 
-                 done(nil)
+                done(nil)
                 
             }
         })
@@ -196,8 +222,7 @@ class DataService {
         
         
     }
-    
-    
+
     
     func uploadUserDataToDB(userName:String?,imageURL:String?,done:@escaping Done){
         
@@ -268,6 +293,7 @@ class DataService {
         let task = URLSession(configuration: config).dataTask(with:url) { (data, response, error) in
             
             if error != nil{
+                 done(error)
                 return
             }
             
@@ -286,7 +312,7 @@ class DataService {
                 
             }
             
-            done(error)
+            done(nil)
             
         }
         

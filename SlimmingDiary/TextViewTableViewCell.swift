@@ -34,6 +34,10 @@ class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
                                                         action:#selector(doneBtnAction))
         
         
+      
+        
+       
+        
         var items = [UIBarButtonItem]()
         items.append(flexSpace)
         items.append(doneBtn)
@@ -56,6 +60,21 @@ class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
         
     }
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        if textView.text == "輸入點內容吧"{
+            textView.text = ""
+        }
+        
+        
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty{
+            textView.text = "輸入點內容吧"
+        }
+    }
+    
     func textViewDidChange(_ textView: UITextView) {
         oneDiary?.text = textView.text
         
@@ -64,22 +83,16 @@ class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
         let maxSize = CGSize(width: bounds.width, height:1000)
         let newRect = NSString(string: textView.text).boundingRect(with:maxSize, options: options, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize:16)], context: nil)
         
-       
-        
-        
+    
 
         let newSize = textView.sizeThatFits(newRect.size)
         bounds.size = newSize;
         textView.bounds = bounds;
         
-        
-    
         let tableView = self.superview?.superview as! UITableView
+        
         tableView.beginUpdates()
         tableView.endUpdates()
-        
-        
-        
         
     }
 

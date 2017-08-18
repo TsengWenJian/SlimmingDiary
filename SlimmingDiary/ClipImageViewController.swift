@@ -18,12 +18,11 @@ class ClipImageViewController: UIViewController,UIScrollViewDelegate{
     @IBOutlet weak var lightView: UIView!
     @IBOutlet weak var upShadowView: UIView!
     var delegate:clipImageVCDelegate?
-    var image = UIImage()
+    var selectImage = UIImage()
     @IBOutlet weak var scrollView: UIScrollView!
     
     
-    override func viewDidLoad() {
-        
+    override func viewDidLoad() {        
         super.viewDidLoad()
         
         
@@ -32,7 +31,7 @@ class ClipImageViewController: UIViewController,UIScrollViewDelegate{
         
         scrollView.maximumZoomScale = 3.0
         scrollView.minimumZoomScale = 1.0
-        imageView.image = image
+        imageView.image = selectImage
         scrollView.contentInset = UIEdgeInsets(top:upShadowView.bounds.height,
                                                left:0,
                                                bottom:upShadowView.bounds.height,
@@ -57,7 +56,21 @@ class ClipImageViewController: UIViewController,UIScrollViewDelegate{
     
     @IBAction func clipImageBtnAction(_ sender: Any) {
         
-        clipImage()
+        
+        UIGraphicsBeginImageContext(CGSize(width:lightView.frame.width*2, height: lightView.frame.height*2))
+        let selectFrame = CGRect(x: 0,
+                                 y:-upShadowView.frame.maxY*2,
+                                 width:view.frame.width*2,
+                                 height:view.frame.height*2)
+        
+        self.view.drawHierarchy(in:selectFrame, afterScreenUpdates: false)
+        
+        let  finalImage = UIGraphicsGetImageFromCurrentImageContext()!;
+        UIGraphicsEndImageContext();
+        imageView.image = finalImage
+        delegate?.clipImageDone(image:finalImage)
+        self.dismiss(animated: false, completion: nil)
+        
         
         
     }
@@ -66,36 +79,5 @@ class ClipImageViewController: UIViewController,UIScrollViewDelegate{
         super.didReceiveMemoryWarning()
         
     }
-    
-    func clipImage(){
-        
-        
-        
-        UIGraphicsBeginImageContext(CGSize(width:lightView.frame.width*2, height: lightView.frame.height*2))
-        let cg = CGRect(x: 0,
-                        y:-upShadowView.frame.maxY*2,
-                        width:view.frame.width*2,
-                        height:view.frame.height*2)
-        
-        self.view.drawHierarchy(in:cg, afterScreenUpdates: false)
-        
-        let  finalImage = UIGraphicsGetImageFromCurrentImageContext()!;
-        UIGraphicsEndImageContext();
-        imageView.image = finalImage
-        delegate?.clipImageDone(image:finalImage)
-        self.dismiss(animated: false, completion: nil)
-        
-    }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

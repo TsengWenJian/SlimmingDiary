@@ -59,13 +59,10 @@ class EnterInformationViewController: UIViewController {
         weightProgress.setSubTitleText(text: "--")
         
 
-        for myView in containerBtnView{
-            addLayerShadow(myView)
-        }
-        addLayerShadow(targetBtn)
+        
         
     
-        datePickerVC = storyboard?.instantiateViewController(withIdentifier:"DatePickerViewController")
+       datePickerVC = storyboard?.instantiateViewController(withIdentifier:"DatePickerViewController")
             as? DatePickerViewController
         
         pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController")
@@ -102,16 +99,7 @@ class EnterInformationViewController: UIViewController {
     
     }
     
-    func addLayerShadow(_ view:UIView){
-        
-        
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOffset = CGSize.zero
-        view.layer.shadowOpacity = 0.3
-        view.layer.shadowRadius = 2
-        view.layer.cornerRadius = 5
     
-    }
     
     
     
@@ -144,7 +132,7 @@ class EnterInformationViewController: UIViewController {
                                         time:calManager.getCurrentTime(),
                                         type:"體重",
                                         value:myWeight,
-                                        photo: nil)
+                                        imageName: nil)
             
             WeightMaster.standard.insertWeightDiary(addRecord)
             
@@ -307,8 +295,7 @@ extension EnterInformationViewController:PickerViewDelegate{
         
         bodyManager.setBodyData(calHeight,calWeight,calGender)
         let bmi  = String(format:"%0.1f",bodyManager.getBmi())
-        
-        
+    
         weightProgress.setTitleText(text:bodyManager.getWeightType().rawValue)
         weightProgress.setTitleColor(bodyManager.getWeightTypeColor())
         weightProgress.setDetailText(text:"理想體重:\(bodyManager.getIdealWeight())kg")

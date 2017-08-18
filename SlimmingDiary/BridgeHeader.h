@@ -9,6 +9,7 @@
 #ifndef BridgeHeader_h
 #define BridgeHeader_h
 #include "sqlite3.h"
+#import "Reachability.h"
 
 
 #endif /* BridgeHeader_h */

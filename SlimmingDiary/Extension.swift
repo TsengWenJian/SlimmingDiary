@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-let imageCach = NSCache<AnyObject, AnyObject>()
+
 
 
 // MARK:- UIView
@@ -32,6 +32,19 @@ extension Double{
     }
     
     
+}
+
+extension Reachability{
+    
+    func checkInternetFunction() -> Bool {
+        if currentReachabilityStatus().rawValue == 0 {
+            print("no internet connected.")
+            return false
+        }else {
+            print("internet connected successfully.")
+            return true
+        }
+    }
 }
 
 // MARK:- UIAlertController
@@ -62,6 +75,7 @@ extension UIImage{
                 image = UIImage(named:"woman")
                 
             }else{
+                
                 image = UIImage(named:"man")
                 
             }
@@ -152,69 +166,51 @@ extension Double{
     }
 }
 
+let imageCach = NSCache<AnyObject, AnyObject>()
 
 extension UIImageView{
     
     
-    func loadImageCacheWithURL(urlString:String){
+  
+    func loadImageCacheWithURL(urlString:String?){
         
-        guard let url = URL(string:urlString)else{
+        self.image = nil
+        
+        
+        
+        guard let urlStr = urlString,
+              let url = URL(string:urlStr)else{
             
            return
         }
-        self.image = nil
         
-        if let cachImage = imageCach.object(forKey: url as AnyObject){
-            self.image = cachImage as? UIImage
+        
+        if let cachImage = imageCach.object(forKey: url as AnyObject),
+          let image = cachImage as? UIImage{
             
+            self.image = image
+        
             return
         }
     
-        
-        var loadingView:UIActivityIndicatorView?
-        
-        if loadingView == nil{
-            
-    
-            
-            loadingView = UIActivityIndicatorView()
-
-            DispatchQueue.main.async {
-             loadingView?.frame = self.bounds
-            }
-        
-            loadingView?.color = UIColor.gray
-            loadingView?.hidesWhenStopped = true
-            addSubview(loadingView!)
-
-
-        }
-        
-        
-        loadingView?.startAnimating()
-        
-        
         
         let config:URLSessionConfiguration = .default
         let session = URLSession(configuration: config)
         let task = session.dataTask(with:url) { (data, response, error) in
             
             if let err = error{
-                print(err)
                 
-                DispatchQueue.main.async {
-                    loadingView?.stopAnimating()
-                    self.image = nil
-                    
-                }
-                return
+                  print(err)
+        return
             }
             
             DispatchQueue.main.async {
-                if let  downloadImage  = UIImage(data: data!){
-                     loadingView?.stopAnimating()
-                    imageCach.setObject(downloadImage,forKey: url as AnyObject)
-                    self.image = downloadImage
+                
+                if let  imageData  = data{
+                    
+                    self.image = UIImage(data:imageData)
+                    imageCach.setObject(self.image as AnyObject,forKey: url as AnyObject)
+                    
                 }
         
                 

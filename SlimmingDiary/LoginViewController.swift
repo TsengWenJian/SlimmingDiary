@@ -25,6 +25,7 @@ class LoginViewController: UIViewController {
     
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,11 +50,15 @@ class LoginViewController: UIViewController {
     
     func singInWithEmail(email:String,password:String){
         
+        if serviceManager.isConnectDBURL == false{
+            showAlertWithError(message:NO_CONNECTINTENTER)
+            return
+        }
+        
         let toast  = NickToastUIView(supView:view, type:.logIn)
-        serviceManager.singInWithEmail(email: email, password: password) { (error) in
+          serviceManager.singInWithEmail(email: email, password: password) { (error) in
             
-            if let  err = error {
-                
+            if let err = error {
                 toast.removefromView()
                 self.showAlertWithError(message:err.localizedDescription)
                 
@@ -84,6 +89,11 @@ class LoginViewController: UIViewController {
     }
     
     func register(name:String,email:String,password:String){
+        
+        if serviceManager.isConnectDBURL == false{
+            showAlertWithError(message: NO_CONNECTINTENTER)
+            return
+        }
         
         let toast  = NickToastUIView(supView: view, type: .logIn)
         
@@ -118,6 +128,12 @@ class LoginViewController: UIViewController {
     
     
     @IBAction func fbBtnAction(_ sender: Any) {
+        
+        if serviceManager.isConnectDBURL == false{
+            showAlertWithError(message: NO_CONNECTINTENTER)
+            return
+        }
+
         
         
         let toast = NickToastUIView(supView: self.view, type: .logIn)

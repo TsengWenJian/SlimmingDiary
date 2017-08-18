@@ -13,24 +13,12 @@ class FoodDiaryViewController: UIViewController{
     let dinnerTime = ["早餐","午餐","晚餐","其他"]
     var isExpend = [true,true,true,true]
     var sectionArray = [[foodDetails]]()
-    let master = foodMaster.standard
+    let master = FoodMaster.standard
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        // 收到通知刷新 tableView
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshSectionArray), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
-    
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-      
-        
-        refreshSectionArray()
         
         let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
         diaryTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
@@ -40,27 +28,39 @@ class FoodDiaryViewController: UIViewController{
         
         let nibFooter = UINib(nibName: "FooterTableViewCell", bundle: nil)
         diaryTableView.register(nibFooter, forCellReuseIdentifier: "footerCell")
-        
 
         
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshSectionArray), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
+    
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        refreshSectionArray()
+        
+
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+    }
     
     
     func refreshSectionArray(){
         
         sectionArray.removeAll()
         
-        let displayDate =  CalenderManager.standard.myDateToString(CalenderManager.standard.displayDate)
+        let displayDate =  CalenderManager.standard.displayDateString()
         
        
         master.diaryType = .foodDiaryAndDetail
         for i in 0..<dinnerTime.count{
            
 
-            let cond = "Food_Diary.food_id=foodDetails_id and time_interval = '\(dinnerTime[i])'and date = '\(displayDate)'"
-            
-            let dinnerDiary = master.getFoodDetails(.diaryData,amount:nil,weight:nil,cond: cond,order: nil)
+            let cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DINNERTIME) = '\(dinnerTime[i])'and \(FOODDIARY_DATE) = '\(displayDate)'"
+            let dinnerDiary = master.getFoodDetails(.diaryData,amount:nil,weight:nil,cond:cond,order: nil)
             sectionArray.append(dinnerDiary)
         }
         
@@ -72,57 +72,15 @@ class FoodDiaryViewController: UIViewController{
     
     
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-    }
-    
-    
-    
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! BodyTableViewCell
-        
-
-        let  diary = sectionArray[indexPath.section][indexPath.row]
-        cell.titleLabel.text = diary.sampleName
-        
-        cell.bodyLabel.text = "\(diary.amount)" + diary.foodUnit + "(" + String(Int(diary.weight)) + "克" + ")"
-        cell.rightLabel.text = String(Int(diary.calorie))
-        
-        if diary.imageName == nil{
-            cell.leftImageView.image = UIImage(named: "food")
-            
-        }else{
-            cell.leftImageView.image = UIImage(imageName: diary.imageName, search: .documentDirectory)
-            
-        }
-        
-        
-        
-        return cell
-    }
-    
-    
-    
-    
-    
-    
     func sectionIsExpend(sender:UIButton){
         let section = sender.tag - 1000
         
-        if isExpend[section]{
-            isExpend[section] = false
-        } else {
-            isExpend[section] = true
-        }
+        isExpend[section] = isExpend[section] == true ? false:true
         diaryTableView.reloadSections(IndexSet(integer:section), with: .automatic)
     }
     
     
-    
-    
+
     func plusFood(sender:UIButton){
         
         let section = sender.tag - 1500
@@ -168,26 +126,40 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         
+        return  isExpend[section] == true ? sectionArray[section].count:0
         
-        if isExpend[section]{
-            return sectionArray[section].count
-            
-            
-        }else{
-            return 0
-            
-        }
     }
     
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! BodyTableViewCell
+        
+        
+        let  diary = sectionArray[indexPath.section][indexPath.row]
+        cell.titleLabel.text = diary.sampleName
+        
+        cell.bodyLabel.text = "\(diary.amount)" + diary.foodUnit + "(\(Int(diary.weight))克)"
+        cell.rightLabel.text = String(Int(diary.calorie))
+        
+        
+        cell.leftImageView.image = diary.imageName == nil ? UIImage(named: "food"):UIImage(imageName: diary.imageName,
+                                                                                           search: .documentDirectory)
+
+        
+        
+        return cell
+    }
+    
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if  let nextPage = storyboard?.instantiateViewController(withIdentifier: "FoodDetailViewController") as? FoodDetailViewController{
 
-            
-            
-            nextPage.foodId = sectionArray[indexPath.section][indexPath.row].foodDetailId
-            nextPage.foodDiaryId = sectionArray[indexPath.section][indexPath.row].foodDiaryId
+            let record = sectionArray[indexPath.section][indexPath.row]
+            nextPage.foodId = record.foodDetailId
+            nextPage.foodDiaryId = record.foodDiaryId
             nextPage.dinnerTime = dinnerTime[indexPath.section]
             nextPage.lastPageVC = .update
             
@@ -202,12 +174,12 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let id = sectionArray[indexPath.section][indexPath.row].foodDiaryId
-            let cond =  "foodDiary_id = \(id)"
+            let cond =  "\(FOODDIARY_ID) = \(id)"
             master.diaryType = .foodDiary
             master.deleteDiary(cond: cond)
-            sectionArray[indexPath.section].remove(at:indexPath.row)
             master.deleteImage(imageName:sectionArray[indexPath.section][indexPath.row].imageName)
-            
+            sectionArray[indexPath.section].remove(at:indexPath.row)
+           
 
             diaryTableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)
             
@@ -217,21 +189,11 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerCell = tableView.dequeueReusableCell(withIdentifier: "footerCell")as! FooterTableViewCell
         
+        let recordCount = sectionArray[section].count
         
-        if sectionArray[section].count == 0{
-            
-            footerCell.titleLabel.text = "尚未添加食物"
-            
-        }else{
-            footerCell.titleLabel.text = String(sectionArray[section].count) + "項"
-        }
-        
-        
-        
+        footerCell.titleLabel.text = recordCount == 0 ?"尚未添加食物":"\(sectionArray[section].count) 項"
         footerCell.footerButton.addTarget(self, action: #selector(plusFood(sender:)), for: .touchUpInside)
         footerCell.footerButton.tag = 1500 + section
-        
-        
         
         
         return footerCell.contentView
@@ -247,17 +209,13 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         headerCell.totalCalorieLebel.text = {
             var calorieSum:Double = 0
             for foodDiaryCaloria in sectionArray[section]{
+                
                 calorieSum+=foodDiaryCaloria.calorie
             }
             
-            if calorieSum == 0.0{
-                
-                return ""
-            }else{
-                return "- "+String(Int(calorieSum))+" 大卡"
-                
-            }
-        }()
+            return calorieSum == 0.0 ? "" : "- \(Int(calorieSum)) 大卡"
+            
+           }()
         
         
         headerCell.expendBtn.addTarget(self, action: #selector(sectionIsExpend), for: .touchUpInside)

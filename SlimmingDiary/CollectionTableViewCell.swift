@@ -198,7 +198,6 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
                 let wobble = CAKeyframeAnimation(keyPath: "transform.rotation")
                 wobble.duration = 0.2
                 wobble.repeatCount = MAXFLOAT
-                
                 wobble.values = [-0.08,0.08,-0.08]
                 wobble.isRemovedOnCompletion = false
                 cell.layer.add(wobble,forKey:"cellRotato")
@@ -213,10 +212,28 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
             
             let rowData = data[indexPath.row]
             let defaultImage = UIImage(named:diaryImageType.rawValue)
-            let myImage = rowData.image != nil ? rowData.image:defaultImage
             
             
-            cell.imageView.image = myImage
+            
+            
+            if  let _ = rowData.image{
+            
+                cell.imageView.image = rowData.image
+                
+                
+            }else{
+                
+                if let url = rowData.imageURL {
+                    
+                cell.imageView.loadImageCacheWithURL(urlString:url)
+                
+                }else{
+                    cell.imageView.image = defaultImage
+
+                }
+            }
+            
+            
             cell.titleLabel.text = rowData.title
             cell.detailLabel.text = "\(rowData.detail)大卡"
             cell.isBeginEdit = isEdit
@@ -254,34 +271,34 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
             nextPage.selectFoodDone = {(done)->()in
                 
                 if self.diaryImageType == .food{
-                
-                for i in foodMaster.standard.foodDiaryArrary{
-                    let detail = foodDetailManager().getFoodDataArray(.insert,
-                                                                      foodDiaryId:nil,
-                                                                      foodId:i.foodId,
-                                                                      amount:i.amount,
-                                                                      weight:i.weight)
                     
-                    let item:DiaryItem =  DiaryItem(image:i.image,
-                                                    title:detail[0],
-                                                    detail:detail[3])
-                    self.data.append(item)
-                    
-                }
+                    for i in FoodMaster.standard.foodDiaryArrary{
+                        let detail = FoodMaster.standard.getFoodDataArray(.insert,
+                                                                          foodDiaryId:nil,
+                                                                          foodId:i.foodId,
+                                                                          amount:i.amount,
+                                                                          weight:i.weight)
+                        
+                        let item:DiaryItem =  DiaryItem(image:i.image,
+                                                        title:detail[0],
+                                                        detail:detail[3])
+                        self.data.append(item)
+                        
+                    }
                     
                 }else{
                     
                     
                     for i in SportMaster.standard.sportDiaryArrary{
                         
-                        print(i)
+                        
                         SportMaster.standard.diaryType = .sportDiaryAndDetail
-                       let cond = "Sport_Diary.SportDiary_DetailId=SportDetail_Id"
-
-                       let detail = SportMaster.standard.getSportDetails(.defaultData,
-                                                                         minute:i.minute,
-                                                                         cond: cond,
-                                                                         order:nil).first
+                        let cond = "Sport_Diary.SportDiary_DetailId=SportDetail_Id"
+                        
+                        let detail = SportMaster.standard.getSportDetails(.defaultData,
+                                                                          minute:i.minute,
+                                                                          cond: cond,
+                                                                          order:nil).first
                         
                         
                         guard let firDetail = detail else{
@@ -293,7 +310,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
                                                         title:firDetail.sampleName,
                                                         detail:"\(firDetail.calories)")
                         self.data.append(item)
-
+                        
                     }
                 }
                 

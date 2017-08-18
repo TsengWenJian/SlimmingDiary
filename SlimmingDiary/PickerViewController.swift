@@ -55,7 +55,6 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         
         interger = floor(de.setSelectRowOfbegin)
         point = (de.setSelectRowOfbegin - interger)*10
-        //有bug double 轉int 2.0->結果是1 暫時用先轉float
         let s  = Float(point)
         
         
@@ -64,9 +63,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         
         
         if delegate?.numberOfComponents == 2{
-            
             dotLabel.isHidden = false
-    
             pickerView.selectRow(Int(s), inComponent: 1, animated: true)
         }
         

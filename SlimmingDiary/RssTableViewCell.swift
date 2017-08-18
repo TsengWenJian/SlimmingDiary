@@ -9,7 +9,7 @@
 import UIKit
 
 class RssTableViewCell: UITableViewCell {
-    @IBOutlet weak var advanceImage: advanceImageView!
+    @IBOutlet weak var advanceImage: AdvanceImageView!
     @IBOutlet weak var pudDate: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var LabelView: UIView!

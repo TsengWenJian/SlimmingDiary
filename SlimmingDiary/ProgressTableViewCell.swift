@@ -19,10 +19,6 @@ class ProgressTableViewCell: UITableViewCell{
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        
-        
-        
-        
         let width = UIScreen.main.bounds.width - 24
         scrollView.delegate = self
         

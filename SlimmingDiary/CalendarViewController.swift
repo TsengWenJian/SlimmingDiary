@@ -113,6 +113,9 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
 //        titleDate.layer.add(transitionLabel, forKey:nil)
         
     }
+    @IBAction func hiddenBtn(_ sender: Any) {
+        hideDialog()
+    }
     
     
     func setTitleDate(){

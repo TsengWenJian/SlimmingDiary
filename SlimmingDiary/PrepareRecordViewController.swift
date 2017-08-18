@@ -20,12 +20,16 @@ class PrepareRecordViewController: UIViewController {
     var setSelectRowOfbegin:Double = 1
     var textFieldText:String?
     var checkIsSelectImage:Bool = false
-    
+
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+         
+        
         
         
         calendarPickVC = storyboard!.instantiateViewController(withIdentifier: "CalendarViewController") as!
@@ -40,13 +44,7 @@ class PrepareRecordViewController: UIViewController {
         
     }
     
-    func touchesBegan(){
-        
-        self.view.endEditing(true)
-        
-        
-        
-    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -65,10 +63,10 @@ class PrepareRecordViewController: UIViewController {
                 if text == ""{
                     
                     return   "請填寫\(titleArray[index])"
-    
+                    
                 }
             }
-        
+            
         }
         return nil
         
@@ -87,7 +85,7 @@ class PrepareRecordViewController: UIViewController {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) == false{
             return
         }
-    
+        
         let picker = UIImagePickerController()
         picker.sourceType =  .photoLibrary
         picker.mediaTypes = ["public.image"]
@@ -99,7 +97,7 @@ class PrepareRecordViewController: UIViewController {
     }
     
 }
-
+//MARK: - UITableViewDelegate,UITableViewDataSource
 extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -178,8 +176,11 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.view.endEditing(true)
+        
+        
+        
         if indexPath.row == 1{
-            
             
             calendarPickVC.displayCalendarPickDialog(self)
             
@@ -191,17 +192,15 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
             
             
         }
+        
         tableView.deselectRow(at: indexPath, animated: false)
     }
-    override func viewDidDisappear(_ animated: Bool) {
-        
-    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    
+        
         
         if let err = checkIsWriteDone(){
-            
             
             let alert = UIAlertController(error: err)
             present(alert, animated: true, completion: nil)
@@ -209,18 +208,19 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
             
         }else{
             
+           
             let nextPage = segue.destination as! MakeShareDiaryTableViewController
-
-            
+                    
+            let back = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
+            navigationItem.backBarButtonItem = back
+            nextPage.actionType = .insert
             nextPage.titleImage = titleImage.image
             nextPage.day = Int(detailArray[2])
             nextPage.beginDate = detailArray[1]
-            nextPage.planTitle = textFieldText
+            nextPage.diaryTitle = textFieldText
             
-            
-        
         }
-
+        
     }
     
 }
@@ -228,7 +228,7 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
 
 
 
-
+//MARK: - CalendarPickDelegate
 extension PrepareRecordViewController:CalendarPickDelegate{
     
     func getCalenderSelectDate(date:MyDate) {
@@ -242,7 +242,7 @@ extension PrepareRecordViewController:CalendarPickDelegate{
 
 
 
-
+//MARK: - UIImagePickerControllerDelegate,UINavigationControllerDelegate
 extension PrepareRecordViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     
     
@@ -255,13 +255,10 @@ extension PrepareRecordViewController:UIImagePickerControllerDelegate,UINavigati
             
         }
         
-        
-        
-        
         let clipImageVC = self.storyboard?.instantiateViewController(withIdentifier:"ClipImageViewController") as? ClipImageViewController
         clipImageVC?.delegate = self
         
-        clipImageVC?.image = image
+        clipImageVC?.selectImage = image
         picker.present(clipImageVC!, animated: true, completion: nil)
         
     }
@@ -269,7 +266,7 @@ extension PrepareRecordViewController:UIImagePickerControllerDelegate,UINavigati
 }
 extension PrepareRecordViewController:clipImageVCDelegate{
     func clipImageDone(image: UIImage) {
-        titleImage.image = image.resizeImage(maxLength: 1024)
+        titleImage.image = image.resizeImage(maxLength:1024)
         checkIsSelectImage = true
         dismiss(animated: false, completion: nil)
         

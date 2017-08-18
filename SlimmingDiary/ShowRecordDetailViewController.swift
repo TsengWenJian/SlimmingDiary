@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import MessageUI
 
 class ShowRecordDetailViewController: UIViewController {
     
@@ -15,12 +16,16 @@ class ShowRecordDetailViewController: UIViewController {
     var shareDiary:ShareDiary?
     var user:UserData?
     
+    
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var userPhotoImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var titleImageView: UIImageView!
+    @IBOutlet weak var titleImageView:AdvanceImageView!
     @IBOutlet weak var titleImageContainerViewHeight: NSLayoutConstraint!
     var sectionsIsExpend = [Bool]()
+    var serviceManager = DataService.standard
+    var shareManager = shareDiaryManager.standard
+    
     
     
     @IBOutlet weak var recordsDetailTableView: UITableView!
@@ -29,119 +34,143 @@ class ShowRecordDetailViewController: UIViewController {
         super.viewDidLoad()
         
         
-        if shareDiary?.userId == ProfileManager.standard.userUid{
-            let btn = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashDiary))
-              navigationItem.rightBarButtonItems = [btn]
-        }
-        
-        
         recordsDetailTableView.contentInset = UIEdgeInsets(top:titleImageContainerViewHeight.constant,
-                                                           left: 0, bottom: 0, right: 0)
+                                                           left:0,bottom:0,right:0)
         
         
         userPhotoImageView.layer.cornerRadius = userPhotoImageView.bounds.height/2
         userPhotoImageView.layer.borderColor = UIColor.white.cgColor
         userPhotoImageView.layer.borderWidth = 1
         
-        
-        
-        
-        guard let myShareDiary = shareDiary,
-            let diaryId = myShareDiary.diaryId,
-            let myUser = user else{
-                return
-        }
-        navigationItem.title = myShareDiary.title
-        titleImageView.loadImageCacheWithURL(urlString:myShareDiary.titleImageURL!)
-        detailLabel.text = "\(myShareDiary.beginDate!) / \(myShareDiary.day!) day"
-        
-        
-        userNameLabel.text = myUser.name
-        if let userImageUrl = myUser.imageURL{
-            
-            userPhotoImageView.loadImageCacheWithURL(urlString:userImageUrl)
-            
-        }else{
-            
-            userPhotoImageView.image = UIImage(named:"man")
-        }
-        
-        
-        
+        recordsDetailTableView.estimatedRowHeight = 100
+        recordsDetailTableView.rowHeight = UITableViewAutomaticDimension
+
         
         
         let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
         recordsDetailTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
         
-        let toastView = NickToastUIView(supView: self.recordsDetailTableView, type:.download)
         
-       
-        Database.database().reference().child("diary-content").child(diaryId).observe(.childAdded, with: { (DataSnapshot) in
-            
-            
-            if let test = DataSnapshot.value as? [String:AnyObject]{
-                print(test)
-            }
-            
-            
-            
-            self.diarys = [OneDiaryRecord]()
-            guard let diaryDictArray =  DataSnapshot.value as? [[String:AnyObject]] else{
-                return
-            }
-            
-            for diary in diaryDictArray{
-                self.sectionsIsExpend.append(true)
-                let foodItems = diary["foodItmes"] as?[[String:String]]
-                let sportItems = diary["sportItems"] as?[[String:String]]
-                let text = diary["text"] as? String
-                guard let date = diary["date"] as? String else{return}
-                
-                let da = OneDiaryRecord(food:self.dictArrayTurnDiaryItem(dict: foodItems),
-                                        sport:self.dictArrayTurnDiaryItem(dict: sportItems),
-                                        text: text, date:date)
-                self.diarys.append(da)
-                
-                
-            }
-            
-            DispatchQueue.main.async {
-                toastView.removefromView()
-                self.recordsDetailTableView.reloadData()
-            }
-            
-            
-        }){ (error) in
-            
-                 toastView.removefromView()
-                 print(error.localizedDescription)
-        
+        if serviceManager.isConnectDBURL == false{
+            return
         }
-        
-        
-        
-        recordsDetailTableView.estimatedRowHeight = 100
-        recordsDetailTableView.rowHeight = UITableViewAutomaticDimension
-        
-    }
-    
-    func trashDiary(){
         
         guard let myShareDiary = shareDiary,
-            let diaryId = myShareDiary.diaryId
-            else{
+            let diaryId = myShareDiary.diaryId else{
                 return
         }
         
-        Database.database().reference().child("diarys").child(diaryId).removeValue { (error, DatabaseReference) in
-              Database.database().reference().child("diary-content").child(diaryId).removeValue()
-              self.navigationController?.popViewController(animated: true)
-        }
+    
+        
+        navigationItem.title = myShareDiary.title
+        titleImageView.loadWithURL(urlString: myShareDiary.titleImageURL!)
+        detailLabel.text = "\(myShareDiary.beginDate!) / \(myShareDiary.day!) day"
        
+    
+        if shareDiary?.userId == ProfileManager.standard.userUid{
+            
+            let btn = UIBarButtonItem(barButtonSystemItem:.trash,target: self, action:#selector(trashDiary))
+            let editImage = UIImage(named: "edit")
+            let edit = UIBarButtonItem(image:editImage, style: .plain, target: self, action:#selector(editDiary))
+            
+            navigationItem.rightBarButtonItems = [btn,edit]
+            userNameLabel.text = "你自己"
+            
+            userPhotoImageView.image = UIImage(imageName: ProfileManager.standard.userPhotoName, search: .cachesDirectory)
+            
+            
+        }else{
+            
+           
+            if let myUser = user{
+                
+                   userNameLabel.text = myUser.name
+ 
+                if let userImageUrl = myUser.imageURL{
+                    
+                    userPhotoImageView.loadImageCacheWithURL(urlString:userImageUrl)
+                    
+                }else{
+                    
+                    userPhotoImageView.image = UIImage(named:"man")
+                }
+        
+            }
+        }
+        
+        
+        
+        shareManager.getShareDiaryContent(diaryID: diaryId) { (error, result) in
+            
+            if let err = error{
+                print(err.localizedDescription)
+                return
+            }
+            self.diarys = result
+            self.setSectionExpend(sum:result.count)
+            DispatchQueue.main.async {
+                self.recordsDetailTableView.reloadData()
+            }
+        }
+    
     }
+    func editDiary(){
+        let nextPage = storyboard?.instantiateViewController(withIdentifier:"MakeShareDiaryTableViewController") as! MakeShareDiaryTableViewController
+        
+           nextPage.diarys = diarys
+           nextPage.actionType = .update
+           nextPage.titleDiary = shareDiary!
+           let back = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
+           navigationItem.backBarButtonItem = back
+           navigationController?.pushViewController(nextPage, animated: true)
+        
+    }
+    func setSectionExpend(sum:Int){
+        
+        for _ in 0..<sum{
+            sectionsIsExpend.append(true)
+        }
+        
+    }
+
+    func trashDiary(){
+        
+        let alert = UIAlertController(title: "刪除", message: "確定刪除這篇日記?", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "確定", style: .default) { (UIAlertAction) in
+            
+            
+            guard let myShareDiary = self.shareDiary,
+                let diaryId = myShareDiary.diaryId,
+                let open = myShareDiary.open,
+                let userId = myShareDiary.userId else{
+                    
+                    return
+            }
+            
+            
+            self.serviceManager.dbDiarysURL.child(open).child(diaryId).removeValue { (error, DatabaseReference) in
+                
+                if let err = error{
+                    print(err.localizedDescription)
+                    return
+                }
+                self.serviceManager.dbDiaryContentURL.child(diaryId).removeValue()
+                self.serviceManager.dbUserDiaryURL.child(userId).child(diaryId).removeValue()
+                self.navigationController?.popViewController(animated: true)
+                
+            }
+        
+        }
+        let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    
+        }
+    
     
     func dictArrayTurnDiaryItem(dict:[[String:String]]?)->[DiaryItem]?{
-        
         
         guard let mydict = dict else{
             return nil
@@ -159,8 +188,9 @@ class ShowRecordDetailViewController: UIViewController {
             items.append(diary)
             
         }
-        return items
         
+        
+        return items
     }
     
     override func didReceiveMemoryWarning() {
@@ -169,31 +199,22 @@ class ShowRecordDetailViewController: UIViewController {
     }
     
     
-    
     func sectionIsExpend(sender:UIButton){
         let section = sender.tag - 1000
         
-        if sectionsIsExpend[section]{
-            sectionsIsExpend[section] = false
-        } else {
-            sectionsIsExpend[section] = true
-        }
-        
+        sectionsIsExpend[section] = !sectionsIsExpend[section]
         recordsDetailTableView.reloadSections(IndexSet(integer:section), with: .automatic)
         
-//        move 1point to touch off scrollViewDidScroll
+        // move 1point to touch off scrollViewDidScroll
         let point = recordsDetailTableView.contentOffset
         recordsDetailTableView.setContentOffset( CGPoint(x: point.x, y: point.y+1), animated: false)
         
     }
-    
-    
 }
-
+//MARK: - UITableViewDelegate,UITableViewDataSource
 extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         
         return diarys.count
         
@@ -210,10 +231,10 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
             if sectionDay.text != nil{calRow+=1}
             
             
-            
             return calRow
             
         }else{
+            
             return 0
         }
     }
@@ -237,11 +258,8 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
             
         }
         
-        
-        
         let sportRow:Int = 1 - calRow
         let textRow:Int = 2 - calRow
-        
         
         
         
@@ -261,7 +279,6 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
         cell.VC = self
         
         
-        
         if indexPath.row == foodRow {
             
             cell.diaryImageType = .food
@@ -272,7 +289,6 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
             
             cell.diaryImageType = .sport
             cell.data = diarys[indexPath.section].sport!
-            
             
         }
         
@@ -293,16 +309,14 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
     }
-    
-    
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
-
+    
     
 }
-
+//MARK: - UIScrollViewDelegate
 extension ShowRecordDetailViewController:UIScrollViewDelegate{
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -312,13 +326,5 @@ extension ShowRecordDetailViewController:UIScrollViewDelegate{
         
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 
-class advanceImageView: UIImageView {
+class AdvanceImageView: UIImageView {
     
     var loadingView:UIActivityIndicatorView?
     var existTask:URLSessionDataTask?

@@ -11,7 +11,7 @@ import UIKit
 class FoodDetailViewController: UIViewController{
     
     @IBOutlet weak var collectBtn: UIButton!
-    let detailManager = foodDetailManager()
+    
     var pickerVC = PickerViewController()
     var lastPageVC:ActionType = .insert
     var foodTitleArray = [String]()
@@ -29,7 +29,7 @@ class FoodDetailViewController: UIViewController{
             foodDetailsTableView.reloadData()
         }
     }
-    let master = foodMaster.standard
+    let master = FoodMaster.standard
     
     
     
@@ -41,36 +41,28 @@ class FoodDetailViewController: UIViewController{
         
         super.viewDidLoad()
         
-        var action:String
+       
         
-        foodDataArray = detailManager.getFoodDataArray(lastPageVC,
+        foodDataArray = master.getFoodDataArray(lastPageVC,
                                                        foodDiaryId:foodDiaryId,
                                                        foodId:foodId,
                                                        amount:nil,
                                                        weight:nil)
         
         
-        foodTitleArray = detailManager.foodTitle
-        foodUnitArray = detailManager.foodUnit
+        foodTitleArray = master.foodDetailTitles
+        foodUnitArray = master.foodDetailUnits
         
-        if detailManager.isCollection == 1{
+        if master.isCollection == 1{
             collectBtn.isSelected = true
         }
         
         
-        selectImage = detailManager.foodImage
+        selectImage = master.foodDetailImage
         
         navigationItem.title = "食物資料"
         
-        if(lastPageVC == ActionType.insert){
-            action = "加入"
-        }else{
-            action = "修改"
-            
-        }
-        
-        
-        let save = UIBarButtonItem(title:action, style: .done, target: self, action: #selector(saveFood))
+        let save = UIBarButtonItem(title:lastPageVC.rawValue, style: .done, target: self, action: #selector(saveFood))
         navigationItem.rightBarButtonItems = [save]
         
         
@@ -85,13 +77,15 @@ class FoodDetailViewController: UIViewController{
         
     }
     
-    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
     
     
     func saveFood(){
-        
-        
-        
+    
         if lastPageVC == ActionType.insert{
             
             guard let myAmount = Double(foodDataArray[1]),
@@ -109,11 +103,11 @@ class FoodDetailViewController: UIViewController{
             
             diary.image = selectImage
             
-        
+            
             
             if let index =  master.switchIsOn.index(of:myFoodId){
-                 master.switchIsOn.remove(at:index)
-                 master.foodDiaryArrary.remove(at:index)
+                master.switchIsOn.remove(at:index)
+                master.foodDiaryArrary.remove(at:index)
             }
             
             master.switchIsOn.append(myFoodId)
@@ -125,20 +119,20 @@ class FoodDetailViewController: UIViewController{
             
             
             
-            let cond = "foodDiary_id=\(foodDiaryId!)"
+            let cond = "\(FOODDIARY_ID)=\(foodDiaryId!)"
             var dict = [String:String]()
             
-            dict = ["amount":"\(foodDataArray[1])",
-                    "weight":"\(foodDataArray[2])"]
+            dict = ["\(FOODDIARY_AMOUNT)":"\(foodDataArray[1])",
+                "\(FOODDIARY_WEIGHT)":"\(foodDataArray[2])"]
             
             if let image = selectImage{
                 
                 let selectImageHash  = "food_\(image.hash)"
-                dict["FoodDiary_ImageName"] = "'\(selectImageHash)'"
+                dict[FOODDIARY_IMAGENAME] = "'\(selectImageHash)'"
                 image.writeToFile(imageName: selectImageHash, search: .documentDirectory)
                 
             }
-
+            
             
             master.diaryType = .foodDiary
             master.updataDiary(cond:cond,rowInfo:dict)
@@ -171,8 +165,8 @@ class FoodDetailViewController: UIViewController{
             
         }
         
-        master.updataDiary(cond: "foodDetails_id =\(foodId!) ",
-            rowInfo: ["collection" :"'\(iscollect)'"])
+        master.updataDiary(cond: "\(FOODDETAIL_Id) =\(foodId!) ",
+            rowInfo: ["\(FOODDETAIL_COLLECTION)" :"'\(iscollect)'"])
         
         
         
@@ -201,9 +195,10 @@ class FoodDetailViewController: UIViewController{
         present(picker, animated: true, completion: nil)
         
     }
-   
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0{
+            
             let alertVC = UIAlertController(title:"選擇照片", message:"", preferredStyle:.actionSheet)
             
             let camera = UIAlertAction(title: "拍照", style: .default, handler: { (UIAlertAction) in
@@ -223,7 +218,7 @@ class FoodDetailViewController: UIViewController{
             alertVC.addAction(library)
             alertVC.addAction(cancel)
             present(alertVC, animated: true, completion: nil)
-
+            
         }else if indexPath.section == 1{
             
             correntRow = indexPath.row
@@ -235,36 +230,25 @@ class FoodDetailViewController: UIViewController{
                     numberOfRows = 30
                     numberOfComponents = 2
                     
-                
+                    
                 }else{
                     
                     numberOfRows = 2000
                     numberOfComponents = 1
-                    
-            
                     
                 }
                 
                 if let baginData =  Double(foodDataArray[indexPath.row+1]){
                     setSelectRowOfbegin = baginData
                 }
-                
                 pickerVC.displayPickViewDialog(present: self)
-
+                
             }
         }
     }
     
     
     
-
-    
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     
     
@@ -274,12 +258,11 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as!HeaderTableViewCell
-         headerCell.contentView.layer.cornerRadius = 0
-         headerCell.rightLabel.text = ""
+        headerCell.contentView.layer.cornerRadius = 0
+        headerCell.rightLabel.text = ""
         
         if section == 1{
-            
-           
+        
             headerCell.titleLabel.text = dinnerTime
             headerCell.totalCalorieLebel.text = foodDataArray[0]
             return headerCell
@@ -341,7 +324,7 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
             return 3
             
         }else{
-              return foodTitleArray.count-3
+            return foodTitleArray.count-3
         }
         
     }
@@ -357,8 +340,8 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
             
             if selectImage != nil{
                 
-            cell.selectImageView.image = selectImage
-                
+                cell.selectImageView.image = selectImage
+    
             }
             
             return cell
@@ -381,50 +364,46 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProgressCell") as!DetailProgressCell
                 
                 
-                var total = detailManager.total
+                var total = master.total
                 
                 if total.isNaN{
                     total = 1
                 }
                 
-                
-                let pro = myProgress(progess:Int(ceil((Double(foodDataArray[4])!/total)*100)), color:blue)
-                let pro2 = myProgress(progess:Int(ceil((Double(foodDataArray[5])!/total)*100)), color:seagreen)
-                let pro3 = myProgress(progess:Int(ceil((Double(foodDataArray[8])!/total)*100)), color:coral)
-                
-                
-                
-                cell.circleProgressRate.setTitleLabelText(text:foodDataArray[3], size: 25)
-                cell.circleProgressRate.setSubTitleLabelText(text:"kcal", size: 18)
-                cell.circleProgressRate.setProgress(pro: [pro,pro2,pro3])
-                
-                
-                
-                
-                
-                cell.proteinLabel.text = "蛋白質 " + String(Int(round((Double(foodDataArray[4])!/total)*100))) + "%"
-                cell.fatLabel.text = "脂肪 " + String(Int(round((Double(foodDataArray[5])!/total)*100))) + "%"
-                cell.carbohydrateLabel.text = "碳水化合物 " + String(Int(round((Double(foodDataArray[8])!/total)*100))) + "%"
-                
-                
-                
-                return cell
+                if let data1 = Double(foodDataArray[4]),
+                   let data2 = Double(foodDataArray[5]),
+                   let data3 = Double(foodDataArray[8]) {
+                    
+                    
+                    
+                    let pro = myProgress(progess:(ceil((data1/total)*100)),color:blue)
+                    let pro2 = myProgress(progess:(ceil((data2/total)*100)), color:seagreen)
+                    let pro3 = myProgress(progess:(ceil((data3/total)*100)), color:coral)
+                    
+                    cell.circleProgressRate.setTitleLabelText(text:foodDataArray[3],size:25)
+                    cell.circleProgressRate.setSubTitleLabelText(text:"kcal",size:18)
+                    cell.circleProgressRate.setProgress(pro: [pro,pro2,pro3])
+                    
+                    
+                    cell.proteinLabel.text = "蛋白質 " +  String(format: "%.0f", round((data1/total)*100)) + "%"
+                    cell.fatLabel.text = "脂肪 " + String(format: "%.0f", round((data2/total)*100)) + "%"
+                    cell.carbohydrateLabel.text = "碳水化合物 " +  String(format: "%.0f", round((data3/total)*100)) + "%"
+                }
+                    return cell
             }
-            
-            
             
             
         }else{
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "rightDetailCell")
             var data = foodDataArray[indexPath.row+3]
+            
             if  data == "0.0"{
                 data = "-"
                 
             }
             cell?.detailTextLabel?.text = data+foodUnitArray[indexPath.row+3]
             cell?.textLabel?.text = foodTitleArray[indexPath.row+3]
-            
             
             return cell!
             
@@ -452,14 +431,14 @@ extension FoodDetailViewController:UIImagePickerControllerDelegate,UINavigationC
         }
         
         selectImage = selectImage?.resizeImage(maxLength: 1024)
-
-
+        
+        
         dismiss(animated: true, completion: nil)
         
-    
+        
         
     }
-
+    
 }
 
 //MARK: - PickerViewDelegate
@@ -469,12 +448,14 @@ extension FoodDetailViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double) {
         
-        print(correntRow)
+        
         
         guard var amount = Double(foodDataArray[1]),
               var weight = Double(foodDataArray[2]) else{
                 return
         }
+        
+      
         
         if correntRow == 0{
             
@@ -485,7 +466,7 @@ extension FoodDetailViewController:PickerViewDelegate{
             weight = data
         }
         
-        foodDataArray = detailManager.getFoodDataArray(lastPageVC,
+        foodDataArray = master.getFoodDataArray(lastPageVC,
                                                        foodDiaryId:foodDiaryId,
                                                        foodId:foodId,
                                                        amount:amount,

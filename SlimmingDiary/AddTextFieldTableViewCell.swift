@@ -15,7 +15,7 @@ class AddTextFieldTableViewCell: UITableViewCell{
     override func awakeFromNib() {
        
         super.awakeFromNib()
-        // Initialization code
+        
         rightTextField.delegate = self
     }
 

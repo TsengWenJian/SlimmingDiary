@@ -9,6 +9,26 @@
 import Foundation
 import UIKit
 
+
+let SPORTYDIARY = "SportDiary"
+let SPORTYDIARY_ID = "\(SPORTYDIARY)_Id"
+let SPORTYDIARY_DATE = "\(SPORTYDIARY)_Date"
+let SPORTYDIARY_MINUTE = "\(SPORTYDIARY)_Minute"
+let SPORTYDIARY_DETAILID = "\(SPORTYDIARY)_DetailId"
+let SPORTYDIARY_IMAGENAME = "\(SPORTYDIARY)_ImageName"
+let SPORTYDIARY_CALORIE = "\(SPORTYDIARY)_Calorie"
+
+
+let SPORTDETAIL = "SportDetail"
+let SPORTDETAIL_ID = "\(SPORTDETAIL)_Id"
+let SPORTDETAIL_CLASSIFICATION = "\(SPORTDETAIL)_Classification"
+let SPORTDETAIL_SAMPLENAME = "\(SPORTDETAIL)_SampleName"
+let SPORTDETAIL_EMTS = "\(SPORTDETAIL)_Emts"
+let SPORTDETAIL_COLLECTION = "\(SPORTDETAIL)_Collection"
+
+
+
+
 struct sportDiary{
     
     
@@ -20,8 +40,6 @@ struct sportDiary{
     
     
     init(minute:Int,sportId:Int,calories:Double){
-        
-        
         self.date = CalenderManager.standard.displayDateString()
         self.minute = minute
         self.sportId = sportId
@@ -86,12 +104,36 @@ class SportMaster:DiaryManager{
         
     }
     
-    func removeFoodDiarysAndSwitchIsON(){
+    func removeSportDiarysAndSwitchIsOn(){
         sportDiaryArrary.removeAll()
         switchIsOn.removeAll()
         
     }
     
+    
+    func insertWeightDiary(diary:sportDiary){
+        
+        diaryType = .sportDiary
+        var dict = [SPORTYDIARY_DATE:"'\(diary.date)'",
+            SPORTYDIARY_MINUTE:"'\(diary.minute)'",
+            SPORTYDIARY_DETAILID:"'\(diary.sportId)'",
+            SPORTYDIARY_CALORIE:"'\(diary.calories)'"]
+        
+        if let photo = diary.image{
+            let finalImageName = "sport_\(photo.hash)"
+            photo.writeToFile(imageName:finalImageName, search: .documentDirectory)
+            dict[SPORTYDIARY_IMAGENAME] = "'\(finalImageName)'"
+            
+            
+        }
+        
+        
+        insertDiary(rowInfo:dict)
+
+        
+        
+        
+    }
     
     
     func getSportDetails(_ detailType:SportDetailtype,
@@ -114,11 +156,11 @@ class SportMaster:DiaryManager{
             switch detailType {
                 
             case .diaryData:
-                sportMinute = sport["SportDiary_Minute"] as! Int
-                sportDiaryId = sport["SportDiary_Id"] as! Int
+                sportMinute = sport[SPORTYDIARY_MINUTE] as! Int
+                sportDiaryId = sport[SPORTYDIARY_ID] as! Int
                 
                 if minute == nil{
-                calories = sport["SportDiary_Calorie"] as? Double
+                    calories = sport[SPORTYDIARY_CALORIE] as? Double
                 }
                 
             case .defaultData:
@@ -132,17 +174,17 @@ class SportMaster:DiaryManager{
                 
             }
             
-            
+    
             var detail = sportDetail(diaryId:sportDiaryId,
-                                     detailId:sport["SportDetail_Id"] as! Int,
+                                     detailId:sport[SPORTDETAIL_ID] as! Int,
                                      minute:sportMinute,
-                                     classification: sport["SportDetail_Classification"] as! String,
-                                     sampleName: sport["SportDetail_SampleName"] as! String,
-                                     imageName:sport["SportDiary_ImageName"] as? String,
-                                     collection:sport["SportDetail_Collection"] as? Int,
-                                     emts: sport["SportDetail_Emts"] as! Double)
+                                     classification: sport[SPORTDETAIL_CLASSIFICATION] as! String,
+                                     sampleName: sport[SPORTDETAIL_SAMPLENAME] as! String,
+                                     imageName:sport[SPORTYDIARY_IMAGENAME] as? String,
+                                     collection:sport[SPORTDETAIL_COLLECTION] as? Int,
+                                     emts: sport[SPORTDETAIL_EMTS] as! Double)
             
-     
+            
             if let myCalories = calories{
                 detail.calories = myCalories
             }

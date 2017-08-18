@@ -24,20 +24,19 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
         let url = URL(string: urlString)
         let request = URLRequest(url: url!)
         webView.loadRequest(request)
-        webView.scalesPageToFit = true
+
     
         
         
         
-        
-        
-        
-        
-        
+    
 
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func backBtnAction(_ sender: Any) {
+        self.dismiss(animated: true , completion:nil)
+    }
    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

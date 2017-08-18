@@ -53,7 +53,7 @@ class WeightDiaryViewController: UIViewController{
         weightMaster.diaryType = .weightDiary
         
         for title in sectionTitle{
-            let cond = "Weight_Type = '\(title)' and Weight_Date = '\(CalenderManager.standard.displayDateString())'"
+            let cond = "\(WEIGHTDIARY_TYPE) = '\(title)' and \(WEIGHTDIARY_DATE) = '\(CalenderManager.standard.displayDateString())'"
             let diary = weightMaster.getWeightDiary(cond: cond, order: nil)
             weightDiaryArray.append(diary)
             
@@ -65,10 +65,10 @@ class WeightDiaryViewController: UIViewController{
     
     func setWeightProgress(){
         
-        
         guard let weight = weightMaster.getLasetWeightValue(.weight) else{
             return
         }
+        
         bodyManager.setBodyData(profileManager.userHeight,
                                 weight,
                                 profileManager.userGender)
@@ -97,7 +97,7 @@ class WeightDiaryViewController: UIViewController{
         if bodyFat == bodyFatView.getProgress(){
             return
         }
-    
+        
         
         let bodyType = bodyManager.getBodyFatType(fat: bodyFat)
         bodyFatView.setTitleText(text:bodyType.rawValue)
@@ -108,15 +108,11 @@ class WeightDiaryViewController: UIViewController{
         
     }
     
-
+    
     func sectionIsExpend(sender:UIButton){
         let section = sender.tag - 1000
         
-        if isExpend[section-1]{
-            isExpend[section-1] = false
-        } else {
-            isExpend[section-1] = true
-        }
+        isExpend[section-1] = !isExpend[section-1]
         weightTableView.reloadSections(IndexSet(integer:section), with: .automatic)
     }
     
@@ -125,15 +121,8 @@ class WeightDiaryViewController: UIViewController{
     func plusWeight(sender:UIButton){
         
         let section = sender.tag - 1500
-        var type:WeightDiaryType
+        let type:WeightDiaryType = section == 1 ?.weight:.bodyFat
         
-        
-        if section == 1{
-            type = .weight
-        
-        } else {
-            type = .bodyFat
-        }
         
         let nextPage = storyboard?.instantiateViewController(withIdentifier: "AddWeightViewController") as! AddWeightViewController
         
@@ -219,7 +208,7 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         }
         
         
-        cell.photoImageView.image = UIImage(imageName:diary[indexPath.row].photo,search:.documentDirectory)
+        cell.photoImageView.image = UIImage(imageName:diary[indexPath.row].imageName,search:.documentDirectory)
         
         return cell
     }
@@ -297,7 +286,7 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         
         let nextPage = storyboard?.instantiateViewController(withIdentifier: "ProgressPhotoViewController") as! ProgressPhotoViewController
         
-        if weightDiaryArray[indexPath.section-1][indexPath.row].photo == "No_Image"{
+        if weightDiaryArray[indexPath.section-1][indexPath.row].imageName == "No_Image"{
             
             
             let nextPage = storyboard?.instantiateViewController(withIdentifier: "AddWeightViewController") as! AddWeightViewController
@@ -328,13 +317,14 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            let id = weightDiaryArray[indexPath.section-1][indexPath.row].id
-            let cond =  "Weight_Id = \(id!)"
-            weightMaster.diaryType = .weightDiary
-            weightMaster.deleteDiary(cond: cond)
-            weightDiaryArray[indexPath.section-1].remove(at:indexPath.row)
-            weightMaster.deleteImage(imageName:weightDiaryArray[indexPath.section-1][indexPath.row].photo)
-            weightTableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)
+            if let id = weightDiaryArray[indexPath.section-1][indexPath.row].id{
+                let cond =  "\(WEIGHTDIARY_ID) = \(id)"
+                weightMaster.diaryType = .weightDiary
+                weightMaster.deleteDiary(cond: cond)
+                weightMaster.deleteImage(imageName:weightDiaryArray[indexPath.section-1][indexPath.row].imageName)
+                weightDiaryArray[indexPath.section-1].remove(at:indexPath.row)
+                weightTableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)
+            }
         }
         
         
