@@ -24,14 +24,10 @@ class PrepareRecordViewController: UIViewController {
     
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-         
-        
-        
-        
+    
         calendarPickVC = storyboard!.instantiateViewController(withIdentifier: "CalendarViewController") as!
         CalendarViewController
         calendarPickVC.delegate = self
@@ -48,8 +44,9 @@ class PrepareRecordViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
+    
     
     func checkIsWriteDone()->String?{
         
@@ -96,17 +93,26 @@ class PrepareRecordViewController: UIViewController {
         
     }
     
+
+     deinit{
+        
+         calendarPickVC = nil
+         pickerVC = nil
+    
+    }
+
 }
 //MARK: - UITableViewDelegate,UITableViewDataSource
 extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1{
-            return 1
-        }
-        return titleArray.count
+        
+        return section == 1 ? 1:titleArray.count
+        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -145,19 +151,13 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
             
             
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetail")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetail", for: indexPath)
+            cell.textLabel?.text = titleArray[indexPath.row]
+        
+                cell.detailTextLabel?.text = detailArray[indexPath.row]
+
             
-            cell?.textLabel?.text = titleArray[indexPath.row]
-            
-            
-            if indexPath.row == 2{
-                cell?.detailTextLabel?.text = detailArray[indexPath.row]
-            }else{
-                cell?.detailTextLabel?.text = detailArray[indexPath.row]
-            }
-            
-            
-            return cell!
+            return cell
         }
         
     }
@@ -265,6 +265,7 @@ extension PrepareRecordViewController:UIImagePickerControllerDelegate,UINavigati
     
 }
 extension PrepareRecordViewController:clipImageVCDelegate{
+    
     func clipImageDone(image: UIImage) {
         titleImage.image = image.resizeImage(maxLength:1024)
         checkIsSelectImage = true

@@ -7,21 +7,22 @@
 //
 
 import UIKit
+import Social
 
 
 class ProgressPhotoViewController:UIViewController{
     
-    
+    @IBOutlet weak var imageScrollView: UIScrollView!
     @IBOutlet weak var imageScrollView2: UIScrollView!
+    @IBOutlet weak var photoCollectionView: UICollectionView!
+    @IBOutlet weak var containerLabelView: UIView!
+    @IBOutlet weak var displayImageView2: UIImageView!
+    @IBOutlet weak var displayImageView: UIImageView!
     
     
-    
+    @IBOutlet weak var containerScrollView: UIView!
     @IBOutlet weak var imageScrollView2Trailing: NSLayoutConstraint!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var displayPlayPhoto2: UIImageView!
-    @IBOutlet weak var imageScrollView: UIScrollView!
-    @IBOutlet weak var displayImageView: UIImageView!
-    @IBOutlet weak var photoCollectionView: UICollectionView!
     @IBOutlet weak var kgLabel: UILabel!
     @IBOutlet weak var date2Label: UILabel!
     @IBOutlet weak var kg2Label: UILabel!
@@ -33,6 +34,7 @@ class ProgressPhotoViewController:UIViewController{
     var weightId:Int?
     let weightMaster = WeightMaster.standard
     var weightArray = [WeightDiary]()
+    
     var imageNumber:Int = 0 {
         didSet{
             changeLabelText()
@@ -72,22 +74,22 @@ class ProgressPhotoViewController:UIViewController{
         
         
         
-        imageScrollView.delegate = self
+        
         imageScrollView.tag = 100
         
         
         
         imageScrollView.maximumZoomScale = 3.0
-        imageScrollView.minimumZoomScale = 1.0
+        imageScrollView.minimumZoomScale = 1
         imageScrollView.zoomScale = 1.0
         imageScrollView.contentInset = UIEdgeInsets(top:100,left:0,bottom:100,right: 100)
         
         
         
-        imageScrollView2.delegate = self
+        
         imageScrollView2.tag = 200
         imageScrollView2.maximumZoomScale = 3.0
-        imageScrollView2.minimumZoomScale = 1.0
+        imageScrollView2.minimumZoomScale = 1
         imageScrollView2.zoomScale = 1.0
         imageScrollView2.contentInset = UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100)
         
@@ -113,7 +115,7 @@ class ProgressPhotoViewController:UIViewController{
         
     }
     
-    // photo Collection view contentoffset 
+    // photo Collection view contentoffset
     func setContentOffSet(index:Int){
         let itemWidth = view.frame.width/4
         let offset = -(photoCollectionView.contentInset.left)
@@ -128,7 +130,7 @@ class ProgressPhotoViewController:UIViewController{
         photoCollectionView.isScrollEnabled = false
         photoCollectionView.allowsSelection = false
         
-        navigationItem.rightBarButtonItems?.removeAll()
+        navigationItem.rightBarButtonItems?.remove(at: 0)
         let puse = UIBarButtonItem(barButtonSystemItem: .pause,
                                    target: self,
                                    action:#selector(endTimer))
@@ -166,16 +168,56 @@ class ProgressPhotoViewController:UIViewController{
     func setPlayNavBtn(){
         
         navigationItem.rightBarButtonItems?.removeAll()
+        
+        let  share = UIBarButtonItem(title: "分享", style: .plain, target:self, action: #selector(shareWightImage))
         let  play = UIBarButtonItem(barButtonSystemItem:.play,
                                     target:self,
                                     action:#selector(startTimer))
-        navigationItem.rightBarButtonItem = play
+        navigationItem.rightBarButtonItems = [play,share]
+        
+        
+        
+    }
+    
+    func shareWightImage(){
+        
+        
+        isCompareBtn.isHidden = true
+        self.containerScrollView.alpha = 0.5
+
+        UIView.animate(withDuration: 0.3, animations: {
+         self.containerScrollView.alpha = 1
+
+        }) { (Bool) in
+           
+            
+            let viewSize = CGRect(x:0,
+                            y:0,
+                            width:self.containerScrollView.frame.width*2,
+                            height:self.containerScrollView.frame.height*2)
+            
+            let selectSize = CGSize(width:self.containerScrollView.frame.width*2,
+                                    height:(self.imageScrollView2.frame.height+self.containerLabelView.frame.height*3/4)*2)
+            UIGraphicsBeginImageContext(selectSize)
+            self.containerScrollView.drawHierarchy(in:viewSize, afterScreenUpdates: false)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            
+            UIGraphicsEndImageContext()
+            self.isCompareBtn.isHidden = false
+            
+            if let myImage = image{
+            
+            let activityViewController = UIActivityViewController(activityItems:[myImage], applicationActivities:nil)
+            self.present(activityViewController, animated: true, completion: nil)
+            }
+        }
+
         
     }
     
     
     
-
+    
     
     func changeLabelText(){
         
@@ -189,7 +231,7 @@ class ProgressPhotoViewController:UIViewController{
                 
                 date2Label.text = date
                 kg2Label.text = kg
-                displayPlayPhoto2.image = UIImage(imageName:weightArray[imageNumber].imageName,search:.documentDirectory)
+                displayImageView2.image = UIImage(imageName:weightArray[imageNumber].imageName,search:.documentDirectory)
                 
                 return
             }
@@ -233,7 +275,7 @@ class ProgressPhotoViewController:UIViewController{
         
     }
     
-
+    
 }
 //MARK: -UICollectionViewDelegate,UICollectionViewDataSource
 extension ProgressPhotoViewController:UICollectionViewDelegate,UICollectionViewDataSource{
@@ -289,7 +331,7 @@ extension ProgressPhotoViewController:UIScrollViewDelegate{
         if scrollView.tag == 100 || scrollView.tag == 200{
             
             
-           
+            
             return
         }
         
@@ -313,14 +355,14 @@ extension ProgressPhotoViewController:UIScrollViewDelegate{
     
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-    
+        
         if scrollView.tag == 100 {
             
             return displayImageView
             
         }else if scrollView.tag == 200{
             
-            return displayPlayPhoto2
+            return displayImageView2
         }
         
         return nil

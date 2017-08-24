@@ -9,7 +9,14 @@
 import Foundation
 import UIKit
 
-
+func SHLog<T>(message: T,
+           fileName: String = #file,
+           methodName: String = #function,
+           lineNumber: Int = #line){
+    #if DEBUG
+        print("\((fileName as NSString).pathComponents.last!).\(methodName)[\(lineNumber)]:\(message)")
+    #endif
+}
 
 
 // MARK:- UIView
@@ -24,24 +31,18 @@ extension UIView{
     }
 }
 
-extension Double{
-    
-    func toString()->String{
-        
-        return String(format: "%.1f",self)
-    }
-    
-    
-}
-
 extension Reachability{
     
     func checkInternetFunction() -> Bool {
         if currentReachabilityStatus().rawValue == 0 {
-            print("no internet connected.")
+            SHLog(message:"no internet connected.")
+            
             return false
         }else {
-            print("internet connected successfully.")
+            
+            
+             SHLog(message:"internet connected successfully.")
+            
             return true
         }
     }
@@ -151,7 +152,7 @@ extension UIImage{
         let imageData = UIImageJPEGRepresentation(self,1)
         
         guard let _ = try? imageData?.write(to:fullFileImageName!,options: [.atomic]) else{
-            print("寫入照片失敗")
+            SHLog(message: "寫入照片失敗")
             return
         }
 
@@ -166,7 +167,7 @@ extension Double{
     }
 }
 
-let imageCach = NSCache<AnyObject, AnyObject>()
+let imageCach = NSCache<AnyObject,UIImage>()
 
 extension UIImageView{
     
@@ -185,10 +186,9 @@ extension UIImageView{
         }
         
         
-        if let cachImage = imageCach.object(forKey: url as AnyObject),
-          let image = cachImage as? UIImage{
+        if let cachImage = imageCach.object(forKey: url as AnyObject){
             
-            self.image = image
+            self.image = cachImage
         
             return
         }
@@ -200,16 +200,17 @@ extension UIImageView{
             
             if let err = error{
                 
-                  print(err)
+                  SHLog(message:err)
         return
             }
             
             DispatchQueue.main.async {
                 
-                if let  imageData  = data{
+                if let  imageData  = data,
+                   let turnimage = UIImage(data:imageData){
                     
-                    self.image = UIImage(data:imageData)
-                    imageCach.setObject(self.image as AnyObject,forKey: url as AnyObject)
+                    self.image = turnimage
+                    imageCach.setObject(turnimage,forKey: url as AnyObject)
                     
                 }
         

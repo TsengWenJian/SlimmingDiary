@@ -12,7 +12,7 @@ class ShowRecordsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleImageView:AdvanceImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var userPhotoImageView: UIImageView!
+    @IBOutlet weak var userPhotoImageView:AdvanceImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var detailLabel: UILabel!

@@ -10,6 +10,7 @@
 		641CA951F10DA3AFB5361C68 /* Pods_SlimmingDiary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3968FF6A8C15727B75A5497 /* Pods_SlimmingDiary.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		6C003D871EDDB68300F1E69C /* sqlite3.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6C8C5C941EDBF480001D9A75 /* sqlite3.sqlite */; };
 		6C0280921F1F0C36000C171B /* ProgressPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0280911F1F0C36000C171B /* ProgressPhotoCollectionViewCell.swift */; };
+		6C05619A1F4A68FC002EA075 /* DiaryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0561991F4A68FC002EA075 /* DiaryManager.swift */; };
 		6C08E8581F24BD8100BC6252 /* SetUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C08E8571F24BD8100BC6252 /* SetUpViewController.swift */; };
 		6C08E85A1F24C67300BC6252 /* LoginBtnTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C08E8591F24C67300BC6252 /* LoginBtnTableViewCell.swift */; };
 		6C0927E81F1B00E3004D1C0F /* CalculateBodyInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0927E71F1B00E3004D1C0F /* CalculateBodyInformation.swift */; };
@@ -41,6 +42,7 @@
 		6C2E942D1F301B76004E784E /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E942C1F301B76004E784E /* ShareViewController.swift */; };
 		6C2E94311F30D792004E784E /* ReadCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E94301F30D792004E784E /* ReadCollectionTableViewCell.swift */; };
 		6C2E94331F30D7C8004E784E /* ReadTextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E94321F30D7C8004E784E /* ReadTextViewTableViewCell.swift */; };
+		6C3111A61F4879CB006B2479 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C3111A51F4879CA006B2479 /* Social.framework */; };
 		6C342EB41EF3A4B1008378BF /* BodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C342EB21EF3A4B1008378BF /* BodyTableViewCell.swift */; };
 		6C342EB51EF3A4B1008378BF /* BodyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C342EB31EF3A4B1008378BF /* BodyTableViewCell.xib */; };
 		6C345A311F1A0A6F006CAB9F /* PersonalFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C345A301F1A0A6F006CAB9F /* PersonalFilesViewController.swift */; };
@@ -96,6 +98,7 @@
 		3E4A4797A1939EA08E6E6212 /* Pods-SlimmingDiary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SlimmingDiary.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SlimmingDiary/Pods-SlimmingDiary.debug.xcconfig"; sourceTree = "<group>"; };
 		60F9EBB9AEF3F68EA2322D84 /* Pods-SlimmingDiary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SlimmingDiary.release.xcconfig"; path = "Pods/Target Support Files/Pods-SlimmingDiary/Pods-SlimmingDiary.release.xcconfig"; sourceTree = "<group>"; };
 		6C0280911F1F0C36000C171B /* ProgressPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		6C0561991F4A68FC002EA075 /* DiaryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryManager.swift; sourceTree = "<group>"; };
 		6C08E8571F24BD8100BC6252 /* SetUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpViewController.swift; sourceTree = "<group>"; };
 		6C08E8591F24C67300BC6252 /* LoginBtnTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginBtnTableViewCell.swift; sourceTree = "<group>"; };
 		6C0927E71F1B00E3004D1C0F /* CalculateBodyInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculateBodyInformation.swift; sourceTree = "<group>"; };
@@ -127,6 +130,7 @@
 		6C2E942C1F301B76004E784E /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		6C2E94301F30D792004E784E /* ReadCollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		6C2E94321F30D7C8004E784E /* ReadTextViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTextViewTableViewCell.swift; sourceTree = "<group>"; };
+		6C3111A51F4879CA006B2479 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		6C342EB21EF3A4B1008378BF /* BodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyTableViewCell.swift; sourceTree = "<group>"; };
 		6C342EB31EF3A4B1008378BF /* BodyTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BodyTableViewCell.xib; sourceTree = "<group>"; };
 		6C345A301F1A0A6F006CAB9F /* PersonalFilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalFilesViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +193,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C3111A61F4879CB006B2479 /* Social.framework in Frameworks */,
 				6CE1E3011F3CB26300FFB9DC /* MessageUI.framework in Frameworks */,
 				6C5B0E061EDE868300CF3018 /* libsqlite3.tbd in Frameworks */,
 				641CA951F10DA3AFB5361C68 /* Pods_SlimmingDiary.framework in Frameworks */,
@@ -268,6 +273,7 @@
 				6C1BB3D61F11E1D8001602EF /* RSSParserManager.swift */,
 				6C345A321F1A0AE2006CAB9F /* PersonalFilesManager.swift */,
 				6CD8FA991EDAB43900116E41 /* FoodMaster.swift */,
+				6C0561991F4A68FC002EA075 /* DiaryManager.swift */,
 				6C3607DB1F35B5630025ACBB /* SportMaster.swift */,
 				6C1C7FC81F1E2FEC0091976C /* WeightMaster.swift */,
 				6C8D4CE81EE97C3C00A74FE6 /* CalenderManager.swift */,
@@ -391,6 +397,7 @@
 		6CBA0CE31ED7BC3300122595 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6C3111A51F4879CA006B2479 /* Social.framework */,
 				6CE1E3001F3CB26300FFB9DC /* MessageUI.framework */,
 				6C5B0E051EDE868300CF3018 /* libsqlite3.tbd */,
 				A3968FF6A8C15727B75A5497 /* Pods_SlimmingDiary.framework */,
@@ -616,6 +623,7 @@
 				6C6682BE1F31EA3900DE1B01 /* ClipImageViewController.swift in Sources */,
 				6CE7DBCB1F23771500671169 /* ProfileHeaderTableViewCell.swift in Sources */,
 				6C20D8161EE59B3800738606 /* CalendarCollectionViewCell.swift in Sources */,
+				6C05619A1F4A68FC002EA075 /* DiaryManager.swift in Sources */,
 				6C8D5A3D1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift in Sources */,
 				6C9C47F31F34793C00580DDA /* ShareDiaryManager.swift in Sources */,
 				6CD8FA9A1EDAB43900116E41 /* FoodMaster.swift in Sources */,
@@ -765,6 +773,7 @@
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_LIBTOOLFLAGS = "";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Nick.SlimmingDiary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = SlimmingDiary/BridgeHeader.h;

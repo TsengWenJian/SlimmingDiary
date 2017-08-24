@@ -53,15 +53,12 @@ class EnterInformationViewController: UIViewController {
         
         if manager.isInputDone{
             goToHomePage()
-           
+           return
         }
         
         weightProgress.setSubTitleText(text: "--")
         
 
-        
-        
-    
        datePickerVC = storyboard?.instantiateViewController(withIdentifier:"DatePickerViewController")
             as? DatePickerViewController
         
@@ -74,12 +71,7 @@ class EnterInformationViewController: UIViewController {
         
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        // 有 leak 需要 設 nil
-        datePickerVC = nil
-        pickerVC = nil
-    }
-    
+       
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -94,13 +86,18 @@ class EnterInformationViewController: UIViewController {
         if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "FirstPage") {
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
-            navigationController?.popViewController(animated: false)
+            
         }
     
     }
     
     
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        datePickerVC = nil
+        pickerVC = nil
+        
+    }
     
     
     @IBAction func inputDoneAction(_ sender: Any) {

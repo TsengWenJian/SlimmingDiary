@@ -22,7 +22,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     let manager = ProfileManager.standard
     let serviceManager = DataService.standard
-    
+    let toast  = NickToastUIView()
+
     
     
     
@@ -55,35 +56,27 @@ class LoginViewController: UIViewController {
             return
         }
         
-        let toast  = NickToastUIView(supView:view, type:.logIn)
-          serviceManager.singInWithEmail(email: email, password: password) { (error) in
+        toast.showView(supView:view,type:.logIn)
+        serviceManager.singInWithEmail(email: email, password: password) { (error) in
             
             if let err = error {
-                toast.removefromView()
+                self.toast.removefromView()
                 self.showAlertWithError(message:err.localizedDescription)
                 
                 return
             }
             
-            self.serviceManager.downlondUserDataWithLogin(done: { (dataDict) in
+            self.serviceManager.downlondUserDataWithLogin{ (dataDict) in
                 
                 
                 guard let dict = dataDict else{
                     return
                 }
                 
-                var photoURL:URL?
-                
-                if let imageURLString = dict["imageURL"] as? String{
-                    photoURL = URL(string:imageURLString)
-                    
-                }
-                
-                
                 self.setDataWithUserDefault(name:dict["name"] as? String,
-                                            imageURL:photoURL,toast:toast)
+                                            imageURLStr: dict["imageURL"] as? String)
                 
-            })
+            }
         }
         
     }
@@ -95,33 +88,32 @@ class LoginViewController: UIViewController {
             return
         }
         
-        let toast  = NickToastUIView(supView: view, type: .logIn)
+         toast.showView(supView: view, type: .logIn)
         
         serviceManager.createAccount(name: name, email: email, password: password) { (error) in
             
             
-            
             if let  err = error {
                 
-                toast.removefromView()
+                self.toast.removefromView()
                 self.showAlertWithError(message:err.localizedDescription)
                 return
             }
             
-            self.serviceManager.uploadUserDataToDB(userName: name, imageURL: nil, done: { (error) in
+            self.serviceManager.uploadUserDataToDB(userName: name, imageURL: nil){ (error) in
                 
                 
                 
                 if let err = error{
-                    toast.removefromView()
+                    self.toast.removefromView()
                     self.showAlertWithError(message:err.localizedDescription)
                     
                     return
                     
                 }
                 
-                self.setDataWithUserDefault(name:name,imageURL:nil,toast: toast)
-            })
+                self.setDataWithUserDefault(name:name,imageURLStr:nil)
+            }
             
         }
     }
@@ -133,25 +125,26 @@ class LoginViewController: UIViewController {
             showAlertWithError(message: NO_CONNECTINTENTER)
             return
         }
-
         
         
-        let toast = NickToastUIView(supView: self.view, type: .logIn)
-        serviceManager.longInWithFB(VC: self) { (error) in
+        
+        toast.showView(supView: self.view,type: .logIn)
+        serviceManager.longInWithFB(VC:self) { (error) in
             
             if let err = error{
-                toast.removefromView()
+                self.toast.removefromView()
                 self.showAlertWithError(message: err.localizedDescription)
                 return
             }
             
+            
             let user = self.serviceManager.currentUser
             self.setDataWithUserDefault(name:user?.displayName,
-                                        imageURL:user?.photoURL, toast: toast)
+                                        imageURLStr:user?.photoURL?.absoluteString)
         }
         
     }
-
+    
     
     func showAlertWithError(message:String){
         let alert = UIAlertController(error:message)
@@ -160,41 +153,37 @@ class LoginViewController: UIViewController {
         
     }
     
-    func setDataWithUserDefault(name:String?,imageURL:URL?,toast:NickToastUIView){
+    func setDataWithUserDefault(name:String?,imageURLStr:String?){
         
         
-        
-        //check is real login
         guard let user = serviceManager.currentUser else{
             
             return
         }
-        
         
         self.manager.setUid(user.uid)
         self.manager.setUserName(name)
         self.manager.setUserEmail(user.email)
         self.serviceManager.isLogin = true
         
-        if let url = imageURL {
+        if let url = imageURLStr {
             
             //Save image into caches
             let photoName = "Profile_\(user.uid)"
             self.manager.setPhotName(photoName)
-            serviceManager.downloadImageSaveWithCaches(url:url,imageName:photoName,done: { (error) in
-                
+            serviceManager.downloadImageSaveWithCaches(URLStr:url,imageName:photoName){ (error) in
                 
                 DispatchQueue.main.async {
-                    toast.removefromView()
+                    self.toast.removefromView()
                     self.navigationController?.popViewController(animated: true)
                     
                 }
-            })
+            }
             
         }else{
             
             DispatchQueue.main.async {
-                toast.removefromView()
+                self.toast.removefromView()
                 self.navigationController?.popViewController(animated: true)
                 
             }
@@ -208,7 +197,7 @@ class LoginViewController: UIViewController {
         
         
         guard let email = emailTextField.text,
-            let password = passWordTextFiled.text else{
+              let password = passWordTextFiled.text else{
                 
                 return
         }
@@ -221,21 +210,22 @@ class LoginViewController: UIViewController {
             
         }else{
             
-            let name = nameTextField.text
             
+
             
-            if   name == "" ||  name == nil{
-                showAlertWithError(message:"The name is empty")
+            if let myName = nameTextField.text,
+                  !myName.isEmpty {
                 
-                return
+                register(name:myName,email:email,password:password)
+            
+            }else{
+                
+                
+                showAlertWithError(message:"The name is empty")
+
             }
             
             
-            guard let myName = name else{
-                return
-            }
-        
-            register(name:myName,email:email,password:password)
             
         }
     }
@@ -249,7 +239,7 @@ class LoginViewController: UIViewController {
         if sender.selectedSegmentIndex == 1{
             
             isHidden = true
-            nameTop = -nameTextField.frame.height - 21
+            nameTop = -nameTextField.frame.height - 20
             nameTextField.alpha = 0
             fbLoginBtn.isHidden = false
             

@@ -16,7 +16,7 @@ class AddFoodViewController: UIViewController {
     var setSelectRowOfbegin:Double = 0
     var currentTouchRow = 0
     var pickerVC:PickerViewController!
-   let sectionTitle = ["食物","營養"]
+    let sectionTitle = ["食物","營養"]
     
     @IBOutlet weak var addFoodTableView: UITableView!
     
@@ -40,6 +40,12 @@ class AddFoodViewController: UIViewController {
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        pickerVC = nil
+
+    }
+    
+        
     
     
     override func didReceiveMemoryWarning() {
@@ -235,6 +241,8 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
         master.foodSelect[indexPathRow] = sender.text
         
     }
+    
+    
     
     
     

@@ -17,6 +17,7 @@ class FoodDiaryViewController: UIViewController{
     
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,17 +32,18 @@ class FoodDiaryViewController: UIViewController{
 
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshSectionArray), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
+        
     
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
-        refreshSectionArray()
         
-
+              refreshSectionArray()
+    
     }
     
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
@@ -50,6 +52,7 @@ class FoodDiaryViewController: UIViewController{
     
     func refreshSectionArray(){
         
+        
         sectionArray.removeAll()
         
         let displayDate =  CalenderManager.standard.displayDateString()
@@ -57,8 +60,6 @@ class FoodDiaryViewController: UIViewController{
        
         master.diaryType = .foodDiaryAndDetail
         for i in 0..<dinnerTime.count{
-           
-
             let cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DINNERTIME) = '\(dinnerTime[i])'and \(FOODDIARY_DATE) = '\(displayDate)'"
             let dinnerDiary = master.getFoodDetails(.diaryData,amount:nil,weight:nil,cond:cond,order: nil)
             sectionArray.append(dinnerDiary)
@@ -173,11 +174,13 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let id = sectionArray[indexPath.section][indexPath.row].foodDiaryId
-            let cond =  "\(FOODDIARY_ID) = \(id)"
+            
+            
+            let rowRecord = sectionArray[indexPath.section][indexPath.row]
+            let cond =  "\(FOODDIARY_ID) = \(rowRecord.foodDiaryId)"
             master.diaryType = .foodDiary
             master.deleteDiary(cond: cond)
-            master.deleteImage(imageName:sectionArray[indexPath.section][indexPath.row].imageName)
+            master.deleteImage(imageName:rowRecord.imageName)
             sectionArray[indexPath.section].remove(at:indexPath.row)
            
 

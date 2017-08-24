@@ -12,12 +12,12 @@ class FoodDetailViewController: UIViewController{
     
     @IBOutlet weak var collectBtn: UIButton!
     
-    var pickerVC = PickerViewController()
+    var pickerVC:PickerViewController?
     var lastPageVC:ActionType = .insert
     var foodTitleArray = [String]()
     var foodDataArray = [String]()
     var foodUnitArray = [String]()
-    var foodDiaryId:Int?
+    var foodDiaryId:Int = 0
     var foodId:Int?
     var dinnerTime:String?
     var numberOfRows:Int = 0
@@ -25,10 +25,9 @@ class FoodDetailViewController: UIViewController{
     var setSelectRowOfbegin:Double = 0
     var correntRow:Int = 0
     var selectImage:UIImage?{
-        didSet{
-            foodDetailsTableView.reloadData()
-        }
+        didSet{ foodDetailsTableView.reloadData() }
     }
+    
     let master = FoodMaster.standard
     
     
@@ -41,13 +40,13 @@ class FoodDetailViewController: UIViewController{
         
         super.viewDidLoad()
         
-       
+        
         
         foodDataArray = master.getFoodDataArray(lastPageVC,
-                                                       foodDiaryId:foodDiaryId,
-                                                       foodId:foodId,
-                                                       amount:nil,
-                                                       weight:nil)
+                                                foodDiaryId:foodDiaryId,
+                                                foodId:foodId,
+                                                amount:nil,
+                                                weight:nil)
         
         
         foodTitleArray = master.foodDetailTitles
@@ -71,9 +70,8 @@ class FoodDetailViewController: UIViewController{
         foodDetailsTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
         
         
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as!
-        PickerViewController
-        pickerVC.delegate = self
+        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as? PickerViewController
+        pickerVC?.delegate = self
         
     }
     
@@ -81,11 +79,16 @@ class FoodDetailViewController: UIViewController{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        pickerVC = nil
+    }
+    
+    
     
     
     func saveFood(){
-    
+        
         if lastPageVC == ActionType.insert{
             
             guard let myAmount = Double(foodDataArray[1]),
@@ -95,6 +98,8 @@ class FoodDetailViewController: UIViewController{
                     
                     return
             }
+            
+            
             
             var diary = foodDiary(dinnerTime:myDinnerTime,
                                   amount:myAmount,
@@ -119,7 +124,7 @@ class FoodDetailViewController: UIViewController{
             
             
             
-            let cond = "\(FOODDIARY_ID)=\(foodDiaryId!)"
+            let cond = "\(FOODDIARY_ID)=\(foodDiaryId)"
             var dict = [String:String]()
             
             dict = ["\(FOODDIARY_AMOUNT)":"\(foodDataArray[1])",
@@ -241,7 +246,7 @@ class FoodDetailViewController: UIViewController{
                 if let baginData =  Double(foodDataArray[indexPath.row+1]){
                     setSelectRowOfbegin = baginData
                 }
-                pickerVC.displayPickViewDialog(present: self)
+                pickerVC?.displayPickViewDialog(present: self)
                 
             }
         }
@@ -262,7 +267,7 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
         headerCell.rightLabel.text = ""
         
         if section == 1{
-        
+            
             headerCell.titleLabel.text = dinnerTime
             headerCell.totalCalorieLebel.text = foodDataArray[0]
             return headerCell
@@ -341,7 +346,7 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
             if selectImage != nil{
                 
                 cell.selectImageView.image = selectImage
-    
+                
             }
             
             return cell
@@ -371,8 +376,8 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                 }
                 
                 if let data1 = Double(foodDataArray[4]),
-                   let data2 = Double(foodDataArray[5]),
-                   let data3 = Double(foodDataArray[8]) {
+                    let data2 = Double(foodDataArray[5]),
+                    let data3 = Double(foodDataArray[8]) {
                     
                     
                     
@@ -389,7 +394,7 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                     cell.fatLabel.text = "脂肪 " + String(format: "%.0f", round((data2/total)*100)) + "%"
                     cell.carbohydrateLabel.text = "碳水化合物 " +  String(format: "%.0f", round((data3/total)*100)) + "%"
                 }
-                    return cell
+                return cell
             }
             
             
@@ -446,31 +451,33 @@ extension FoodDetailViewController:PickerViewDelegate{
     
     
     
+    
     func getSelectRow(data:Double) {
-        
-        
-        
-        guard var amount = Double(foodDataArray[1]),
-              var weight = Double(foodDataArray[2]) else{
-                return
-        }
-        
-      
         
         if correntRow == 0{
             
-            amount = data
+            foodDataArray[1] = "\(data)"
             
         }else {
             
-            weight = data
+            foodDataArray[2] = "\(data)"
+            
         }
         
+        
+        guard let amount = Double(foodDataArray[1]),
+              let weight = Double(foodDataArray[2]) else{
+                return
+        }
+        
+        
+        
+        
         foodDataArray = master.getFoodDataArray(lastPageVC,
-                                                       foodDiaryId:foodDiaryId,
-                                                       foodId:foodId,
-                                                       amount:amount,
-                                                       weight:weight)
+                                                foodDiaryId:foodDiaryId,
+                                                foodId:foodId,
+                                                amount:amount,
+                                                weight:weight)
         foodDetailsTableView.reloadData()
     }
     

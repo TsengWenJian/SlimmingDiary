@@ -19,7 +19,7 @@ class SportDetailViewController: UIViewController {
     @IBOutlet weak var sampleNameLabel: UILabel!
     
     var pickerVC:PickerViewController?
-    var lastPageVC:ActionType = .insert
+    var actionType:ActionType = .insert
     var numberOfRows:Int = 200
     var numberOfComponents:Int = 1
     var setSelectRowOfbegin:Double = 30
@@ -38,15 +38,13 @@ class SportDetailViewController: UIViewController {
                     return
                 }
                 
-                
-                
-                self.calorieLabel.text = "消耗  \(myDetail.calories.toString()) 卡"
+                self.calorieLabel.text = "消耗  \(myDetail.calories.roundTo(places: 1)) 卡"
                 self.selectMinuteBtn.setTitle("\(myDetail.minute) 分鐘", for: .normal)
                 self.sampleNameLabel.text = myDetail.sampleName
                 
-                if self.detail?.imageName != nil && self.lastPageVC == .update{
-                    
-                    self.imageView.image = UIImage(imageName:myDetail.imageName, search: .documentDirectory)
+                if self.detail?.imageName != nil,
+                   self.actionType == .update{
+                   self.imageView.image = UIImage(imageName:myDetail.imageName, search: .documentDirectory)
                     
                 }
             }
@@ -60,8 +58,7 @@ class SportDetailViewController: UIViewController {
         
         
         calorieLabel.setShadowView(0,0.1,CGSize.zero)
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController")
-            as? PickerViewController
+        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as? PickerViewController
         pickerVC?.delegate = self
         
         let insert = UIBarButtonItem(title:"新增", style: .plain, target: self, action:#selector(insertSport))
@@ -74,11 +71,9 @@ class SportDetailViewController: UIViewController {
         }
  
        
-         navigationItem.rightBarButtonItem?.title = lastPageVC.rawValue
-         navigationItem.title = "\(lastPageVC.rawValue)運動"
-        
-        
-        
+         navigationItem.rightBarButtonItem?.title = actionType.rawValue
+         navigationItem.title = "\(actionType.rawValue)運動"
+    
         
     }
     
@@ -94,13 +89,15 @@ class SportDetailViewController: UIViewController {
             return
         }
         
-        if lastPageVC == .insert{
+        if actionType == .insert{
             
            
             
             var diary = sportDiary(minute: myDetail.minute,
                                    sportId:myDetail.detailId,
                                    calories: myDetail.calories)
+            
+            
             diary.image = selectImage?.resizeImage(maxLength:1024)
             
             
@@ -193,12 +190,18 @@ class SportDetailViewController: UIViewController {
             collectionBtn.isSelected = true
             
         }
-        
-       master.updataDiary(cond: "\(SPORTYDIARY_DETAILID) = '\(myDetail.detailId)' ",
+       master.diaryType = .sportDetail
+       master.updataDiary(cond: "\(SPORTDETAIL_ID) = '\(myDetail.detailId)' ",
        rowInfo: [SPORTDETAIL_COLLECTION :"'\(iscollect)'"])
         
     
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        pickerVC = nil
+        
+    }
+
     
     
     @IBAction func minuteBtnAction(_ sender: Any) {
@@ -223,8 +226,6 @@ class SportDetailViewController: UIViewController {
         
         
         let cancel = UIAlertAction(title: "取消", style:.cancel, handler:nil)
-        
-        
         alertVC.addAction(camera)
         alertVC.addAction(library)
         alertVC.addAction(cancel)
@@ -272,11 +273,11 @@ extension SportDetailViewController:PickerViewDelegate{
         }
         detail = sportDetail(diaryId:myDetail.diaryId,
                              detailId:myDetail.detailId,
-                             minute: Int(data),
+                             minute:Int(data),
                              classification:myDetail.classification,
-                             sampleName: myDetail.sampleName,
-                             imageName: myDetail.imageName,
-                             collection: myDetail.collection,
+                             sampleName:myDetail.sampleName,
+                             imageName:myDetail.imageName,
+                             collection:myDetail.collection,
                              emts: myDetail.emts)
         
         

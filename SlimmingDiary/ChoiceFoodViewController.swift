@@ -32,11 +32,11 @@ class ChoiceFoodViewController: UIViewController{
     
     // when actionType is update use
     typealias selectDone = (Bool)->()
-    var selectFoodDone:selectDone?
+    var selectItemsDone:selectDone?
     
     
     
-    var lastPageVC:ActionType?
+    var actionType:ActionType?
     var diaryType:DiaryImageType = .food
     var dinnerTime:String?
     
@@ -73,6 +73,7 @@ class ChoiceFoodViewController: UIViewController{
                 cond = diaryType == .food ? "\(FOODDETAIL_COLLECTION) = '1'":"\(SPORTDETAIL_COLLECTION) = '1'"
                 
             case 1:
+                
                 foodMaster.diaryType = .foodDetail
                 sportMaster.diaryType = .sportDetail
                 addCustomBtn.isHidden = false
@@ -113,6 +114,7 @@ class ChoiceFoodViewController: UIViewController{
                 
                 
             }
+            
             if currentButton < 3{
                 if diaryType == .food{
                     
@@ -140,8 +142,6 @@ class ChoiceFoodViewController: UIViewController{
         
         
         
-        foodMaster.removeFoodDiarysAndSwitch()
-        sportMaster.removeSportDiarysAndSwitchIsOn()
         
         navigationItem.title = diaryType == .food ? "搜尋食物":"搜尋運動"
         
@@ -260,15 +260,21 @@ class ChoiceFoodViewController: UIViewController{
     }
     
     
-    
+    deinit {
+        
+        
+        foodMaster.removeFoodDiarysAndSwitch()
+        sportMaster.removeSportDiarysAndSwitchIsOn()
+
+    }
     
     func insertDiary(){
         
         
-        if lastPageVC == .update{
+        if actionType == .update{
             
             
-            selectFoodDone!(true)
+            selectItemsDone!(true)
             
             
             
@@ -482,7 +488,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             
             let nextpage = storyboard?.instantiateViewController(withIdentifier: "SportDetailViewController") as! SportDetailViewController
             
-            nextpage.lastPageVC = .insert
+            nextpage.actionType = .insert
             
             nextpage.detail = sportItemsArray[indexPath.row]
             navigationController?.pushViewController(nextpage, animated: true)

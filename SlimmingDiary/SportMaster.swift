@@ -96,13 +96,7 @@ class SportMaster:DiaryManager{
     
     
     
-    enum SportDetailtype {
-        
-        case diaryData
-        case defaultData
-        
-        
-    }
+   
     
     func removeSportDiarysAndSwitchIsOn(){
         sportDiaryArrary.removeAll()
@@ -136,7 +130,7 @@ class SportMaster:DiaryManager{
     }
     
     
-    func getSportDetails(_ detailType:SportDetailtype,
+    func getSportDetails(_ detailType:DetailType,
                          minute:Int?,
                          cond:String?,
                          order:String?)->[sportDetail]{

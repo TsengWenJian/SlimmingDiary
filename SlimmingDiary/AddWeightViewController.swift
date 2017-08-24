@@ -24,7 +24,7 @@ class AddWeightViewController: UIViewController{
     
     
     var titleArray = ["體重","進展照片"]
-    var image:UIImage?
+    var selectImage:UIImage?
     var weight:Double = 0
     var actionType:ActionType = .insert
     var weightId:Int?
@@ -70,7 +70,7 @@ class AddWeightViewController: UIViewController{
         
         var imageName:String?
         
-        if let myImage = image{
+        if let myImage = selectImage{
             
             
             let hashString = "WeightProgress_\(myImage.hash)"
@@ -157,17 +157,17 @@ extension AddWeightViewController:UIImagePickerControllerDelegate,UINavigationCo
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        image = UIImage()
+       
         
         if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage{
-            image = photo
+            selectImage = photo
             
         }
         if let myImage = info[UIImagePickerControllerEditedImage] as? UIImage {
-            image = myImage
+            selectImage = myImage
         }
-        
-        photoImageView.image = image?.resizeImage(maxLength:1024)
+        selectImage = selectImage?.resizeImage(maxLength: 1024)
+        photoImageView.image = selectImage
         dismiss(animated: true, completion: nil)
         
     }

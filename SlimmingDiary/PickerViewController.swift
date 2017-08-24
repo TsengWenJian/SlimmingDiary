@@ -42,6 +42,9 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         
         
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+          hideDialog()
+    }
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,13 +71,12 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         }
         
     }
-    
-    
+        
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
     }
-    
+   
     
     func displayPickViewDialog(present:UIViewController){
         present.addChildViewController(self)
@@ -89,7 +91,11 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         
     }
     
+    
+    
     @IBAction func comfirmButton(_ sender: Any) {
+        
+        
         
         didSelectRowNumber = interger+point
         delegate?.getSelectRow(data:didSelectRowNumber.roundTo(places: 1))

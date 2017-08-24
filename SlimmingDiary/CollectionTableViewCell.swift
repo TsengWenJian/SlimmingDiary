@@ -17,25 +17,29 @@ enum DiaryImageType:String{
 
 class CollectionTableViewCell:UITableViewCell{
     
-    
-    
-    
-    
+
     @IBOutlet weak var editBtn: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var isEdit = false
+    var isEdit = false {
+        didSet{
+            
+            let btnTitle = isEdit ?"Done":"Edit"
+            editBtn.setTitle(btnTitle, for: .normal)
+            
+        }
+    }
     var currentTapItem = 0
     var VC:MakeShareDiaryTableViewController?
     var diaryImageType:DiaryImageType = .food
     
-    var allData = OneDiaryRecord(food:nil,sport:nil,text:nil, date: ""){
+    var allDiarys = OneDiaryRecord(date:""){
         
         didSet{
             
-            if let mydata = diaryImageType == .food ? allData.food:allData.sport {
+            if let mydata = diaryImageType == .food ? allDiarys.food:allDiarys.sport {
                 
                 data = mydata
                 
@@ -49,10 +53,10 @@ class CollectionTableViewCell:UITableViewCell{
             
             if diaryImageType == .food{
                 
-                allData.food = data
+                allDiarys.food = data
             }else{
                 
-                allData.sport = data
+                allDiarys.sport = data
             }
             
             
@@ -179,6 +183,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InTableCollectionViewCell",for: indexPath) as! InTableCollectionViewCell
         
+      
         
         if indexPath.section == 0{
             
@@ -263,16 +268,18 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
             
             let nextPage = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChoiceFoodViewController") as! ChoiceFoodViewController
             
-            nextPage.lastPageVC = .update
+            nextPage.actionType = .update
             nextPage.diaryType = diaryImageType
             nextPage.dinnerTime = ""
             
             
-            nextPage.selectFoodDone = {(done)->()in
+            nextPage.selectItemsDone = {(done)->()in
+                
                 
                 if self.diaryImageType == .food{
                     
                     for i in FoodMaster.standard.foodDiaryArrary{
+                        
                         let detail = FoodMaster.standard.getFoodDataArray(.insert,
                                                                           foodDiaryId:nil,
                                                                           foodId:i.foodId,
@@ -292,12 +299,12 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
                     for i in SportMaster.standard.sportDiaryArrary{
                         
                         
-                        SportMaster.standard.diaryType = .sportDiaryAndDetail
-                        let cond = "Sport_Diary.SportDiary_DetailId=SportDetail_Id"
+                        SportMaster.standard.diaryType = .sportDetail
+                        let cond = "\(SPORTDETAIL_ID)=\(i.sportId)"
                         
                         let detail = SportMaster.standard.getSportDetails(.defaultData,
                                                                           minute:i.minute,
-                                                                          cond: cond,
+                                                                          cond:cond,
                                                                           order:nil).first
                         
                         

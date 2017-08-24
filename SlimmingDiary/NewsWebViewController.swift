@@ -13,12 +13,31 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
     
     var newsLink:String? = nil
     @IBOutlet weak var webView: UIWebView!
+    
+    
+    
     override func viewDidLoad() {
       
         super.viewDidLoad()
         
-        guard let urlString = newsLink else{
+        guard let urlString = newsLink,
+              let reach = Reachability(hostName: urlString)else{
             return
+        }
+        
+       
+        
+        if !reach.checkInternetFunction(){
+            
+            DispatchQueue.main.async {
+                
+                let alert = UIAlertController(error:NO_CONNECTINTENTER)
+                self.present(alert, animated: true, completion: nil)
+                
+            }
+            
+            return
+            
         }
         
         let url = URL(string: urlString)
@@ -26,9 +45,6 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
         webView.loadRequest(request)
 
     
-        
-        
-        
     
 
         // Do any additional setup after loading the view.

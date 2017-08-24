@@ -23,6 +23,11 @@ class OneDiaryRecord:NSObject{
         self.text = text
         self.date = date
     }
+    
+    convenience init(date:String) {
+        self.init(food: nil, sport: nil, text: nil, date:date)
+        
+    }
 }
 
 
@@ -47,14 +52,14 @@ class DiaryItem {
 
 class ShareDiary:NSObject {
     
-    var diaryId:String?
-    var title:String?
-    var titleImageURL:String?
-    var userId:String?
-    var beginDate:String?
-    var timestamp:NSNumber?
-    var day:NSNumber?
-    var open:String?
+    var diaryId = String()
+    var title = String()
+    var titleImageURL = String()
+    var userId = String()
+    var beginDate = String()
+    var timestamp = NSNumber()
+    var day = NSNumber()
+    var open = String()
     
     }
 
@@ -134,7 +139,10 @@ class shareDiaryManager {
                 let foodItems = diary["foodItmes"] as?[[String:String]]
                 let sportItems = diary["sportItems"] as?[[String:String]]
                 let text = diary["text"] as? String
-                guard let date = diary["date"] as? String else{return}
+                
+                guard let date = diary["date"] as? String else{
+                    return
+                }
                 
                 let da = OneDiaryRecord(food:self.dictArrayTurnDiaryItem(dict: foodItems),
                                         sport:self.dictArrayTurnDiaryItem(dict: sportItems),
@@ -156,6 +164,55 @@ class shareDiaryManager {
         
         
     }
+    
+    
+    func itemsTurnDict(items:[DiaryItem]?)->[[String:String]]{
+        
+        var recordItems = [[String:String]]()
+        
+        if let myItems = items{
+            
+            for item in myItems {
+                
+                var dit = [String:String]()
+                dit["title"] = item.title
+                dit["detail"] = item.detail
+                dit["imageURL"] = item.imageURL
+                recordItems.append(dit)
+            }
+            
+        }
+        return recordItems
+        
+    }
+    
+    
+    func diarysTurnDict(day:OneDiaryRecord)->[String:AnyObject]?{
+        
+        
+        let foodItems = itemsTurnDict(items:day.food)
+        
+        let sportItems = itemsTurnDict(items:day.sport)
+        
+        
+        let  text = day.text == "" ? nil: day.text
+        let dict = ["foodItmes":foodItems,
+                    "sportItems":sportItems,
+                    "text":text,
+                    "date":day.date] as [String : Any?]
+        
+        
+        if text == nil,
+           foodItems.count == 0,
+           sportItems.count == 0{
+            
+            return nil
+        }
+        
+        return dict as [String : AnyObject]
+        
+    }
+
     
     
     

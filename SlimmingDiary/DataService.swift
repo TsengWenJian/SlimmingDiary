@@ -44,10 +44,10 @@ class DataService {
         
         
         didSet{
-        
+            
             NotificationCenter.default.post(name:NSNotification.Name(rawValue: "loginStatus"),
                                             object: nil)
-          }
+        }
     }
     
     var userUid:String? {
@@ -133,12 +133,13 @@ class DataService {
         
         let fbLoginManager = FBSDKLoginManager()
         
-        fbLoginManager.logIn(withReadPermissions: ["public_profile", "email"], from: VC) { (result, error) in
+        fbLoginManager.logIn(withReadPermissions: ["public_profile", "email"], from: VC) { (result, fbErr) in
             
             
-            if let err = error {
-                print(error.debugDescription)
-                done(err)
+            
+            if let myFbErr = fbErr {
+                
+                done(myFbErr)
                 
                 return
             }
@@ -155,35 +156,35 @@ class DataService {
             
             
             
-            // Perform login by calling Firebase APIs
-            self.singInWithCredential(cred:credential, done: { (error) in
+            
+            Auth.auth().signIn(with:credential, completion: { (user, signErr) in
                 
-                
-                if let  err = error {
-                    print(err)
-                    done(err)
-                    return
+                if let mySignErr = signErr{
+                       done(mySignErr)
                 }
                 
                 
+                
+
                 let user = self.currentUser
-                let userPhotoURL = user?.photoURL
-                self.uploadUserDataToDB(userName:user?.displayName,
-                                        imageURL:userPhotoURL?.absoluteString,
-                                        done: { (error) in
-                                            
-                                            if let  err = error {
-                                                
-                                                done(err)
-                                                
-                                                return
-                                            }
-                                            
-                                            done(nil)
-                })
+                let userPhotoURLStr = user?.photoURL?.absoluteString
+                
+                self.uploadUserDataToDB(userName:user?.displayName,imageURL:userPhotoURLStr){ (uploadErr) in
+                    
+                    if let  myUploadErr = uploadErr {
+                        
+                        done(myUploadErr)
+
+                    }
+                    
+                    done(nil)
+                }
+                
+                
             })
             
         }
+        
     }
     
     
@@ -209,20 +210,6 @@ class DataService {
         })
     }
     
-    func singInWithCredential(cred:AuthCredential,done: @escaping Done){
-        
-        Auth.auth().signIn(with:cred, completion: { (user, error) in
-            
-            if error != nil{
-                print(error.debugDescription)
-            }
-            done(error)
-            
-        })
-        
-        
-    }
-
     
     func uploadUserDataToDB(userName:String?,imageURL:String?,done:@escaping Done){
         
@@ -268,8 +255,10 @@ class DataService {
         guard let uid = userUid else{
             return
         }
+        let time = Date().timeIntervalSince1970
+        let finalImageName = "\(Int(time))_\(uid)"
         
-        storageProfileImageURL.child("\(uid).jpg").putData(data, metadata: nil) { (storageMetadata, error) in
+        storageProfileImageURL.child("\(finalImageName).jpg").putData(data, metadata: nil) { (storageMetadata, error) in
             
             
             if error != nil{
@@ -280,20 +269,22 @@ class DataService {
         }
     }
     
-    func downloadImageSaveWithCaches(url:URL,imageName:String,done: @escaping Done){
+    func downloadImageSaveWithCaches(URLStr:String,imageName:String,done: @escaping Done){
         
         let cachesURL = FileManager.default.urls(for:.cachesDirectory, in: .userDomainMask).first
         
-        guard let fullFileImageName = cachesURL?.appendingPathComponent(imageName) else{
-            print("create ImageName URL error")
-            return
+        guard let fullFileImageName = cachesURL?.appendingPathComponent(imageName),
+            let URL = URL(string: URLStr) else{
+                
+                print("create ImageName URL error")
+                return
         }
         
         let config = URLSessionConfiguration.ephemeral
-        let task = URLSession(configuration: config).dataTask(with:url) { (data, response, error) in
+        let task = URLSession(configuration: config).dataTask(with:URL) { (data, response, error) in
             
             if error != nil{
-                 done(error)
+                done(error)
                 return
             }
             

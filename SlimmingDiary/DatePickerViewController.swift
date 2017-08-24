@@ -27,6 +27,10 @@ class DatePickerViewController: UIViewController {
         
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        hideDialog()
+    }
+    
     func displayPickViewDialog(present:UIViewController){
         present.addChildViewController(self)
         present.view.addSubview(self.view)

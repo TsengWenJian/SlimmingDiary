@@ -46,7 +46,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         
     }
-    
+   
     
     
     @IBAction func swipeNextMonthAction(_ sender:UIButton) {
@@ -105,12 +105,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         transition.subtype = transitionForm
         calendarCollectionView.layer.add(transition, forKey:nil)
         
-//        let transitionLabel = CATransition()
-//        transitionLabel.duration = 0.4
-//        transitionLabel.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//        transitionLabel.type = "push"
-//        transitionLabel.subtype = transitionForm
-//        titleDate.layer.add(transitionLabel, forKey:nil)
+
         
     }
     @IBAction func hiddenBtn(_ sender: Any) {

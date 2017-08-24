@@ -19,7 +19,7 @@ enum ToastType:String {
 @IBDesignable class NickToastUIView: UIView {
     
     var active:UIActivityIndicatorView?
-    var supUIView:UIView?
+    var toastView = UIView()
     
     
     
@@ -36,18 +36,19 @@ enum ToastType:String {
     }
     
     
-    init(supView:UIView,type:ToastType) {
-        super.init(frame: supView.frame)
+    func showView(supView:UIView,type:ToastType) {
         
+        
+        self.frame = supView.frame
         supView.addSubview(self)
         
         
-        //        UIApplication.shared.beginIgnoringInteractionEvents()
-        
+        // UIApplication.shared.beginIgnoringInteractionEvents()
+         self.alpha = 1
         
         self.backgroundColor = UIColor(red:0, green: 0, blue: 0, alpha:0.5)
         
-        let toastView = UIView(frame: CGRect(x:0, y:0, width:140, height: 140))
+        toastView = UIView(frame: CGRect(x:0, y:0, width:140, height: 140))
         toastView.center = CGPoint(x:supView.bounds.midX, y:supView.bounds.midY-30)
         
         toastView.backgroundColor = UIColor(red:0.99, green: 0.99, blue: 0.99, alpha: 0.99)
@@ -79,6 +80,8 @@ enum ToastType:String {
             removefromView()
             
         }
+ 
+        
     }
     
     
@@ -87,22 +90,11 @@ enum ToastType:String {
         //UIApplication.shared.endIgnoringInteractionEvents()
         
         active = nil
+        toastView.removeFromSuperview()
+        self.removeFromSuperview()
         
-        UIView.animate(withDuration:0.3,delay:0, options: [.curveEaseInOut], animations: {
-            
-            self.alpha = 0
-            self.backgroundColor = UIColor.white
-            
-        }) { (done) in
-            if done{
-                
-                self.removeFromSuperview()
-            }
-        }
         
+
         
     }
-    
-    
-    
 }

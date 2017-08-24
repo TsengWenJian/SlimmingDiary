@@ -13,8 +13,10 @@ class SpotsDiaryViewController:UIViewController{
     
     var isExpend:Bool = false
     var sportItems = [sportDetail](){
+        
         didSet{spotsDiaryTableView.reloadData()}
     }
+    
     let sportMaster = SportMaster.standard
     
     
@@ -50,7 +52,7 @@ class SpotsDiaryViewController:UIViewController{
         sportMaster.diaryType = .sportDiaryAndDetail
         let cond = "Sport_Diary.\(SPORTYDIARY_DETAILID)=\(SPORTDETAIL_ID) and \(SPORTYDIARY_DATE) = '\(displayDate)'"
         
-        let items = sportMaster.getSportDetails(.diaryData, minute: nil, cond: cond, order: nil)
+        let items = sportMaster.getSportDetails(.diaryData,minute:nil,cond:cond,order: nil)
         sportItems = items
         
     
@@ -67,7 +69,6 @@ class SpotsDiaryViewController:UIViewController{
         
         
         let nextPage = storyboard?.instantiateViewController(withIdentifier: "ChoiceFoodViewController") as! ChoiceFoodViewController
-        nextPage.dinnerTime = ""
         nextPage.diaryType = .sport
         navigationController?.pushViewController(nextPage,animated: true)
         
@@ -168,7 +169,7 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let nextPage = storyboard?.instantiateViewController(withIdentifier:"SportDetailViewController") as! SportDetailViewController
         nextPage.detail = sportItems[indexPath.row]
-        nextPage.lastPageVC = .update
+        nextPage.actionType = .update
         navigationController?.pushViewController(nextPage, animated: true)
         
     }
@@ -180,11 +181,11 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         if editingStyle == .delete {
             
             
-            let id = sportItems[indexPath.row].diaryId
-            let cond =  "\(SPORTYDIARY_ID) = \(id)"
+            let rowItem = sportItems[indexPath.row]
+            let cond =  "\(SPORTYDIARY_ID) = \(rowItem.diaryId)"
             sportMaster.diaryType = .sportDiary
             sportMaster.deleteDiary(cond: cond)
-            sportMaster.deleteImage(imageName:sportItems[indexPath.row].imageName)
+            sportMaster.deleteImage(imageName:rowItem.imageName)
             sportItems.remove(at:indexPath.row)
             
             

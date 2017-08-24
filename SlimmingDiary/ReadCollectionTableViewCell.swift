@@ -100,19 +100,26 @@ extension ReadCollectionTableViewCell: UICollectionViewDataSource,UICollectionVi
        
         
        let filterData =  data.filter { (item) -> Bool in 
-            
+        
+        
            if item.imageURL != nil {
+            
                 return true
             }else{
                 return false
             }
         }
         
+        
+        
         if filterData.count >= 1{
         
+            
         
         nextPage.diaryItems = filterData
-        VC?.navigationController?.pushViewController(nextPage, animated: true)
+        nextPage.currentItem = currentTapRow
+        nextPage.displayPickViewDialog(present:VC!)
+            
     }
     
    }

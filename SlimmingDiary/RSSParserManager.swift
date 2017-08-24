@@ -26,6 +26,17 @@ class RSSParserManager:NSObject,XMLParserDelegate {
     var currentElementValue:String?
     var parser = XMLParser()
     
+    var newsReach = Reachability(hostName:"https://www.everydayhealth.com.tw/upload/all_rss.xml")
+    
+    var isConnect:Bool{
+        
+        guard let reach = newsReach else{
+            return false
+        }
+        return reach.checkInternetFunction()
+    }
+
+    
     
     
     func downloadList(completion: @escaping DoneHandler){

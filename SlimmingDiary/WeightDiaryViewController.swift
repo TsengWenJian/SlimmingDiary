@@ -197,17 +197,8 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         let diary = weightDiaryArray[indexPath.section-1]
         cell.titleLabel.text = diary[indexPath.row].time
         
-        if indexPath.section == 1{
-            
-            cell.detailLabel.text = "\(diary[indexPath.row].value) kg"
-            
-        }else{
-            
-            cell.detailLabel.text = "\(diary[indexPath.row].value) %"
-            
-        }
-        
-        
+        let detailUint = indexPath.section == 1 ?"kg":"%"
+        cell.detailLabel.text = "\(diary[indexPath.row].value) \(detailUint)"
         cell.photoImageView.image = UIImage(imageName:diary[indexPath.row].imageName,search:.documentDirectory)
         
         return cell
@@ -229,8 +220,9 @@ extension WeightDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         if section == 0{
             return nil
         }
+        
         headerCell.titleLabel.text = sectionTitle[section-1]
-        headerCell.totalCalorieLebel.text = ""
+        headerCell.totalCalorieLebel.text = nil
         headerCell.expendBtn.addTarget(self, action:#selector(sectionIsExpend), for: .touchUpInside)
         headerCell.expendBtn.tag = 1000 + section
         

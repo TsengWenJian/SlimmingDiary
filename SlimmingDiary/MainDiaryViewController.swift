@@ -15,24 +15,27 @@ class MainDiaryViewController: UIViewController{
     @IBOutlet weak var foodDiaryBtn: UIButton!
     @IBOutlet weak var displayDateBtn: UIButton!
     @IBOutlet weak var weightDiaryBtn: UIButton!
+    @IBOutlet weak var btnContainerleading: NSLayoutConstraint!
     
-    var pan = UIPanGestureRecognizer()
+    var pageVCPan = UIPanGestureRecognizer()
     var pageVC: UIPageViewController!
     
     var displayCalendar = false
-    
     var calender = CalenderManager.standard
     var foodDairyVC:FoodDiaryViewController!
     var sportsDiaryVC:SpotsDiaryViewController!
     var weightDiaryVC:WeightDiaryViewController!
     var calendarPickVC:CalendarViewController!
+  
     
+   
     var lastPage = 0
     
     
     var displayDate:MyDate = CalenderManager.standard.displayDate{
         
         didSet{
+            
             NotificationCenter.default.post(name:NSNotification.Name(rawValue: "changeDiaryData"), object: nil)
             displayDateBtn.setTitle(calender.myDateToString(displayDate), for: .normal)
             
@@ -41,42 +44,7 @@ class MainDiaryViewController: UIViewController{
     
     var currentPage:Int = 0{
         
-        didSet{
-            let offset = self.view.frame.width / 3.0 * CGFloat(currentPage)
-            
-            UIView.animate(withDuration: 0.2) {
-                self.btnBackgroundView.frame.origin = CGPoint(x: offset, y: self.btnBackgroundView.frame.minY)
-                
-            }
-            
-            let wobble = CAKeyframeAnimation(keyPath: "transform.rotation")
-            wobble.duration = 0.2
-            wobble.repeatCount = 2
-            wobble.values = [0.0,-0.05,0.0,0.05, 0.0]
-            
-            
-            self.btnBackgroundView.layer.add(wobble,forKey:nil)
-            
-            foodDiaryBtn.isSelected = false
-            spotsDiaryBtn.isSelected = false
-            weightDiaryBtn.isSelected = false
-            
-            if currentPage == 0{
-                
-                foodDiaryBtn.isSelected = true
-                
-            }else if currentPage == 1{
-                
-                spotsDiaryBtn.isSelected = true
-                
-            }
-            else{
-                weightDiaryBtn.isSelected = true
-                
-            }
-            
-        }
-        
+        didSet{changeBtnStatus()}
     }
     
     
@@ -89,10 +57,7 @@ class MainDiaryViewController: UIViewController{
         pageVC = self.childViewControllers.first as! UIPageViewController
         
         foodDairyVC = storyboard?.instantiateViewController(withIdentifier: "FoodDiaryViewController") as!FoodDiaryViewController
-        
         sportsDiaryVC = storyboard?.instantiateViewController(withIdentifier: "SpotsDiaryViewController") as!SpotsDiaryViewController
-        
-        
         weightDiaryVC = storyboard?.instantiateViewController(withIdentifier: "WeightDiaryViewController") as!WeightDiaryViewController
         
         pageVC.delegate = self
@@ -109,15 +74,22 @@ class MainDiaryViewController: UIViewController{
         
         
         
-        pageContainerView.addGestureRecognizer(pan)
-        pan.delegate = self
         
         
-        for x in pageVC.view.subviews {
+        pageContainerView.addGestureRecognizer(pageVCPan)
+        pageVCPan.delegate = self
+
+        
+        for view in pageVC.view.subviews {
             
-            pan = x.gestureRecognizers?[1] as! UIPanGestureRecognizer
-            pageContainerView.addGestureRecognizer(pan)
-            
+            if view.isKind(of:UIScrollView.self){
+                if let  scrollPan = view.gestureRecognizers?[1] as? UIPanGestureRecognizer{
+                    
+                    pageVCPan = scrollPan
+                    pageContainerView.addGestureRecognizer(pageVCPan)
+                }
+
+            }
             
         }
         
@@ -130,7 +102,47 @@ class MainDiaryViewController: UIViewController{
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+    }
+    
+    func changeBtnStatus(){
+        let offset = self.view.frame.width / 3.0 * CGFloat(currentPage)
+        
+        UIView.animate(withDuration: 0.2) {
+            
+            self.btnContainerleading.constant = offset
+            self.view.layoutIfNeeded()
+            
+            
+        }
+        
+        let wobble = CAKeyframeAnimation(keyPath: "transform.rotation")
+        wobble.duration = 0.2
+        wobble.repeatCount = 2
+        wobble.values = [0.0,-0.05,0.0,0.05, 0.0]
+        
+        
+        self.btnBackgroundView.layer.add(wobble,forKey:nil)
+        
+        foodDiaryBtn.isSelected = false
+        spotsDiaryBtn.isSelected = false
+        weightDiaryBtn.isSelected = false
+        
+        if currentPage == 0{
+            
+            foodDiaryBtn.isSelected = true
+            
+        }else if currentPage == 1{
+            
+            spotsDiaryBtn.isSelected = true
+            
+        }
+        else{
+            weightDiaryBtn.isSelected = true
+            
+        }
+
+        
     }
     
     
@@ -173,7 +185,7 @@ class MainDiaryViewController: UIViewController{
             
         }
         
-        pageVC.setViewControllers([currentPageVC], direction:direction, animated: true, completion: nil)
+        pageVC.setViewControllers([currentPageVC], direction:direction,animated:true,completion: nil)
         
     }
     
@@ -215,9 +227,10 @@ class MainDiaryViewController: UIViewController{
         displayDate = calender.displayDate
     }
     
-    
+        
     
 }
+//MARK: - UIPageViewControllerDelegate,UIPageViewControllerDataSource
 extension MainDiaryViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSource{
     
     
@@ -231,6 +244,7 @@ extension MainDiaryViewController:UIPageViewControllerDelegate,UIPageViewControl
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         
+        
         guard let pendingVC = pendingViewControllers.first else{
             return
         }
@@ -238,7 +252,7 @@ extension MainDiaryViewController:UIPageViewControllerDelegate,UIPageViewControl
         if  pendingVC.isKind(of:SpotsDiaryViewController.self){
             
             
-            lastPage = currentPage == 2 ? 2:0
+            lastPage = currentPage == 2 ?2:0
             currentPage = 1
             
             
@@ -257,7 +271,10 @@ extension MainDiaryViewController:UIPageViewControllerDelegate,UIPageViewControl
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
+        
+        
         if viewController.isKind(of:SpotsDiaryViewController.self){
+            
             return foodDairyVC
         }
         
@@ -296,16 +313,28 @@ extension MainDiaryViewController:CalendarPickDelegate{
 //MARK: - UIGestureRecognizerDelegate
 extension MainDiaryViewController:UIGestureRecognizerDelegate{
     
+
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         
-        if String(describing:touch.view!.superview!.superview!.classForCoder) == "BodyTableViewCell" || String(describing:touch.view!.superview!.superview!.classForCoder) == "WeightDiaryBodyTableViewCell"{
-            pageContainerView.removeGestureRecognizer(pan)
-            return false
+    
+          if let touchView =  touch.view,
+             let superView = touchView.superview,
+             let cellView = superView.superview{
             
-        } else {
-            
-            pageContainerView.addGestureRecognizer(pan)
+             let cellClass =  String(describing:cellView.classForCoder)
+        
+            if cellClass == "BodyTableViewCell" || cellClass == "WeightDiaryBodyTableViewCell"{
+                
+                pageContainerView.removeGestureRecognizer(pageVCPan)
+                
+                return false
+                
+            } else {
+                
+                pageContainerView.addGestureRecognizer(pageVCPan)
+            }
         }
+        
         
         return true
         

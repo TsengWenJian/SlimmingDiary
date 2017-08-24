@@ -66,13 +66,7 @@ struct foodDiary{
 }
 
 
-enum ActionType:String{
-    case update = "修改"
-    case insert = "新增"
-    case delete = "刪除"
-    case search = "搜尋"
-    
-}
+
 
 
 struct foodDetails{
@@ -136,83 +130,6 @@ struct foodDetails{
     
 }
 
-enum DiaryType:String {
-    
-    
-    case foodDetail = "Food_Detail"
-    case foodDiary = "Food_Diary"
-    case sportDetail = "Sport_Detail"
-    case sportDiary = "Sport_Diary"
-    case sportDiaryAndDetail = "Sport_Diary,Sport_Detail"
-    case foodDiaryAndDetail = "Food_Diary,Food_Detail"
-    case weightDiary = "Weight_Diary"
-    
-    
-    
-}
-
-
-
-
-class DiaryManager{
-    
-    var diaryType:DiaryType = .foodDiary
-    
-    
-    func getDiaryData(cond:String?,order:String?)->[[String:Any?]]{
-        
-        let db = SQLiteConnect()
-        if let mydb = db{
-            
-            return mydb.fetch2(diaryType.rawValue, cond: cond,order:order)
-        }
-        return [[String:Any?]]()
-        
-        
-    }
-    func deleteDiary(cond:String?){
-        let db = SQLiteConnect()
-        if let mydb = db{
-            let _ =  mydb.delete(diaryType.rawValue, cond: cond)
-        }
-        
-        
-    }
-    
-    func updataDiary(cond:String?,rowInfo:[String:String]){
-        let db = SQLiteConnect()
-        
-        if let mydb = db{
-            let _ =  mydb.update(diaryType.rawValue, cond:cond,rowInfo:rowInfo)
-        }
-        
-        
-    }
-    
-    func insertDiary(rowInfo:[String:String]){
-        
-        let db = SQLiteConnect()
-        let _ = db?.insert(diaryType.rawValue,rowInfo:rowInfo)
-        
-    }
-    func deleteImage(imageName:String?){
-        
-        guard let name = imageName else{
-            return
-        }
-        let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        
-        guard let imageURL = documentURL?.appendingPathComponent(name) else{
-            return
-        }
-        
-        let _ = try? FileManager.default.removeItem(at: imageURL)
-        
-    }
-    
-    
-    
-}
 
 class FoodMaster:DiaryManager{
     
@@ -223,13 +140,6 @@ class FoodMaster:DiaryManager{
     
     
     
-    enum FoodDetailtype {
-        
-        case diaryData
-        case defaultData
-        
-        
-    }
     
     func removeFoodDiarysAndSwitch(){
         foodDiaryArrary.removeAll()
@@ -237,7 +147,7 @@ class FoodMaster:DiaryManager{
         
     }
     
-    func getFoodDetails(_ detailType:FoodDetailtype,
+    func getFoodDetails(_ detailType:DetailType,
                         amount:Double?,
                         weight:Double?,
                         cond:String?,
@@ -256,9 +166,12 @@ class FoodMaster:DiaryManager{
             switch detailType {
                 
             case .diaryData:
+                
+               
                 foodAmount = food[FOODDIARY_AMOUNT] as! Double
-                foodWight = food[FOODDETAIL_WEIGHT] as! Double
+                foodWight = food[FOODDIARY_WEIGHT] as! Double
                 foodDiaryId = food[FOODDIARY_ID] as! Int
+                
                 
             case .defaultData:
                 break
@@ -312,12 +225,13 @@ class FoodMaster:DiaryManager{
         var dict = [String:String]()
         
         
-        dict = [FOODDIARY_DATE:"'\(diary.date)'",
-            FOODDIARY_DINNERTIME:"'\(diary.dinnerTime)'",
-            FOODDIARY_DETAILID:"\(diary.foodId)",
-            FOODDIARY_AMOUNT:"\(diary.amount)",
-            FOODDIARY_WEIGHT:"\(diary.weight)"]
+        print(diary)
         
+        dict = [FOODDIARY_DATE:"'\(diary.date)'",
+                FOODDIARY_DINNERTIME:"'\(diary.dinnerTime)'",
+                FOODDIARY_DETAILID:"\(diary.foodId)",
+                FOODDIARY_AMOUNT:"\(diary.amount)",
+                FOODDIARY_WEIGHT:"\(diary.weight)"]
         
         if let image = diary.image {
             
@@ -326,14 +240,15 @@ class FoodMaster:DiaryManager{
             dict[FOODDIARY_IMAGENAME] = "'\(imageName)'"
             
         }
-        
+        print(dict)
+
         insertDiary(rowInfo:dict)
 
 
     }
     
     
-    //MAKE: - FoodDetail Function
+    //MAKE: - FoodDetail
     let foodDetailTitles = ["名稱","數量","重量","熱量","蛋白質","脂肪",
                      "反式脂肪","飽和脂肪","碳水化合物","膳食纖維",
                      "糖質","鈉","鉀","鈣","膽固醇"]
@@ -347,7 +262,7 @@ class FoodMaster:DiaryManager{
     var isCollection:Int = 0
     
     
-    func getFoodDataArray(_ lastPageVC:ActionType,foodDiaryId:Int?,foodId:Int?,amount:Double?,weight:Double?)->[String]{
+    func getFoodDataArray(_ actionType:ActionType,foodDiaryId:Int?,foodId:Int?,amount:Double?,weight:Double?)->[String]{
         
         let foodDetail:foodDetails
         var foodDataArray = [String]()
@@ -365,7 +280,7 @@ class FoodMaster:DiaryManager{
             
         }
         
-        if(lastPageVC == .insert){
+        if(actionType == .insert){
             
             let cond = "\(FOODDETAIL_Id) = "+"\""+String(foodId!)+"\""
             
@@ -427,7 +342,7 @@ class FoodMaster:DiaryManager{
     
     
     
-    // MARK : - AddFood Fuction
+    // MARK : - AddFood 
     let  addFoodTitle = ["名稱","單位(份)","重量(g)","熱量(kcal)","蛋白質(g)","脂肪(g)",
                          "反式脂肪(g)","飽和脂肪(g)","碳水化合物(g)","膳食纖維(mg)",
                          "糖質(g)","鈉(mg)","鉀(mg)","鈣(mg)","膽固醇(mg)"]

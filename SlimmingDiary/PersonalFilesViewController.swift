@@ -76,6 +76,12 @@ class PersonalFilesViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        pickerVC = nil
+        datePickerVC = nil
+    }
+    
+    
     
     
     
@@ -124,11 +130,12 @@ class PersonalFilesViewController: UIViewController {
         if let finalPhoto = userPhoto,
             let uploadData = UIImageJPEGRepresentation(finalPhoto,0.8){
             
-            var toast:NickToastUIView?
+            let toast = NickToastUIView()
             
             if let navView = navigationController?.view {
                 
-                toast = NickToastUIView(supView:navView, type:.update)
+                
+                toast.showView(supView: navView, type: .update)
                 
                 
             }
@@ -136,14 +143,14 @@ class PersonalFilesViewController: UIViewController {
             
             if serviceManager.isConnectDBURL == false{
                 showAlertError(error:NO_CONNECTINTENTER)
-                toast?.removefromView()
+                toast.removefromView()
                 return
             }
             
             serviceManager.uploadProfileImage(data:uploadData) { (photoURL, error) in
                 
                 if error != nil{
-                    toast?.removefromView()
+                    toast.removefromView()
                     self.showAlertError(error:error?.localizedDescription)
                     return
                 }
@@ -152,7 +159,7 @@ class PersonalFilesViewController: UIViewController {
                 
                 self.serviceManager.uploadUserDataToDB(userName:name,imageURL:photoURL,done: { (error) in
                     
-                    toast?.removefromView()
+                    toast.removefromView()
                     
                     if error != nil {
                         self.showAlertError(error:error?.localizedDescription)

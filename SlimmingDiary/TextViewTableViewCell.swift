@@ -32,11 +32,7 @@ class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
                                                         style:UIBarButtonItemStyle.done,
                                                         target:self,
                                                         action:#selector(doneBtnAction))
-        
-        
-      
-        
-       
+
         
         var items = [UIBarButtonItem]()
         items.append(flexSpace)

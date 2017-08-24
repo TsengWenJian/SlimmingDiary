@@ -23,8 +23,6 @@ class MakeShareDiaryTableViewController: UITableViewController {
     var trackUploadImageNumber = 0{
         didSet{
             if trackUploadImageNumber == sumItem{
-                
-                
                 uploadDairyToDB(id:diaryId)
                 
             }
@@ -35,7 +33,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
     var titleImage:UIImage?
     var day:Int?
     var beginDate:String?
-    var toastView:NickToastUIView?
+    var toastView = NickToastUIView()
     var serviceManager = DataService.standard
     var isLocked:Bool = false
     var trackIsLock:Bool = false
@@ -60,17 +58,13 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
         if actionType == .insert{
             
-            
             getDiaryRecords()
             
             
         }else{
             
-            
             isLocked = titleDiary.open == "public" ?false:true
             navigationItem.title = "修改日記"
-            
-            
             
         }
         
@@ -215,8 +209,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
     }
     
-    
-    
+
     func uploadDiaryWithItemsImage(diarys:[OneDiaryRecord]){
         
         for diary in diarys{
@@ -274,13 +267,10 @@ class MakeShareDiaryTableViewController: UITableViewController {
             
         }
         
-        if toastView != nil {
-            return
-        }
         
         
         if let navView = navigationController?.view{
-            toastView = NickToastUIView(supView:navView, type:.Upload)
+            toastView.showView(supView:navView, type:.Upload)
         }
         
         
@@ -295,10 +285,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
         
         
-        
-        
         diaryId = NSUUID().uuidString
-        
         
         
         guard let myTitleImage = titleImage?.resizeImage(maxLength: 1024),
@@ -314,7 +301,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
             
             if let err = error{
                 print(err.localizedDescription)
-                self.toastView?.removefromView()
+                self.toastView.removefromView()
                 return
             }
             
@@ -343,7 +330,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
             self.serviceManager.dbDiarysURL.child(open).child(self.diaryId).updateChildValues(dict) { (error,reference) in
                 
                 if error != nil{
-                    self.toastView?.removefromView()
+                    self.toastView.removefromView()
                     print(error.debugDescription)
                     return
                     
@@ -352,7 +339,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
                 self.serviceManager.dbUserDiaryURL.child(userId).child(self.diaryId).updateChildValues(dict, withCompletionBlock: { (error, userdiaryDB) in
                     
                     if error != nil{
-                        self.toastView?.removefromView()
+                        self.toastView.removefromView()
                         print(error.debugDescription)
                         return
                     }
@@ -366,18 +353,14 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
     }
     
-    
-    
-    
-    
-    
+
     
     func uploadImageIntoStorage(items:[DiaryItem]){
         
         
         if diarys.count == 0{
-            toastView?.removefromView()
-            toastView = nil
+            toastView.removefromView()
+            
         }
         
         for item in items{
@@ -388,7 +371,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
                     continue
             }
             let timestamp = Date().timeIntervalSince1970
-            serviceManager.storageImagesURL.child("item_\(timestamp)_\(myImage.hash).jpg").putData(data,metadata: nil, completion: { (StorageMetadata,error) in
+            serviceManager.storageImagesURL.child("item_\(timestamp)_\(myImage.hash).jpg").putData(data,metadata:nil,completion: { (StorageMetadata,error) in
                 
                 if let err = error{
                     print(err.localizedDescription)
@@ -409,7 +392,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         var records = [[String:AnyObject]]()
         for record in diarys{
             
-            if let dict = dataTurnDict(day:record){
+            if let dict = shareManager.diarysTurnDict(day:record){
                 records.append(dict)
             }
         }
@@ -421,11 +404,10 @@ class MakeShareDiaryTableViewController: UITableViewController {
             
             serviceManager.dbDiaryContentURL.child(id).updateChildValues(["diaryRecords":records]) { (error, databaseReference) in
                 
-                self.toastView?.removefromView()
+                self.toastView.removefromView()
                 if error != nil{
                     
                     print(error.debugDescription)
-                    
                     return
                 }
                 
@@ -439,7 +421,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
             
             
             let originOpen = self.trackIsLock == true ?"private":"public"
-            let nowOpen = self.isLocked == true ?"private":"public"
+            let currnetOpen = self.isLocked == true ?"private":"public"
             
             
             let dict = ["title":titleDiary.title,
@@ -449,72 +431,36 @@ class MakeShareDiaryTableViewController: UITableViewController {
                         "beginDate":titleDiary.beginDate,
                         "day":titleDiary.day,
                         "timestamp":titleDiary.timestamp,
-                        "open":nowOpen] as [String : Any?]
+                        "open":currnetOpen] as [String : Any?]
             
             
-            if trackIsLock != isLocked{
+            if trackIsLock != isLocked,
+            let uid = serviceManager.userUid{
                 
-                self.serviceManager.dbDiarysURL.child(nowOpen).child(self.titleDiary.diaryId!).setValue(dict)
-                self.serviceManager.dbDiarysURL.child(originOpen).child(self.titleDiary.diaryId!).removeValue()
-                self.serviceManager.dbUserDiaryURL.child(ProfileManager.standard.userUid!).child(self.titleDiary.diaryId!).removeValue()
-                self.serviceManager.dbUserDiaryURL.child(ProfileManager.standard.userUid!).child(self.titleDiary.diaryId!).setValue(dict)
+               
+                let myDiaryId = titleDiary.diaryId
+                self.serviceManager.dbDiarysURL.child(currnetOpen).child(myDiaryId).setValue(dict)
+                self.serviceManager.dbDiarysURL.child(originOpen).child(myDiaryId).removeValue()
+                self.serviceManager.dbUserDiaryURL.child(uid).child(myDiaryId).removeValue()
+                self.serviceManager.dbUserDiaryURL.child(uid).child(myDiaryId).setValue(dict)
+                
                 
             }
             
             
-            serviceManager.dbDiaryContentURL.child(titleDiary.diaryId!).updateChildValues(["diaryRecords":records], withCompletionBlock: { (error, data) in
-                self.toastView?.removefromView()
+            serviceManager.dbDiaryContentURL.child(titleDiary.diaryId).updateChildValues(["diaryRecords":records], withCompletionBlock: { (error, data) in
+                self.toastView.removefromView()
+                
                 DispatchQueue.main.async {
                     self.navigationController?.popToRootViewController(animated: true)
-                    
+
                 }
             })
         }
         
     }
     
-    func itemsTurnDict(items:[DiaryItem]?)->[[String:String]]{
-        
-        var recordItems = [[String:String]]()
-        
-        if let myItems = items{
-            
-            for item in myItems {
-                
-                var dit = [String:String]()
-                dit["title"] = item.title
-                dit["detail"] = item.detail
-                dit["imageURL"] = item.imageURL
-                recordItems.append(dit)
-            }
-            
-        }
-        return recordItems
-        
-    }
-    
-    
-    func dataTurnDict(day:OneDiaryRecord)->[String:AnyObject]?{
-        
-        
-        let foodItems = itemsTurnDict(items:day.food)
-        
-        let sportItems = itemsTurnDict(items:day.sport)
-        
-        
-        let  text = day.text == "" ? nil: day.text
-        let dict = ["foodItmes":foodItems,"sportItems":sportItems,"text":text,"date":day.date] as [String : Any?]
-        
-        
-        if text == nil && foodItems.count == 0 && sportItems.count == 0{
-            
-            return nil
-        }
-        
-        return dict as [String : AnyObject]
-        
-    }
-    
+       
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
@@ -529,7 +475,6 @@ class MakeShareDiaryTableViewController: UITableViewController {
                     
                 case .sport:
                     sectionDay.sport = nil
-                    
                 }
                 
             }else{
@@ -570,8 +515,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         }else{
             
             return 0
-            
-            
+        
         }
         
     }
@@ -613,14 +557,17 @@ class MakeShareDiaryTableViewController: UITableViewController {
             
             let cell = tableView.dequeueReusableCell(withIdentifier:"TextViewTableViewCell",for: indexPath) as! TextViewTableViewCell
             
-            cell.oneDiary = diarys[indexPath.section]
+            let diary = diarys[indexPath.section]
+            cell.oneDiary = diary
             
-            if diarys[indexPath.section].text == ""{
-                
-                
+            if let text = diary.text,
+               text.isEmpty{
+            
                 cell.textView.text = "輸入點內容吧"
+                
             }else{
-                cell.textView.text = diarys[indexPath.section].text
+                
+                cell.textView.text = diary.text
             }
             
             
@@ -631,7 +578,8 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CollectionTableViewCell", for: indexPath) as! CollectionTableViewCell
         cell.VC = self
-        
+        cell.isEdit = false
+
         
         if indexPath.row == foodRow {
             
@@ -645,7 +593,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
             
         }
         
-        cell.allData = diarys[indexPath.section]
+        cell.allDiarys = diarys[indexPath.section]
         
         
         return cell

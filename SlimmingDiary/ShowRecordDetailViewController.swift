@@ -13,22 +13,24 @@ import MessageUI
 class ShowRecordDetailViewController: UIViewController {
     
     var diarys = [OneDiaryRecord]()
-    var shareDiary:ShareDiary?
+    var shareDiary = ShareDiary()
     var user:UserData?
     
     
     @IBOutlet weak var detailLabel: UILabel!
-    @IBOutlet weak var userPhotoImageView: UIImageView!
+    @IBOutlet weak var userPhotoImageView: AdvanceImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var titleImageView:AdvanceImageView!
     @IBOutlet weak var titleImageContainerViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var recordsDetailTableView: UITableView!
+    
     var sectionsIsExpend = [Bool]()
     var serviceManager = DataService.standard
     var shareManager = shareDiaryManager.standard
     
     
     
-    @IBOutlet weak var recordsDetailTableView: UITableView!
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,87 +46,114 @@ class ShowRecordDetailViewController: UIViewController {
         
         recordsDetailTableView.estimatedRowHeight = 100
         recordsDetailTableView.rowHeight = UITableViewAutomaticDimension
-
-        
         
         let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
         recordsDetailTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
         
+        getDiaryDetail()
+        recordsDetailTableView.refreshControl = UIRefreshControl()
+        recordsDetailTableView.refreshControl?.addTarget(self, action:#selector(getDiaryDetail), for: .valueChanged)
+        
+
+    }
+    
+    func getDiaryDetail(){
+        
+        
         
         if serviceManager.isConnectDBURL == false{
+            
+            titleImageView.image = UIImage(named: "not_connect")
+            
+            DispatchQueue.main.async {
+                
+                let alert = UIAlertController(error:NO_CONNECTINTENTER)
+                self.present(alert,animated:true, completion: nil)
+                
+            }
+            
             return
+            
         }
         
-        guard let myShareDiary = shareDiary,
-            let diaryId = myShareDiary.diaryId else{
-                return
-        }
         
-    
+        navigationItem.title = shareDiary.title
+        titleImageView.loadWithURL(urlString: shareDiary.titleImageURL)
+        detailLabel.text = "\(shareDiary.beginDate) / \(shareDiary.day) day"
         
-        navigationItem.title = myShareDiary.title
-        titleImageView.loadWithURL(urlString: myShareDiary.titleImageURL!)
-        detailLabel.text = "\(myShareDiary.beginDate!) / \(myShareDiary.day!) day"
-       
-    
-        if shareDiary?.userId == ProfileManager.standard.userUid{
+        
+        if shareDiary.userId == serviceManager.userUid{
             
             let btn = UIBarButtonItem(barButtonSystemItem:.trash,target: self, action:#selector(trashDiary))
-            let editImage = UIImage(named: "edit")
+            let editImage = UIImage(named:"edit")
             let edit = UIBarButtonItem(image:editImage, style: .plain, target: self, action:#selector(editDiary))
             
             navigationItem.rightBarButtonItems = [btn,edit]
             userNameLabel.text = "你自己"
             
-            userPhotoImageView.image = UIImage(imageName: ProfileManager.standard.userPhotoName, search: .cachesDirectory)
+            if let userPhoto  = UIImage(imageName: ProfileManager.standard.userPhotoName, search: .cachesDirectory){
+                userPhotoImageView.image = userPhoto
+            }else{
+                userPhotoImageView.image = UIImage(named:"user")
+
+            }
             
             
         }else{
             
-           
+            
             if let myUser = user{
                 
-                   userNameLabel.text = myUser.name
- 
-                if let userImageUrl = myUser.imageURL{
+                userNameLabel.text = myUser.name
+                
+                if let userImageURL = myUser.imageURL{
                     
-                    userPhotoImageView.loadImageCacheWithURL(urlString:userImageUrl)
+                    userPhotoImageView.loadWithURL(urlString: userImageURL)
+                    
                     
                 }else{
                     
-                    userPhotoImageView.image = UIImage(named:"man")
+                    userPhotoImageView.image = UIImage(named:"user")
                 }
-        
+                
             }
         }
         
         
-        
-        shareManager.getShareDiaryContent(diaryID: diaryId) { (error, result) in
+        shareManager.getShareDiaryContent(diaryID:shareDiary.diaryId) { (error, result) in
             
             if let err = error{
                 print(err.localizedDescription)
                 return
+                
             }
             self.diarys = result
             self.setSectionExpend(sum:result.count)
             DispatchQueue.main.async {
                 self.recordsDetailTableView.reloadData()
+                
             }
         }
-    
+
+        
+        recordsDetailTableView.refreshControl?.endRefreshing()
+        
     }
+    
+    
     func editDiary(){
         let nextPage = storyboard?.instantiateViewController(withIdentifier:"MakeShareDiaryTableViewController") as! MakeShareDiaryTableViewController
         
-           nextPage.diarys = diarys
-           nextPage.actionType = .update
-           nextPage.titleDiary = shareDiary!
-           let back = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
-           navigationItem.backBarButtonItem = back
-           navigationController?.pushViewController(nextPage, animated: true)
+        nextPage.diarys = diarys
+        nextPage.actionType = .update
+        nextPage.titleDiary = shareDiary
+        let back = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = back
+        navigationController?.pushViewController(nextPage, animated: true)
         
     }
+    
+    
     func setSectionExpend(sum:Int){
         
         for _ in 0..<sum{
@@ -132,70 +161,36 @@ class ShowRecordDetailViewController: UIViewController {
         }
         
     }
-
+    
+    
+    
+    
     func trashDiary(){
         
         let alert = UIAlertController(title: "刪除", message: "確定刪除這篇日記?", preferredStyle: .alert)
         let ok = UIAlertAction(title: "確定", style: .default) { (UIAlertAction) in
             
-            
-            guard let myShareDiary = self.shareDiary,
-                let diaryId = myShareDiary.diaryId,
-                let open = myShareDiary.open,
-                let userId = myShareDiary.userId else{
-                    
-                    return
-            }
+    
+            self.serviceManager.dbDiarysURL.child(self.shareDiary.open).child(self.shareDiary.diaryId).removeValue()
+            self.serviceManager.dbDiaryContentURL.child(self.shareDiary.diaryId).removeValue()
+            self.serviceManager.dbUserDiaryURL.child(self.shareDiary.userId).child(self.shareDiary.diaryId).removeValue()
+            self.navigationController?.popViewController(animated: true)
             
             
-            self.serviceManager.dbDiarysURL.child(open).child(diaryId).removeValue { (error, DatabaseReference) in
-                
-                if let err = error{
-                    print(err.localizedDescription)
-                    return
-                }
-                self.serviceManager.dbDiaryContentURL.child(diaryId).removeValue()
-                self.serviceManager.dbUserDiaryURL.child(userId).child(diaryId).removeValue()
-                self.navigationController?.popViewController(animated: true)
-                
-            }
-        
+            
         }
         let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
-        
         alert.addAction(ok)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
-    
-        }
-    
-    
-    func dictArrayTurnDiaryItem(dict:[[String:String]]?)->[DiaryItem]?{
         
-        guard let mydict = dict else{
-            return nil
-        }
-        
-        var items = [DiaryItem]()
-        
-        for item in mydict {
-            
-            let diary = DiaryItem(image: nil,
-                                  title:item["title"]!,
-                                  detail: item["detail"]!)
-            
-            diary.imageURL = item["imageURL"]
-            items.append(diary)
-            
-        }
-        
-        
-        return items
     }
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
     
@@ -207,10 +202,12 @@ class ShowRecordDetailViewController: UIViewController {
         
         // move 1point to touch off scrollViewDidScroll
         let point = recordsDetailTableView.contentOffset
-        recordsDetailTableView.setContentOffset( CGPoint(x: point.x, y: point.y+1), animated: false)
+        recordsDetailTableView.setContentOffset( CGPoint(x: point.x,y:point.y+1), animated: false)
         
     }
 }
+
+
 //MARK: - UITableViewDelegate,UITableViewDataSource
 extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSource{
     
@@ -295,6 +292,9 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
         return cell
     }
     
+    
+    
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as!HeaderTableViewCell
         headerCell.contentView.layer.cornerRadius = 0
@@ -309,7 +309,7 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
     }
-
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
