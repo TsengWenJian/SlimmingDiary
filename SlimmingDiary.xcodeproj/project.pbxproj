@@ -266,8 +266,8 @@
 			isa = PBXGroup;
 			children = (
 				6CBA0CE91ED7C0C500122595 /* SQLiteConnect.swift */,
-				6C20B41A1F3B48880097E00D /* Reachability.h */,
 				6C20B41B1F3B48880097E00D /* Reachability.m */,
+				6C20B41A1F3B48880097E00D /* Reachability.h */,
 				6C13ADBB1F261E010095E235 /* DataService.swift */,
 				6C0927E71F1B00E3004D1C0F /* CalculateBodyInformation.swift */,
 				6C1BB3D61F11E1D8001602EF /* RSSParserManager.swift */,
@@ -466,6 +466,14 @@
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 93QT5L8PP6;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

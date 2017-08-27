@@ -10,6 +10,9 @@ import Foundation
 import UIKit
 
 typealias DoneHandlerDiarys = (Error?,[OneDiaryRecord])->()
+
+
+
 class OneDiaryRecord:NSObject{
     
     var food:[DiaryItem]?
@@ -25,7 +28,7 @@ class OneDiaryRecord:NSObject{
     }
     
     convenience init(date:String) {
-        self.init(food: nil, sport: nil, text: nil, date:date)
+        self.init(food: nil,sport:nil,text:nil,date:date)
         
     }
 }
@@ -40,7 +43,6 @@ class DiaryItem {
     
     
     
-    
     init(image:UIImage?,title:String,detail:String) {
         self.image = image
         self.title = title
@@ -49,6 +51,8 @@ class DiaryItem {
     }
     
 }
+
+
 
 class ShareDiary:NSObject {
     
@@ -61,7 +65,9 @@ class ShareDiary:NSObject {
     var day = NSNumber()
     var open = String()
     
-    }
+}
+
+
 
 class UserData: NSObject {
     
@@ -70,8 +76,6 @@ class UserData: NSObject {
     
     
 }
-
-
 
 
 
@@ -96,6 +100,8 @@ class shareDiaryManager {
     }
     
     
+    
+    
     func dictArrayTurnDiaryItem(dict:[[String:String]]?)->[DiaryItem]?{
         
         guard let mydict = dict else{
@@ -106,13 +112,17 @@ class shareDiaryManager {
         
         for item in mydict {
             
-            let diary = DiaryItem(image: nil,
-                                  title:item["title"]!,
-                                  detail: item["detail"]!)
-            
-            diary.imageURL = item["imageURL"]
-            items.append(diary)
-            
+            if let myTitle = item[ServiceDBKey.itemTitle],
+                let myDetail = item[ServiceDBKey.itemDetail]{
+                
+                let diary = DiaryItem(image: nil,
+                                      title:myTitle,
+                                      detail:myDetail)
+                
+                diary.imageURL = item[ServiceDBKey.itemImageURL]
+                items.append(diary)
+                
+            }
         }
         
         
@@ -136,17 +146,18 @@ class shareDiaryManager {
             
             for diary in diaryDictArray{
                 
-                let foodItems = diary["foodItmes"] as?[[String:String]]
-                let sportItems = diary["sportItems"] as?[[String:String]]
-                let text = diary["text"] as? String
+                let foodItems = diary[ServiceDBKey.foodItmes] as?[[String:String]]
+                let sportItems = diary[ServiceDBKey.sportItems] as?[[String:String]]
+                let text = diary[ServiceDBKey.text] as? String
                 
-                guard let date = diary["date"] as? String else{
+                guard let date = diary[ServiceDBKey.date] as? String else{
                     return
                 }
                 
                 let da = OneDiaryRecord(food:self.dictArrayTurnDiaryItem(dict: foodItems),
                                         sport:self.dictArrayTurnDiaryItem(dict: sportItems),
-                                        text: text, date:date)
+                                        text:text,
+                                        date:date)
                 myDiarys.append(da)
                 
                 
@@ -175,9 +186,9 @@ class shareDiaryManager {
             for item in myItems {
                 
                 var dit = [String:String]()
-                dit["title"] = item.title
-                dit["detail"] = item.detail
-                dit["imageURL"] = item.imageURL
+                dit[ServiceDBKey.itemTitle] = item.title
+                dit[ServiceDBKey.itemDetail] = item.detail
+                dit[ServiceDBKey.itemImageURL] = item.imageURL
                 recordItems.append(dit)
             }
             
@@ -196,15 +207,15 @@ class shareDiaryManager {
         
         
         let  text = day.text == "" ? nil: day.text
-        let dict = ["foodItmes":foodItems,
-                    "sportItems":sportItems,
-                    "text":text,
-                    "date":day.date] as [String : Any?]
+        let dict = [ServiceDBKey.foodItmes:foodItems,
+                    ServiceDBKey.sportItems:sportItems,
+                    ServiceDBKey.text:text,
+                    ServiceDBKey.date:day.date] as [String : Any?]
         
         
         if text == nil,
-           foodItems.count == 0,
-           sportItems.count == 0{
+            foodItems.count == 0,
+            sportItems.count == 0{
             
             return nil
         }
@@ -212,30 +223,11 @@ class shareDiaryManager {
         return dict as [String : AnyObject]
         
     }
-
+    
     
     
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

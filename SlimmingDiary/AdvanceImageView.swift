@@ -66,7 +66,7 @@ class AdvanceImageView: UIImageView {
             }
             
             if error != nil{
-                print(error.debugDescription)
+                SHLog(message:error.debugDescription)
                 return
             }
             

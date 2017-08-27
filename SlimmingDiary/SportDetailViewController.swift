@@ -18,7 +18,7 @@ class SportDetailViewController: UIViewController {
     @IBOutlet weak var selectMinuteBtn: UIButton!
     @IBOutlet weak var sampleNameLabel: UILabel!
     
-    var pickerVC:PickerViewController?
+    
     var actionType:ActionType = .insert
     var numberOfRows:Int = 200
     var numberOfComponents:Int = 1
@@ -58,8 +58,6 @@ class SportDetailViewController: UIViewController {
         
         
         calorieLabel.setShadowView(0,0.1,CGSize.zero)
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as? PickerViewController
-        pickerVC?.delegate = self
         
         let insert = UIBarButtonItem(title:"新增", style: .plain, target: self, action:#selector(insertSport))
         
@@ -82,6 +80,16 @@ class SportDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         
     }
+    
+//    func launchPickerVC(){
+//        
+//        let pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as? PickerViewController
+//        pickerVC?.delegate = self
+//        pickerVC?.displayPickViewDialog(present:self)
+//        
+//        
+//    }
+
     
     func insertSport(){
         
@@ -197,16 +205,12 @@ class SportDetailViewController: UIViewController {
     
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        pickerVC = nil
-        
-    }
-
+       
     
     
     @IBAction func minuteBtnAction(_ sender: Any) {
         
-        pickerVC?.displayPickViewDialog(present: self)
+        launchPickerVC(parVC: self)
         
         
         

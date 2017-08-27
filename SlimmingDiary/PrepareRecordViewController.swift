@@ -11,31 +11,20 @@ import UIKit
 class PrepareRecordViewController: UIViewController {
     let titleArray = ["名稱","開始日期","天數"]
     var detailArray = ["","",""]
+    
     @IBOutlet weak var prepareTableView: UITableView!
     @IBOutlet weak var titleImage: UIImageView!
-    var calendarPickVC:CalendarViewController!
-    var pickerVC:PickerViewController!
+    
+    
     var numberOfRows:Int = 7
     var numberOfComponents:Int = 1
     var setSelectRowOfbegin:Double = 1
     var textFieldText:String?
     var checkIsSelectImage:Bool = false
 
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        calendarPickVC = storyboard!.instantiateViewController(withIdentifier: "CalendarViewController") as!
-        CalendarViewController
-        calendarPickVC.delegate = self
-        
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as!PickerViewController
-        pickerVC.delegate = self
-        
-        
         
         
     }
@@ -93,13 +82,6 @@ class PrepareRecordViewController: UIViewController {
         
     }
     
-
-     deinit{
-        
-         calendarPickVC = nil
-         pickerVC = nil
-    
-    }
 
 }
 //MARK: - UITableViewDelegate,UITableViewDataSource
@@ -182,13 +164,13 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
         
         if indexPath.row == 1{
             
-            calendarPickVC.displayCalendarPickDialog(self)
+            launchCalanderPickerVC(self)
             
             
         }else if indexPath.row == 2{
             
             
-            pickerVC.displayPickViewDialog(present: self)
+            launchPickerVC(parVC: self)
             
             
         }
@@ -211,7 +193,7 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
            
             let nextPage = segue.destination as! MakeShareDiaryTableViewController
                     
-            let back = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
+            let back = UIBarButtonItem(title:"Back",style: .plain, target: nil, action: nil)
             navigationItem.backBarButtonItem = back
             nextPage.actionType = .insert
             nextPage.titleImage = titleImage.image

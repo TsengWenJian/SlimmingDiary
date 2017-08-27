@@ -46,9 +46,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>存取相機以取得照片儲存</string>
+	<string>存取相機以取得照片作發送和存取</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>存取相簿以取得照片儲存</string>
+	<string>存取相簿以取得照片作發送和存取</string>
+	<key>UIBackgroundModes</key>
+	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

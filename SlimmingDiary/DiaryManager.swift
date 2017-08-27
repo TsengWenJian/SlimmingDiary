@@ -19,10 +19,9 @@ enum DiaryType:String {
     case sportDiaryAndDetail = "Sport_Diary,Sport_Detail"
     case foodDiaryAndDetail = "Food_Diary,Food_Detail"
     case weightDiary = "Weight_Diary"
-    
-    
-    
+
 }
+
 enum DetailType {
     
     case diaryData
@@ -38,11 +37,6 @@ enum ActionType:String{
     case search = "搜尋"
     
 }
-
-
-
-
-
 
 class DiaryManager{
     

@@ -12,7 +12,7 @@ class FoodDetailViewController: UIViewController{
     
     @IBOutlet weak var collectBtn: UIButton!
     
-    var pickerVC:PickerViewController?
+    
     var lastPageVC:ActionType = .insert
     var foodTitleArray = [String]()
     var foodDataArray = [String]()
@@ -70,19 +70,17 @@ class FoodDetailViewController: UIViewController{
         foodDetailsTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
         
         
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as? PickerViewController
-        pickerVC?.delegate = self
+
         
     }
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        pickerVC = nil
-    }
     
     
     
@@ -246,17 +244,15 @@ class FoodDetailViewController: UIViewController{
                 if let baginData =  Double(foodDataArray[indexPath.row+1]){
                     setSelectRowOfbegin = baginData
                 }
-                pickerVC?.displayPickViewDialog(present: self)
+
+                  launchPickerVC(parVC: self)
                 
             }
         }
     }
     
     
-    
-    
-    
-    
+  
 }
 //MARK: - UITableViewDelegate,UITableViewDataSource
 extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
@@ -335,6 +331,9 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     
+
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
@@ -371,28 +370,32 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                 
                 var total = master.total
                 
+                
                 if total.isNaN{
                     total = 1
                 }
                 
-                if let data1 = Double(foodDataArray[4]),
-                    let data2 = Double(foodDataArray[5]),
-                    let data3 = Double(foodDataArray[8]) {
+                
+                if  let protein = Double(foodDataArray[4]),
+                    let fat = Double(foodDataArray[5]),
+                    let carbohydrates = Double(foodDataArray[8]) {
                     
                     
                     
-                    let pro = myProgress(progess:(ceil((data1/total)*100)),color:blue)
-                    let pro2 = myProgress(progess:(ceil((data2/total)*100)), color:seagreen)
-                    let pro3 = myProgress(progess:(ceil((data3/total)*100)), color:coral)
+                    let pro = myProgress(progess:(ceil((protein/total)*100)),color:blue)
+                    let pro2 = myProgress(progess:(ceil((fat/total)*100)), color:seagreen)
+                    let pro3 = myProgress(progess:(ceil((carbohydrates/total)*100)), color:coral)
+                    
+                    
                     
                     cell.circleProgressRate.setTitleLabelText(text:foodDataArray[3],size:25)
                     cell.circleProgressRate.setSubTitleLabelText(text:"kcal",size:18)
                     cell.circleProgressRate.setProgress(pro: [pro,pro2,pro3])
                     
                     
-                    cell.proteinLabel.text = "蛋白質 " +  String(format: "%.0f", round((data1/total)*100)) + "%"
-                    cell.fatLabel.text = "脂肪 " + String(format: "%.0f", round((data2/total)*100)) + "%"
-                    cell.carbohydrateLabel.text = "碳水化合物 " +  String(format: "%.0f", round((data3/total)*100)) + "%"
+                    cell.proteinLabel.text = "蛋白質 " +  calProportion(value:protein) + "%"
+                    cell.fatLabel.text = "脂肪 " + calProportion(value:fat) + "%"
+                    cell.carbohydrateLabel.text = "碳水化合物 " +  calProportion(value:carbohydrates) + "%"
                 }
                 return cell
             }
@@ -415,6 +418,14 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
             
             
         }
+        
+        
+    }
+    
+    func calProportion(value:Double)->String{
+        let total = master.total
+        let dataStr = String(format: "%.0f", round((value/total)*100))
+        return  dataStr == "nan" ?"0":dataStr
         
         
     }

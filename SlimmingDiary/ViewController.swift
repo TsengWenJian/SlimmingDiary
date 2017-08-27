@@ -25,7 +25,7 @@ class ViewController: UIViewController{
     @IBOutlet weak var homePageTableView: UITableView!
     @IBOutlet weak var pageContainerView: UIView!
     
-   var showNotConnectCell:Bool = false
+    var showNotConnectCell:Bool = false
     
     
     
@@ -33,7 +33,7 @@ class ViewController: UIViewController{
         super.viewDidLoad()
         
         
-       
+        
         checkIsLogInSetUserDefault()
         getNewsArray()
         
@@ -53,6 +53,12 @@ class ViewController: UIViewController{
         homePageTableView.refreshControl = myRefresh
         myRefresh.addTarget(self, action: #selector(getNewsArray), for: .valueChanged)
         
+       
+        
+               
+        
+    
+
         
         
         
@@ -61,8 +67,8 @@ class ViewController: UIViewController{
     
     func checkIsLogInSetUserDefault(){
         
-           let manager = DataService.standard
-           let profileManager = ProfileManager.standard
+        let manager = DataService.standard
+        let profileManager = ProfileManager.standard
         
         
         if manager.isLogin{
@@ -78,7 +84,7 @@ class ViewController: UIViewController{
         
         
         
-
+        
         
         
     }
@@ -86,11 +92,11 @@ class ViewController: UIViewController{
     func getNewsArray(){
         
         if newsManger.isConnect{
+            
             showNotConnectCell = false
-
             newsManger.downloadList { (error, result) in
                 
-                if let  err = error{
+                if let err = error{
                     
                     SHLog(message:err)
                     
@@ -98,6 +104,7 @@ class ViewController: UIViewController{
                 }
                 
                 self.newsArray = result
+                
                 DispatchQueue.main.async {
                     self.homePageTableView.reloadData()
                 }
@@ -126,7 +133,6 @@ class ViewController: UIViewController{
         let zero = IndexPath(row: 0, section: 0)
         homePageTableView.scrollToRow(at: zero, at: .top, animated: true)
         
-        
     }
 }
 
@@ -148,7 +154,6 @@ extension ViewController:UIScrollViewDelegate{
             
             moveTopBtn.isHidden = true
         }
-        
     }
     
 }
@@ -195,7 +200,7 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
+        
         
         if !showNotConnectCell{
             let nextPage = storyboard?.instantiateViewController(withIdentifier: "NewsWebViewController") as!NewsWebViewController

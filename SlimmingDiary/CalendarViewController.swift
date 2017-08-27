@@ -8,6 +8,16 @@
 
 import UIKit
 
+
+func launchCalanderPickerVC(_ parentVC:UIViewController){
+    
+    let man = UIStoryboard(name: "Main", bundle: nil)
+    let picker = man.instantiateViewController(withIdentifier: "CalendarViewController") as! CalendarViewController
+    picker.delegate = parentVC as? CalendarPickDelegate
+    picker.displayCalendarPickDialog(parentVC)
+    
+}
+
 protocol CalendarPickDelegate {
     
     func getCalenderSelectDate(date:MyDate)

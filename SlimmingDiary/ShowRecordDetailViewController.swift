@@ -24,12 +24,11 @@ class ShowRecordDetailViewController: UIViewController {
     @IBOutlet weak var titleImageContainerViewHeight: NSLayoutConstraint!
     @IBOutlet weak var recordsDetailTableView: UITableView!
     
+    
     var sectionsIsExpend = [Bool]()
     var serviceManager = DataService.standard
     var shareManager = shareDiaryManager.standard
-    
-    
-    
+
   
     
     override func viewDidLoad() {
@@ -63,11 +62,11 @@ class ShowRecordDetailViewController: UIViewController {
         
         if serviceManager.isConnectDBURL == false{
             
-            titleImageView.image = UIImage(named: "not_connect")
+            titleImageView.image = UIImage(named:"not_connect")
             
             DispatchQueue.main.async {
                 
-                let alert = UIAlertController(error:NO_CONNECTINTENTER)
+                let alert = UIAlertController(error:notConnectInterent)
                 self.present(alert,animated:true, completion: nil)
                 
             }
@@ -167,7 +166,7 @@ class ShowRecordDetailViewController: UIViewController {
     
     func trashDiary(){
         
-        let alert = UIAlertController(title: "刪除", message: "確定刪除這篇日記?", preferredStyle: .alert)
+        let alert = UIAlertController(title:"刪除", message: "確定刪除這篇日記?", preferredStyle: .alert)
         let ok = UIAlertAction(title: "確定", style: .default) { (UIAlertAction) in
             
     

@@ -52,7 +52,7 @@ class LoginViewController: UIViewController {
     func singInWithEmail(email:String,password:String){
         
         if serviceManager.isConnectDBURL == false{
-            showAlertWithError(message:NO_CONNECTINTENTER)
+            showAlertWithError(message:notConnectInterent)
             return
         }
         
@@ -84,7 +84,7 @@ class LoginViewController: UIViewController {
     func register(name:String,email:String,password:String){
         
         if serviceManager.isConnectDBURL == false{
-            showAlertWithError(message: NO_CONNECTINTENTER)
+            showAlertWithError(message: notConnectInterent)
             return
         }
         
@@ -122,7 +122,7 @@ class LoginViewController: UIViewController {
     @IBAction func fbBtnAction(_ sender: Any) {
         
         if serviceManager.isConnectDBURL == false{
-            showAlertWithError(message: NO_CONNECTINTENTER)
+            showAlertWithError(message: notConnectInterent)
             return
         }
         

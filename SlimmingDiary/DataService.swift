@@ -17,8 +17,39 @@ typealias Done = (Error?)->()
 typealias DoneUserData = ([String:AnyObject]?) ->()
 typealias DoneUploadProfileImage = (String?,Error?)->()
 let fireBaseDBURL = "https://simmingdiary-75e3b.firebaseio.com"
-let NO_CONNECTINTENTER = "無法取的網際網路"
+let notConnectInterent = "無法取的網際網路"
 var reachability = Reachability(hostName:fireBaseDBURL)
+
+struct ServiceDBKey {
+    
+    static  let diaryBeginDate = "beginDate"
+    static let diaryDay = "day"
+    static let diaryID = "diaryId"
+    static let diaryOpen = "open"
+    static let diaryTimeStamp = "timestamp"
+    static let diaryTitle = "title"
+    static let diaryImageURL = "titleImageURL"
+    static let diaryUserID = "userId"
+    
+    
+    static let foodItmes = "foodItmes"
+    static let sportItems = "sportItems"
+    static let text = "text"
+    static let date = "date"
+    static let itemTitle = "title"
+    static let itemDetail = "detail"
+    static let itemImageURL = "imageURL"
+    
+    static let userName = "name"
+    static let userImageURL = "imageURL"
+    static let userEmail = "email"
+    
+    
+    
+}
+
+
+
 
 
 
@@ -108,7 +139,9 @@ class DataService {
         Auth.auth().createUser(withEmail:email, password:password) { (user, error) in
             
             if error != nil{
-                print(error.debugDescription)
+                
+                SHLog(message:error.debugDescription)
+                
             }
             done(error)
             
@@ -122,7 +155,7 @@ class DataService {
         Auth.auth().signIn(withEmail:email, password:password) { (user, error) in
             
             if error != nil{
-                print(error.debugDescription)
+                  SHLog(message:error.debugDescription)
             }
             done(error)
             
@@ -146,8 +179,9 @@ class DataService {
             
             
             guard let accessToken = FBSDKAccessToken.current() else {
-                print("Fail get access token")
-                done(NSError(domain:"", code: 0, userInfo: nil))
+                
+                SHLog(message:"Fail get access token")
+                done(NSError(domain:"",code: 0, userInfo: nil))
                 return
             }
             
@@ -232,17 +266,19 @@ class DataService {
             
         }
         
-        var dict = ["email":email,"name":name]
+        var dict = [ServiceDBKey.userEmail:email,ServiceDBKey.userName:name]
         
         if let url = imageURL{
-            dict["imageURL"] = url
+            dict[ServiceDBKey.userImageURL] = url
         }
         
         dbUserURL.child(auth.uid).updateChildValues(dict) { (error, databaseReference) in
             
             
             if error != nil{
-                print(error.debugDescription)
+                
+                SHLog(message: error.debugDescription)
+
             }
             done(error)
             
@@ -262,7 +298,8 @@ class DataService {
             
             
             if error != nil{
-                print(error.debugDescription)
+                SHLog(message: error.debugDescription)
+                
             }
             done(storageMetadata?.downloadURL()?.absoluteString,error)
             
@@ -276,7 +313,8 @@ class DataService {
         guard let fullFileImageName = cachesURL?.appendingPathComponent(imageName),
             let URL = URL(string: URLStr) else{
                 
-                print("create ImageName URL error")
+                SHLog(message: "create ImageName URL error")
+                
                 return
         }
         
@@ -299,7 +337,8 @@ class DataService {
                 
             }catch{
                 
-                print("Fail Image write into caches")
+                 SHLog(message:"Fail Image write into caches")
+                
                 
             }
             

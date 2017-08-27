@@ -51,8 +51,8 @@ class MakeShareDiaryTableViewController: UITableViewController {
         timeLineTableView.rowHeight = UITableViewAutomaticDimension
         
         
-        let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
-        timeLineTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
+        let nibHeader = UINib(nibName:"HeaderTableViewCell", bundle: nil)
+        timeLineTableView.register(nibHeader, forCellReuseIdentifier:"headerCell")
         
         
         
@@ -209,7 +209,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
     }
     
-
+    
     func uploadDiaryWithItemsImage(diarys:[OneDiaryRecord]){
         
         for diary in diarys{
@@ -250,7 +250,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         sumItem = calSumItem()
         
         if serviceManager.isConnectDBURL == false{
-            let alert = UIAlertController(error:NO_CONNECTINTENTER)
+            let alert = UIAlertController(error:notConnectInterent)
             present(alert, animated: true, completion: nil)
             return
         }
@@ -316,15 +316,17 @@ class MakeShareDiaryTableViewController: UITableViewController {
             
             
             
+            
+            
             let open = self.isLocked == true ?"private":"public"
-            let dict = ["title":myPlanTitle,
-                        "titleImageURL":titleImageURL,
-                        "diaryId":self.diaryId,
-                        "userId":userId,
-                        "beginDate":myBeginDate,
-                        "day":self.diarys.count,
-                        "timestamp":timestamp,
-                        "open":open] as [String : Any]
+            let dict = [ServiceDBKey.diaryTitle:myPlanTitle,
+                        ServiceDBKey.diaryImageURL:titleImageURL,
+                        ServiceDBKey.diaryID:self.diaryId,
+                        ServiceDBKey.diaryUserID:userId,
+                        ServiceDBKey.diaryBeginDate:myBeginDate,
+                        ServiceDBKey.diaryDay:self.diarys.count,
+                        ServiceDBKey.diaryTimeStamp:timestamp,
+                        ServiceDBKey.diaryOpen:open] as [String : Any]
             
             
             self.serviceManager.dbDiarysURL.child(open).child(self.diaryId).updateChildValues(dict) { (error,reference) in
@@ -353,7 +355,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
     }
     
-
+    
     
     func uploadImageIntoStorage(items:[DiaryItem]){
         
@@ -424,20 +426,20 @@ class MakeShareDiaryTableViewController: UITableViewController {
             let currnetOpen = self.isLocked == true ?"private":"public"
             
             
-            let dict = ["title":titleDiary.title,
-                        "titleImageURL":titleDiary.titleImageURL,
-                        "diaryId":titleDiary.diaryId,
-                        "userId":titleDiary.userId,
-                        "beginDate":titleDiary.beginDate,
-                        "day":titleDiary.day,
-                        "timestamp":titleDiary.timestamp,
-                        "open":currnetOpen] as [String : Any?]
+            let dict = [ServiceDBKey.diaryTitle:titleDiary.title,
+                        ServiceDBKey.diaryImageURL:titleDiary.titleImageURL,
+                        ServiceDBKey.diaryID:titleDiary.diaryId,
+                        ServiceDBKey.diaryUserID:titleDiary.userId,
+                        ServiceDBKey.diaryBeginDate:titleDiary.beginDate,
+                        ServiceDBKey.diaryDay:titleDiary.day,
+                        ServiceDBKey.diaryTimeStamp:titleDiary.timestamp,
+                        ServiceDBKey.diaryOpen:currnetOpen] as [String : Any?]
             
             
             if trackIsLock != isLocked,
-            let uid = serviceManager.userUid{
+                let uid = serviceManager.userUid{
                 
-               
+                
                 let myDiaryId = titleDiary.diaryId
                 self.serviceManager.dbDiarysURL.child(currnetOpen).child(myDiaryId).setValue(dict)
                 self.serviceManager.dbDiarysURL.child(originOpen).child(myDiaryId).removeValue()
@@ -453,14 +455,14 @@ class MakeShareDiaryTableViewController: UITableViewController {
                 
                 DispatchQueue.main.async {
                     self.navigationController?.popToRootViewController(animated: true)
-
+                    
                 }
             })
         }
         
     }
     
-       
+    
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
@@ -515,7 +517,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         }else{
             
             return 0
-        
+            
         }
         
     }
@@ -561,8 +563,8 @@ class MakeShareDiaryTableViewController: UITableViewController {
             cell.oneDiary = diary
             
             if let text = diary.text,
-               text.isEmpty{
-            
+                text.isEmpty{
+                
                 cell.textView.text = "輸入點內容吧"
                 
             }else{
@@ -579,7 +581,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CollectionTableViewCell", for: indexPath) as! CollectionTableViewCell
         cell.VC = self
         cell.isEdit = false
-
+        
         
         if indexPath.row == foodRow {
             

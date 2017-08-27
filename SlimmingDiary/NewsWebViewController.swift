@@ -31,7 +31,7 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
             
             DispatchQueue.main.async {
                 
-                let alert = UIAlertController(error:NO_CONNECTINTENTER)
+                let alert = UIAlertController(error:notConnectInterent)
                 self.present(alert, animated: true, completion: nil)
                 
             }
@@ -47,7 +47,7 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
     
     
 
-        // Do any additional setup after loading the view.
+        
     }
     
     @IBAction func backBtnAction(_ sender: Any) {
@@ -59,15 +59,5 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

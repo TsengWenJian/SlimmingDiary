@@ -15,9 +15,9 @@ target 'SlimmingDiary' do
   pod 'Firebase'
  
 
-pod 'FBSDKCoreKit'
-pod 'FBSDKLoginKit'
-pod 'Bolts'
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'Bolts'
 
 
 end

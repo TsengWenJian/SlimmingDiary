@@ -22,7 +22,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     let sportMaster = SportMaster.standard
     let textView = UITextView()
     let rangeTextLabel = UILabel()
-    let embraveText = "請輸入激勵語..."
+    let embraveDefault = "請輸入激勵語..."
     
     
     
@@ -43,7 +43,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         let embraveText = profileManager.userEmbraveText
         
         if embraveText == nil  {
-            textView.text = embraveText
+            textView.text = embraveDefault
             
         }else{
             
@@ -177,7 +177,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         
-        if textView.text == embraveText{
+        if textView.text == embraveDefault{
             textView.text = ""
         }
         
@@ -186,7 +186,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty{
-            textView.text = embraveText
+            textView.text = embraveDefault
         }
     }
     

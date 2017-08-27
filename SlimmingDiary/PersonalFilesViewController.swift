@@ -19,8 +19,8 @@ class PersonalFilesViewController: UIViewController {
     
     @IBOutlet weak var personalFilesTableView: UITableView!
     
-    var datePickerVC:DatePickerViewController!
-    var pickerVC:PickerViewController!
+    
+    
     
     var userPhoto:UIImage? = {
         return UIImage().checkUserPhoto()
@@ -45,9 +45,7 @@ class PersonalFilesViewController: UIViewController {
     var userPhotoIschanage = false
     
     
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,14 +54,7 @@ class PersonalFilesViewController: UIViewController {
         navigationItem.rightBarButtonItem = editBaritem
         
         
-        datePickerVC = storyboard?.instantiateViewController(withIdentifier:"DatePickerViewController") as! DatePickerViewController
-        
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as! PickerViewController
-        
-        
-        
-        datePickerVC.delegate = self
-        pickerVC.delegate = self
+       
         userData = manager.getUserData()
         
     }
@@ -73,13 +64,10 @@ class PersonalFilesViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        pickerVC = nil
-        datePickerVC = nil
-    }
+    
     
     
     
@@ -142,7 +130,7 @@ class PersonalFilesViewController: UIViewController {
             
             
             if serviceManager.isConnectDBURL == false{
-                showAlertError(error:NO_CONNECTINTENTER)
+                showAlertError(error:notConnectInterent)
                 toast.removefromView()
                 return
             }
@@ -367,14 +355,13 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
             
             if  let begin = Double(userData[indexPath.row]){
                 setSelectRowOfbegin = begin
-                pickerVC.displayPickViewDialog(present: self)
+                launchPickerVC(parVC:self)
             }
             
             
             
         }else if indexPath.row == 4 {
-            
-            datePickerVC.displayPickViewDialog(present: self)
+             launchDatePickerVC(parVC: self)
             
         }else{
             

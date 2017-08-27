@@ -35,7 +35,6 @@ class SetUpViewController: UIViewController {
         
     }
     
-    
     func  loginOrlogut(sender:UIButton){
         
         if manager.userUid == nil{
@@ -93,18 +92,12 @@ class SetUpViewController: UIViewController {
                         
                     }
                 }
-                
-                
             }
         }
         
         cachesSize = (allSize/1024/1024)
         
     }
-    
-    
-    
-    
 }
 
 //MARK: - MFMailComposeViewControllerDelegate
@@ -122,7 +115,7 @@ extension SetUpViewController:MFMailComposeViewControllerDelegate{
         let messageVC = MFMailComposeViewController()
         messageVC.mailComposeDelegate = self
         messageVC.setSubject("App問題回報")
-        messageVC.setToRecipients(["TSENGWENJIAN@gmail.com"])
+        messageVC.setToRecipients(["tsengwenjian@gmail.com"])
         messageVC.setMessageBody("iPhone機型：\niOS:版本號：\n回報問題：", isHTML: false)
         return messageVC
         

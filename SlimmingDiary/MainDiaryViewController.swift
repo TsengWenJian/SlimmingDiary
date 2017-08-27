@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import UserNotifications
+
 
 class MainDiaryViewController: UIViewController{
     @IBOutlet weak var btnBackgroundView: UIView!
@@ -97,8 +99,26 @@ class MainDiaryViewController: UIViewController{
         btnBackgroundView.setShadowView(1, 0.2,CGSize.zero)
         btnBackgroundView.layer.shadowRadius = 1
         
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.badge,.sound]) { (bool, error) in
+            
+        }
+      
+        
+        let content = UNMutableNotificationContent()
+        content.title = "f"
+        content.subtitle = "fffff"
+        content.body = "fffffff"
+        content.badge = 0
+        let tar = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let re = UNNotificationRequest(identifier: "timeDone", content: content, trigger: tar)
+        UNUserNotificationCenter.current().add(re, withCompletionHandler: nil)
+        
         
     }
+    
+    
+
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -215,7 +235,7 @@ class MainDiaryViewController: UIViewController{
             
             
         }else{
-            
+            calendarPickVC.delegate = self
             calendarPickVC.displayCalendarPickDialog(self)
             calender.displayCalenderAction = true
             

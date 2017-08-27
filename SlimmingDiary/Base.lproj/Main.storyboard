@@ -476,9 +476,6 @@
                                         <date key="date" timeIntervalSinceReferenceDate="-31581864.462364972">
                                             <!--2000-01-01 11:15:35 +0000-->
                                         </date>
-                                        <connections>
-                                            <action selector="datePickerAction:" destination="82f-Ob-HTb" eventType="valueChanged" id="3Kz-Vd-fx6"/>
-                                        </connections>
                                     </datePicker>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="請選擇" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tyG-4m-40v">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
@@ -789,7 +786,7 @@
                                             <rect key="frame" x="316" y="12" width="44" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -1815,7 +1812,7 @@
                                             <constraint firstAttribute="width" constant="46" id="5tB-ho-5mb"/>
                                             <constraint firstAttribute="height" constant="30" id="DFO-JX-aqb"/>
                                         </constraints>
-                                        <state key="normal" title="﹤">
+                                        <state key="normal">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
@@ -1828,7 +1825,7 @@
                                             <constraint firstAttribute="height" constant="30" id="Dmr-pL-HeC"/>
                                             <constraint firstAttribute="width" constant="46" id="Jyq-dp-MhC"/>
                                         </constraints>
-                                        <state key="normal" title="﹥">
+                                        <state key="normal">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>

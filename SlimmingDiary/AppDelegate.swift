@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 import FBSDKCoreKit
-
+import UserNotifications
 
 
 
@@ -26,13 +26,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         
-        //從fb app 回來時會調用
+//        if #available(iOS 8.0, *) {
+//            let nus = UIUserNotificationSettings(types: [.alert,.badge,.sound], categories: nil)
+//            UIApplication.shared.registerUserNotificationSettings(nus)
+//            
+//            
+//            
+//        }
+        
+       
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
 
         
         
         return true
     }
+    
+       
     
     
     // 選定用於顯示Facebook登入（例如切換到本地Facebook app）或Facebook對話框

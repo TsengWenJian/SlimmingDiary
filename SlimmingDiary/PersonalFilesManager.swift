@@ -179,9 +179,6 @@ class ProfileManager {
     }
     
     
-    
-    
-    
     func getUserData()->[String]{
         
         var userArray = [String]()
@@ -193,8 +190,9 @@ class ProfileManager {
         if let bir = userBirthday{
             
             userArray.append(bir)
+            
         }else{
-             userArray.append("2001-01-01")
+            userArray.append("2001-01-01")
         }
         
         userArray.append(liftStyleArray[userLifeStyle])

@@ -18,6 +18,7 @@ struct NewsItem {
 
 typealias  DoneHandler = (Error?,[NewsItem])->Void
 
+let rssURLStr = "https://www.everydayhealth.com.tw/upload/all_rss.xml"
 
 class RSSParserManager:NSObject,XMLParserDelegate {
     
@@ -26,7 +27,8 @@ class RSSParserManager:NSObject,XMLParserDelegate {
     var currentElementValue:String?
     var parser = XMLParser()
     
-    var newsReach = Reachability(hostName:"https://www.everydayhealth.com.tw/upload/all_rss.xml")
+    
+    var newsReach = Reachability(hostName:rssURLStr)
     
     var isConnect:Bool{
         
@@ -35,7 +37,7 @@ class RSSParserManager:NSObject,XMLParserDelegate {
         }
         return reach.checkInternetFunction()
     }
-
+    
     
     
     
@@ -44,28 +46,31 @@ class RSSParserManager:NSObject,XMLParserDelegate {
         let config = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: config)
         
-        let url = URL(string:"https://www.everydayhealth.com.tw/upload/all_rss.xml")
-        let task = session.dataTask(with:url!) { (data, respone, error) in
-            
-            if error != nil{
-                print(error.debugDescription)
+        if  let url = URL(string:rssURLStr){
+            let task = session.dataTask(with:url) { (data, respone, error) in
                 
-                return
+                if error != nil{
+                    SHLog(message: error.debugDescription)
+                    
+                    
+                    return
+                }
+                
+                self.parser = XMLParser(data: data!)
+                self.parser.delegate = self
+                
+                if self.parser.parse(){
+                    
+                    completion(nil,self.getResult())
+                    
+                }
+                
             }
             
-            self.parser = XMLParser(data: data!)
-            self.parser.delegate = self
-            
-            if self.parser.parse(){
-                
-                 completion(nil,self.getResult())
-                
-            }
+            task.resume()
             
         }
         
-        task.resume()
-
     }
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
@@ -137,18 +142,12 @@ class RSSParserManager:NSObject,XMLParserDelegate {
             
             
         }else if  elementName ==  "pubDate"{
-            
-            
-            
-            
-            
-         
-            
-       let date = currentValue.replacingOccurrences(of:"+0800", with:"")
+        
+            let date = currentValue.replacingOccurrences(of:"+0800",with:"")
             
             currentNewsItem?.pubDate = date
             
-           
+            
         }
         
         currentElementValue = nil

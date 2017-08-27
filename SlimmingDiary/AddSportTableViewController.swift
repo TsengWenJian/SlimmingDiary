@@ -14,7 +14,6 @@ class AddSportTableViewController: UITableViewController {
     
     let titleArray = ["名稱","多久(分鐘)","消耗卡路里"]
     var detailArray = ["","",""]
-    var pickerVC:PickerViewController!
     var numberOfRows:Int = 2000
     var numberOfComponents:Int = 2
     var setSelectRowOfbegin:Double = 0
@@ -22,8 +21,6 @@ class AddSportTableViewController: UITableViewController {
     var textFieldText:String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as! PickerViewController
-        pickerVC.delegate = self
         
         
         let insertItem = UIBarButtonItem(title:"加入", style: .done, target: self, action: #selector(addSport))
@@ -114,7 +111,8 @@ class AddSportTableViewController: UITableViewController {
             setSelectRowOfbegin = 200
         }
         
-        pickerVC.displayPickViewDialog(present: self)
+        launchPickerVC(parVC: self)
+        
         
     }
     

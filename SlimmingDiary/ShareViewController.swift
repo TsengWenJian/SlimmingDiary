@@ -14,7 +14,6 @@ class ShareViewController: UIViewController {
     @IBOutlet weak var roundView: UIView!
     @IBOutlet weak var addDiaryBtn: UIButton!
     let selectLabel = UILabel()
-   
     var recordsVC:ShowRecordsTableViewController?
     
     var currnetPage = 0{

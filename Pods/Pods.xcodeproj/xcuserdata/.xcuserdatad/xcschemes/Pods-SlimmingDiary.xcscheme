@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '5A15E426DDDFE7165F1B6BC6DD1CBF60'
+               BlueprintIdentifier = '82AD3CD6FB199EBA4E376B7572944E4C'
                BlueprintName = 'Pods-SlimmingDiary'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods-SlimmingDiary.framework'>

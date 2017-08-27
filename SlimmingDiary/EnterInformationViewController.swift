@@ -22,8 +22,8 @@ class EnterInformationViewController: UIViewController {
     @IBOutlet weak var weightProgress: NickProgress2UIView!
     let manager = ProfileManager.standard
     let bodyManager = BodyInformationManager.standard
-    var datePickerVC:DatePickerViewController?
-    var pickerVC:PickerViewController?
+    
+    
     
     
     var numberOfRows:Int = 0
@@ -59,14 +59,6 @@ class EnterInformationViewController: UIViewController {
         weightProgress.setSubTitleText(text: "--")
         
 
-       datePickerVC = storyboard?.instantiateViewController(withIdentifier:"DatePickerViewController")
-            as? DatePickerViewController
-        
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController")
-            as? PickerViewController
-        
-        datePickerVC?.delegate = self
-        pickerVC?.delegate = self
         
         
     }
@@ -92,12 +84,6 @@ class EnterInformationViewController: UIViewController {
     }
     
     
-    override func viewWillDisappear(_ animated: Bool) {
-        
-        datePickerVC = nil
-        pickerVC = nil
-        
-    }
     
     
     @IBAction func inputDoneAction(_ sender: Any) {
@@ -168,7 +154,7 @@ class EnterInformationViewController: UIViewController {
                 setSelectRowOfbegin = 60
             }
             
-            pickerVC?.displayPickViewDialog(present: self)
+            launchPickerVC(parVC: self)
             
             
         case 1:
@@ -198,8 +184,7 @@ class EnterInformationViewController: UIViewController {
         case 2:
             
             
-            datePickerVC?.displayPickViewDialog(present: self)
-            
+           launchDatePickerVC(parVC:self)
             break
         case 3:
             
@@ -214,7 +199,7 @@ class EnterInformationViewController: UIViewController {
                 
             }
             
-            pickerVC?.displayPickViewDialog(present: self)
+           launchPickerVC(parVC: self)
             
             break
         case 4:
@@ -227,7 +212,7 @@ class EnterInformationViewController: UIViewController {
                 
             }
             
-            pickerVC?.displayPickViewDialog(present: self)
+              launchPickerVC(parVC: self)
             
             break
         default:

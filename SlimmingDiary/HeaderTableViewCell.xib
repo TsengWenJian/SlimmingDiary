@@ -29,9 +29,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9R-fs-79g">
-                        <rect key="frame" x="60" y="0.0" width="100" height="45.5"/>
+                        <rect key="frame" x="60" y="0.0" width="200" height="45.5"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="100" id="KyB-wb-Fik"/>
+                            <constraint firstAttribute="width" constant="200" id="hv8-9D-ugn"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <color key="textColor" red="0.93783044820000006" green="0.92774409059999996" blue="0.78574913739999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

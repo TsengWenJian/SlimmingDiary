@@ -8,6 +8,14 @@
 
 import UIKit
 
+func launchPickerVC(parVC:UIViewController){
+    let man = UIStoryboard(name: "Main", bundle: nil)
+    let picker = man.instantiateViewController(withIdentifier: "PickerViewController") as! PickerViewController
+    picker.delegate = parVC as? PickerViewDelegate
+    picker.displayPickViewDialog(present: parVC)
+}
+
+
 protocol PickerViewDelegate {
     
     var numberOfRows:Int{
@@ -47,6 +55,8 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
     }
     
     
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         
         pickerView.reloadAllComponents()
@@ -79,6 +89,8 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
    
     
     func displayPickViewDialog(present:UIViewController){
+        
+        
         present.addChildViewController(self)
         present.view.addSubview(self.view)
         didMove(toParentViewController: self)
@@ -90,6 +102,11 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         self.removeFromParentViewController()
         
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        delegate = nil
+    }
+    
     
     
     
@@ -103,6 +120,9 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         
         
     }
+    
+   
+    
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         

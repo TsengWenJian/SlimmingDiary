@@ -91,6 +91,7 @@ class WeightDiaryViewController: UIViewController{
     func setBodyFatProgress(){
         
         guard let bodyFat = weightMaster.getLasetWeightValue(.bodyFat) else{
+            bodyFatView.setSubTitleText(text:"--")
             return
         }
         

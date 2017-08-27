@@ -15,7 +15,6 @@ class AddFoodViewController: UIViewController {
     var numberOfComponents:Int = 0
     var setSelectRowOfbegin:Double = 0
     var currentTouchRow = 0
-    var pickerVC:PickerViewController!
     let sectionTitle = ["食物","營養"]
     
     @IBOutlet weak var addFoodTableView: UITableView!
@@ -25,9 +24,7 @@ class AddFoodViewController: UIViewController {
         super.viewDidLoad()
         
         
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as!
-        PickerViewController
-        pickerVC.delegate = self
+      
         
         let nibHeader = UINib(nibName: "HeaderTableViewCell",bundle: nil)
         addFoodTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
@@ -40,12 +37,17 @@ class AddFoodViewController: UIViewController {
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        pickerVC = nil
+    
+    
+    
 
+    
+    
+    deinit {
+        master.resetFoodSelect()
     }
     
-        
+    
     
     
     override func didReceiveMemoryWarning() {
@@ -230,7 +232,7 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             setSelectRowOfbegin = doubleValue
         }
         
-        pickerVC.displayPickViewDialog(present: self)
+        launchPickerVC(parVC: self)
         
     }
     

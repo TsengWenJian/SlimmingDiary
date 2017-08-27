@@ -518,7 +518,8 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
                     let id = choiceArray[indexPath.row].foodDetailId
                     let cond =  "\(FOODDETAIL_Id) = \(id)"
                     foodMaster.diaryType = .foodDetail
-                    foodMaster.deleteDiary(cond: cond)
+                    foodMaster.updataDiary(cond: cond,
+                                           rowInfo: [FOODDETAIL_CLASSIFICATION:"'其他'"])
                     choiceArray.remove(at:indexPath.row)
                     
                 }else{
@@ -527,7 +528,8 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
                     let cond =  "\(SPORTDETAIL_ID) = \(id)"
                     sportMaster.diaryType = .sportDetail
                     sportItemsArray.remove(at: indexPath.row)
-                    sportMaster.deleteDiary(cond: cond)
+                    sportMaster.updataDiary(cond: cond,
+                                            rowInfo: [SPORTDETAIL_CLASSIFICATION:"'其他'"])
                     
                 }
                 

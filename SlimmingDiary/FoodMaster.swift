@@ -225,7 +225,7 @@ class FoodMaster:DiaryManager{
         var dict = [String:String]()
         
         
-        print(diary)
+        
         
         dict = [FOODDIARY_DATE:"'\(diary.date)'",
                 FOODDIARY_DINNERTIME:"'\(diary.dinnerTime)'",
@@ -240,7 +240,7 @@ class FoodMaster:DiaryManager{
             dict[FOODDIARY_IMAGENAME] = "'\(imageName)'"
             
         }
-        print(dict)
+        
 
         insertDiary(rowInfo:dict)
 
@@ -372,6 +372,20 @@ class FoodMaster:DiaryManager{
         return array
     }()
     
+    
+    
+    func resetFoodSelect(){
+        
+        
+        foodSelect.removeAll()
+        
+        for _ in 0..<15{
+            
+            foodSelect.append(nil)
+        }
+
+    
+    }
     
     
     

@@ -32,7 +32,7 @@ class AddWeightViewController: UIViewController{
     
     let proFileManager = ProfileManager.standard
     let weightMaster = WeightMaster.standard
-    var pickerVC:PickerViewController?
+    
     
     var numberOfRows:Int = 200
     var numberOfComponents:Int = 2
@@ -43,21 +43,13 @@ class AddWeightViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController")
-            as? PickerViewController
-        
-        
-        
-        pickerVC?.delegate = self
         titleArray[0] = type.rawValue
         detailArray[0] = "\(weight)"
         
         
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        pickerVC = nil
-    }
+   
     
     
     //MARK:- Function
@@ -220,7 +212,7 @@ extension AddWeightViewController:UITableViewDelegate,UITableViewDataSource{
                 setSelectRowOfbegin = detail
             }
             
-            pickerVC?.displayPickViewDialog(present: self)
+            launchPickerVC(parVC: self)
             
         }
         
