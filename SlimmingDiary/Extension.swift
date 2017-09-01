@@ -41,7 +41,7 @@ extension Reachability{
         }else {
             
             
-             SHLog(message:"internet connected successfully.")
+            SHLog(message:"internet connected successfully.")
             
             return true
         }
@@ -134,7 +134,7 @@ extension UIImage{
         
         
         guard let cachesURL = FileManager.default.urls(for:search,in:.userDomainMask).first,
-        let name = imageName else{
+            let name = imageName else{
                 return nil
         }
         
@@ -155,7 +155,7 @@ extension UIImage{
             SHLog(message: "寫入照片失敗")
             return
         }
-
+        
     }
 }
 extension Double{
@@ -172,7 +172,7 @@ let imageCach = NSCache<AnyObject,UIImage>()
 extension UIImageView{
     
     
-  
+    
     func loadImageCacheWithURL(urlString:String?){
         
         self.image = nil
@@ -180,40 +180,40 @@ extension UIImageView{
         
         
         guard let urlStr = urlString,
-              let url = URL(string:urlStr)else{
-            
-           return
+            let url = URL(string:urlStr)else{
+                
+                return
         }
         
         
         if let cachImage = imageCach.object(forKey: url as AnyObject){
             
             self.image = cachImage
-        
+            
             return
         }
-    
         
-        let config:URLSessionConfiguration = .default
+        
+        let config:URLSessionConfiguration = .ephemeral
         let session = URLSession(configuration: config)
         let task = session.dataTask(with:url) { (data, response, error) in
             
             if let err = error{
                 
-                  SHLog(message:err)
-        return
+                SHLog(message:err)
+                return
             }
             
             DispatchQueue.main.async {
                 
                 if let  imageData  = data,
-                   let turnimage = UIImage(data:imageData){
+                    let turnimage = UIImage(data:imageData){
                     
                     self.image = turnimage
                     imageCach.setObject(turnimage,forKey: url as AnyObject)
                     
                 }
-        
+                
                 
             }
             

@@ -112,6 +112,7 @@ class AddSportTableViewController: UITableViewController {
         }
         
         launchPickerVC(parVC: self)
+        self.view.endEditing(true)
         
         
     }

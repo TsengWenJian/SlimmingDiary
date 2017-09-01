@@ -41,28 +41,28 @@ class CollectionTableViewCell:UITableViewCell{
             
             if let mydata = diaryImageType == .food ? allDiarys.food:allDiarys.sport {
                 
-                data = mydata
+                diaryItems = mydata
                 
             }
         }
     }
     
-    var data = [DiaryItem](){
+    var diaryItems = [DiaryItem](){
         
         didSet{
             
             if diaryImageType == .food{
                 
-                allDiarys.food = data
+                allDiarys.food = diaryItems
             }else{
                 
-                allDiarys.sport = data
+                allDiarys.sport = diaryItems
             }
             
             
-            let text = shareDiaryManager.standard.calSumCalorie(items: data)
+            let calorie = shareDiaryManager.standard.calSumCalorie(items:diaryItems)
             titleLabel.text = diaryImageType == .food ? "飲食":"運動"
-            detailLabel.text = diaryImageType == .food ? "攝取\(text)大卡":"消耗 \(text)大卡"
+            detailLabel.text = diaryImageType == .food ? "攝取\(calorie)大卡":"消耗 \(calorie)大卡"
             collectionView.reloadData()
         }
     }
@@ -82,9 +82,13 @@ class CollectionTableViewCell:UITableViewCell{
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
+    
         
     }
+    
+    
+    
+    
     
     
     @IBAction func editBtnAction(_ sender: Any) {
@@ -128,7 +132,7 @@ extension CollectionTableViewCell:UIImagePickerControllerDelegate,UINavigationCo
             finalImage = myImage
         }
         
-        data[currentTapItem].image = finalImage.resizeImage(maxLength:1024)
+        diaryItems[currentTapItem].image = finalImage.resizeImage(maxLength:1024)
         collectionView.reloadData()
         VC?.dismiss(animated: true, completion: nil)
         
@@ -173,7 +177,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
             return 1
         }
         
-        return  data.count
+        return  diaryItems.count
     }
     
     
@@ -215,7 +219,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
             }
             
             
-            let rowData = data[indexPath.row]
+            let rowData = diaryItems[indexPath.row]
             let defaultImage = UIImage(named:diaryImageType.rawValue)
             
             
@@ -255,7 +259,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
     func deleteItem(_ sender:UIButton){
         
         let tag = sender.tag - 1000
-        data.remove(at:tag)
+        diaryItems.remove(at:tag)
         
         
         
@@ -289,7 +293,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
                         let item:DiaryItem =  DiaryItem(image:i.image,
                                                         title:detail[0],
                                                         detail:detail[3])
-                        self.data.append(item)
+                        self.diaryItems.append(item)
                         
                     }
                     
@@ -316,7 +320,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
                         let item:DiaryItem =  DiaryItem(image:i.image,
                                                         title:firDetail.sampleName,
                                                         detail:"\(firDetail.calories)")
-                        self.data.append(item)
+                        self.diaryItems.append(item)
                         
                     }
                 }

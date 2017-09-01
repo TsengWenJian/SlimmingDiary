@@ -20,7 +20,7 @@ class ShowRecordsTableViewController: UITableViewController {
     var selfDiary = [ShareDiary]()
     var currentPage = 0{
         didSet{
-        
+            
             tableView.reloadData()
             
             if currentPage == 0{
@@ -47,11 +47,12 @@ class ShowRecordsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         let refreshControl = UIRefreshControl()
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self,action: #selector(refreshPublicDiarys),
                                  for: .valueChanged)
-
+        
         
         if servicManager.isConnectDBURL{
             toastView = NickToastUIView()
@@ -83,15 +84,16 @@ class ShowRecordsTableViewController: UITableViewController {
             
             
             recordArray.removeAll()
+            userDict.removeAll()
             tableView.reloadData()
             
-          
+            
             if servicManager.isConnectDBURL{
-        
+                
                 getPublicDiary()
                 
             }
-
+            
         }
         
         tableView.refreshControl?.endRefreshing()
@@ -102,7 +104,7 @@ class ShowRecordsTableViewController: UITableViewController {
     
     func loginStatusIsChange(){
         
-    
+        
         servicManager.dbUserDiaryURL.removeAllObservers()
         selfDiary.removeAll()
         tableView.reloadData()
@@ -114,9 +116,7 @@ class ShowRecordsTableViewController: UITableViewController {
                 getUserDiary()
                 
             }
-
         }
-        
     }
     
     
@@ -124,70 +124,57 @@ class ShowRecordsTableViewController: UITableViewController {
     
     func getPublicDiary(){
         
-        
-        
-        servicManager.dbDiarysURL.child("public").observeSingleEvent(of:.value, with: { (DataSnapshot) in
+    
+        servicManager.dbDiarysURL.child("public").queryLimited(toLast: 50).observeSingleEvent(of:.value, with: { (DataSnapshot) in
             
             
-            guard let dict = DataSnapshot.value as? [String:AnyObject] else{
-                  self.toastView?.removefromView()
+            guard let recordDict = DataSnapshot.value as? [String:AnyObject] else{
+                self.toastView?.removefromView()
                 return
             }
             
-            
-            
-            
-            for diaryID in dict{
+            for (index,diaryID) in recordDict.enumerated(){
                 
                 let record = ShareDiary()
                 record.setValuesForKeys(diaryID.value as! [String : Any])
                 self.recordArray.append(record)
-              
                 
-                if self.userDict[record.userId] == nil{
+
+                self.servicManager.dbUserURL.child(record.userId).observeSingleEvent(of:.value, with: {  (dataSnapshot) in
                     
-                    self.servicManager.dbUserURL.child(record.userId).observeSingleEvent(of:.value, with: { (dataSnapshot) in
+                    guard let userDict = dataSnapshot.value as? [String:AnyObject] else{
+                        self.toastView?.removefromView()
+                        return
+                    }
+                    
+                    let user = UserData()
+                    user.name = userDict[ServiceDBKey.userName] as? String
+                    user.imageURL = userDict[ServiceDBKey.userImageURL] as? String
+                    self.userDict[record.userId] = user
+                    
+                    
+                    if self.currentPage == 0 {
                         
-                        guard let dict2 = dataSnapshot.value as? [String:AnyObject] else{
-                            self.toastView?.removefromView()
-                            return
-                        }
-                        
-                        let user = UserData()
-                        user.name = dict2[ServiceDBKey.userName] as? String
-                        user.imageURL = dict2[ServiceDBKey.userImageURL] as? String
-                        self.userDict[record.userId] = user
-                        
-                        
-                        if self.currentPage == 0{
-                        
-                            DispatchQueue.main.async {
+                        DispatchQueue.main.async {
+                            
+                            if index == recordDict.count-1{
+                                
                                 self.tableView.reloadData()
+                                self.toastView?.removefromView()
+                                
                             }
                             
+                            
                         }
-
-            
-                    })
-  
-                }
-            }
-            
-            
-            
-            if self.currentPage == 0{
-                self.recordArray = self.sortWithTimestamp(array:self.recordArray)
-                
-                DispatchQueue.main.async {
-                
-                    self.tableView.reloadData()
-                    
-                    if  self.toastView != nil{
-                        self.toastView?.removefromView()
                     }
-                }
+                })
+                
             }
-
+            
+            
+            
+            self.recordArray = self.sortWithTimestamp(array: self.recordArray)
+            
         })
     }
     
@@ -274,6 +261,8 @@ class ShowRecordsTableViewController: UITableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         
+        
+        
         return currentPage == 0 ? 1 : 2
         
         
@@ -312,7 +301,7 @@ class ShowRecordsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        print("cellforRow")
+        
         
         let recordRow:ShareDiary
         if currentPage == 0 {

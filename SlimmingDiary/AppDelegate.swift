@@ -25,14 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         
-        
-//        if #available(iOS 8.0, *) {
-//            let nus = UIUserNotificationSettings(types: [.alert,.badge,.sound], categories: nil)
-//            UIApplication.shared.registerUserNotificationSettings(nus)
-//            
-//            
-//            
-//        }
+      
         
        
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -45,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        
     
     
-    // 選定用於顯示Facebook登入（例如切換到本地Facebook app）或Facebook對話框
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         

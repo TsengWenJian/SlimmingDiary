@@ -173,6 +173,8 @@ class ShowRecordDetailViewController: UIViewController {
             self.serviceManager.dbDiarysURL.child(self.shareDiary.open).child(self.shareDiary.diaryId).removeValue()
             self.serviceManager.dbDiaryContentURL.child(self.shareDiary.diaryId).removeValue()
             self.serviceManager.dbUserDiaryURL.child(self.shareDiary.userId).child(self.shareDiary.diaryId).removeValue()
+           
+            
             self.navigationController?.popViewController(animated: true)
             
             

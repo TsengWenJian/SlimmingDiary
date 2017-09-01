@@ -43,7 +43,7 @@ enum ToastType:String {
         supView.addSubview(self)
         
         
-        // UIApplication.shared.beginIgnoringInteractionEvents()
+        
          self.alpha = 1
         
         self.backgroundColor = UIColor(red:0, green: 0, blue: 0, alpha:0.5)
@@ -87,7 +87,7 @@ enum ToastType:String {
     
     func removefromView(){
         
-        //UIApplication.shared.endIgnoringInteractionEvents()
+        
         
         active = nil
         toastView.removeFromSuperview()

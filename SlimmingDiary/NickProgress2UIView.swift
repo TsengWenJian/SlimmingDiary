@@ -155,10 +155,10 @@ import UIKit
         
         insidePath.addArc(withCenter:CGPoint(x:insiderLayer.bounds.midX,
                                              y:insiderLayer.bounds.maxY),
-                                        radius:bounds.size.width/3,
-                                    startAngle:startAngle,
-                                      endAngle:endAngle,
-                                     clockwise:true)
+                          radius:bounds.size.width/3,
+                          startAngle:startAngle,
+                          endAngle:endAngle,
+                          clockwise:true)
         
         
         
@@ -222,12 +222,12 @@ import UIKit
         
         insiderLayer.addSublayer(pointerView.layer)
         
-    
+        
         let center = insiderLayer.position
         
         
         margin = insiderLayer.frame.height/10
-//        titleLabel.text = "--"
+        
         titleLabel.font = UIFont.systemFont(ofSize:titleTextSize)
         titleLabel.sizeToFit()
         titleLabel.center = CGPoint(x:center.x, y:insiderLayer.frame.minY+margin*2)
@@ -235,7 +235,7 @@ import UIKit
         
         
         subTitleLabel.font = UIFont.systemFont(ofSize:subTitleTextSize)
-//        subTitleLabel.text = "--"
+        
         subTitleLabel.sizeToFit()
         subTitleLabel.center = center
         
@@ -244,7 +244,7 @@ import UIKit
         
         detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)
         detailLabel.textColor = UIColor.gray
-//        detailLabel.text = "--"
+        
         detailLabel.sizeToFit()
         detailLabel.center = CGPoint(x:center.x, y:bounds.height - detailLabel.frame.height)
         
@@ -335,7 +335,7 @@ import UIKit
         
         
         
-        //pointerView.layer.removeAnimation(forKey: "pointer")
+        
         let orbit = CAKeyframeAnimation(keyPath:"position")
         orbit.duration = 1
         orbit.path = pointerPath.cgPath

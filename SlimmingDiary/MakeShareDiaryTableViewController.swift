@@ -285,7 +285,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
         
         
-        diaryId = NSUUID().uuidString
+        
         
         
         guard let myTitleImage = titleImage?.resizeImage(maxLength: 1024),
@@ -294,9 +294,10 @@ class MakeShareDiaryTableViewController: UITableViewController {
         }
         
         let timestamp = Date().timeIntervalSince1970
+        let imageUid = NSUUID().uuidString
         
         
-        serviceManager.storageTitleImagesURL.child("image_\(timestamp)_\(myTitleImage.hash).jpg").putData(dataImage, metadata: nil) { (metadata, error) in
+        serviceManager.storageTitleImagesURL.child("image_\(imageUid)_\(myTitleImage.hash).jpg").putData(dataImage, metadata: nil) { (metadata, error) in
             
             
             if let err = error{
@@ -318,22 +319,30 @@ class MakeShareDiaryTableViewController: UITableViewController {
             
             
             
+            
+            
+
             let open = self.isLocked == true ?"private":"public"
-            let dict = [ServiceDBKey.diaryTitle:myPlanTitle,
+            var dict = [ServiceDBKey.diaryTitle:myPlanTitle,
                         ServiceDBKey.diaryImageURL:titleImageURL,
-                        ServiceDBKey.diaryID:self.diaryId,
                         ServiceDBKey.diaryUserID:userId,
                         ServiceDBKey.diaryBeginDate:myBeginDate,
                         ServiceDBKey.diaryDay:self.diarys.count,
                         ServiceDBKey.diaryTimeStamp:timestamp,
                         ServiceDBKey.diaryOpen:open] as [String : Any]
             
-            
-            self.serviceManager.dbDiarysURL.child(open).child(self.diaryId).updateChildValues(dict) { (error,reference) in
+               let ref = self.serviceManager.dbDiarysURL.child(open).childByAutoId()
+               dict[ServiceDBKey.diaryID] = ref.key
+               self.diaryId = ref.key
+    
+               ref.updateChildValues(dict) { (error,reference) in
                 
+               
+                                
                 if error != nil{
                     self.toastView.removefromView()
-                    print(error.debugDescription)
+                    SHLog(message: error.debugDescription)
+                    
                     return
                     
                 }
@@ -342,7 +351,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
                     
                     if error != nil{
                         self.toastView.removefromView()
-                        print(error.debugDescription)
+                        SHLog(message: error.debugDescription)
                         return
                     }
                     
@@ -372,11 +381,14 @@ class MakeShareDiaryTableViewController: UITableViewController {
                     trackUploadImageNumber+=1
                     continue
             }
-            let timestamp = Date().timeIntervalSince1970
-            serviceManager.storageImagesURL.child("item_\(timestamp)_\(myImage.hash).jpg").putData(data,metadata:nil,completion: { (StorageMetadata,error) in
+            
+            let imageUid = NSUUID().uuidString
+
+            serviceManager.storageImagesURL.child("item_\(imageUid)_\(myImage.hash).jpg").putData(data,metadata:nil,completion: { (StorageMetadata,error) in
                 
                 if let err = error{
-                    print(err.localizedDescription)
+                    SHLog(message: err.localizedDescription)
+                    
                     return
                 }
                 
@@ -407,9 +419,9 @@ class MakeShareDiaryTableViewController: UITableViewController {
             serviceManager.dbDiaryContentURL.child(id).updateChildValues(["diaryRecords":records]) { (error, databaseReference) in
                 
                 self.toastView.removefromView()
-                if error != nil{
+                if let err = error{
+                    SHLog(message: err)
                     
-                    print(error.debugDescription)
                     return
                 }
                 
