@@ -40,13 +40,11 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
             
         }
         
-        let url = URL(string: urlString)
-        let request = URLRequest(url: url!)
-        webView.loadRequest(request)
-
-    
-    
-
+        if let url = URL(string:urlString){
+            let request = URLRequest(url:url)
+            webView.loadRequest(request)
+        }
+       
         
     }
     

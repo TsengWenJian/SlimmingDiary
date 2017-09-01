@@ -41,10 +41,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
+	<dict/>
 	<key>NSCameraUsageDescription</key>
 	<string>存取相機以取得照片作發送和存取</string>
 	<key>NSPhotoLibraryUsageDescription</key>
