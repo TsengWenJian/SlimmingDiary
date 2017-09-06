@@ -34,6 +34,9 @@ class ViewController: UIViewController{
         
         
         
+        
+        
+        
         checkIsLogInSetUserDefault()
         getNewsArray()
         

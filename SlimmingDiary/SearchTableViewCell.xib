@@ -6,7 +6,9 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,16 +22,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="G8x-Ms-Tot">
-                        <rect key="frame" x="10" y="8.5" width="312" height="41.5"/>
+                        <rect key="frame" x="10" y="8.5" width="308" height="41.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4B-i4-wu7">
-                                <rect key="frame" x="0.0" y="0.0" width="312" height="20.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="308" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xDJ-AZ-mEu">
-                                <rect key="frame" x="0.0" y="23.5" width="312" height="18"/>
+                                <rect key="frame" x="0.0" y="23.5" width="308" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -41,10 +43,9 @@
                         </constraints>
                     </stackView>
                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJQ-k1-bwP">
-                        <rect key="frame" x="322" y="11.5" width="35" height="35"/>
+                        <rect key="frame" x="318" y="7" width="44" height="44"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="35" id="6e8-Qz-ayn"/>
-                            <constraint firstAttribute="height" constant="35" id="TrP-We-pee"/>
+                            <constraint firstAttribute="width" secondItem="oJQ-k1-bwP" secondAttribute="height" multiplier="1:1" id="9vn-x8-5YB"/>
                         </constraints>
                         <state key="normal" title="Button" image="checkoff"/>
                         <state key="selected" image="checked"/>
@@ -53,8 +54,9 @@
                 <constraints>
                     <constraint firstItem="oJQ-k1-bwP" firstAttribute="centerY" secondItem="oz3-Lj-z5b" secondAttribute="centerY" id="Bdh-QO-NfZ"/>
                     <constraint firstItem="G8x-Ms-Tot" firstAttribute="centerY" secondItem="oz3-Lj-z5b" secondAttribute="centerY" id="GwY-7w-XyQ"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="oJQ-k1-bwP" secondAttribute="trailing" constant="10" id="OI4-p6-CC6"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="oJQ-k1-bwP" secondAttribute="trailing" constant="5" id="OI4-p6-CC6"/>
                     <constraint firstItem="oJQ-k1-bwP" firstAttribute="leading" secondItem="G8x-Ms-Tot" secondAttribute="trailing" id="h5A-Oh-oW1"/>
+                    <constraint firstItem="oJQ-k1-bwP" firstAttribute="height" secondItem="oz3-Lj-z5b" secondAttribute="height" multiplier="0.75" id="jEc-mL-CXX"/>
                     <constraint firstItem="G8x-Ms-Tot" firstAttribute="leading" secondItem="oz3-Lj-z5b" secondAttribute="leading" constant="10" id="yOS-A6-SRy"/>
                 </constraints>
             </tableViewCellContentView>

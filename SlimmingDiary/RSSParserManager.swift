@@ -9,6 +9,7 @@
 import Foundation
 
 struct NewsItem {
+    
     var title = String()
     var link = String()
     var imageURL = String()

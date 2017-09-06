@@ -241,14 +241,14 @@ class LoginViewController: UIViewController {
             isHidden = true
             nameTop = -nameTextField.frame.height - 20
             nameTextField.alpha = 0
-            fbLoginBtn.isHidden = false
+            
             
             
         }else{
             nameTop = 0
             isHidden = false
             nameTextField.alpha = 1
-            fbLoginBtn.isHidden = true
+            
         }
         
         UIView.animate(withDuration:0.2, delay: 0, options:[.curveEaseInOut], animations: {

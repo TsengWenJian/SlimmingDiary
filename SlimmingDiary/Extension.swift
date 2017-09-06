@@ -9,12 +9,15 @@
 import Foundation
 import UIKit
 
-func SHLog<T>(message: T,
-           fileName: String = #file,
+
+
+func SHLog<T>(message:T,
+           fileName: NSString = #file,
            methodName: String = #function,
            lineNumber: Int = #line){
+    
     #if DEBUG
-        print("\((fileName as NSString).pathComponents.last!).\(methodName)[\(lineNumber)]:\(message)")
+        print("\(fileName.lastPathComponent).\(methodName)[\(lineNumber)]:\(message)")
     #endif
 }
 
@@ -70,6 +73,8 @@ extension UIImage{
         var image:UIImage?
         
         if manager.userPhotoName == nil{
+            
+            
             
             if manager.userGender == 0{
                 

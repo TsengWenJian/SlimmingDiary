@@ -185,6 +185,8 @@ class DataService {
                 return
             }
             
+            
+            
             //製作Firebase憑證：
             let credential = FacebookAuthProvider.credential(withAccessToken: accessToken.tokenString)
             

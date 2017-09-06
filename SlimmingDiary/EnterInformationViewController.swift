@@ -78,11 +78,13 @@ class EnterInformationViewController: UIViewController {
         if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "FirstPage") {
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
+            self.dismiss(animated: false, completion: nil)
             
         }
     
     }
     
+       
     
     
     

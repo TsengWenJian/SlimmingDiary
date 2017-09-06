@@ -55,8 +55,13 @@ class ShowRecordsTableViewController: UITableViewController {
         
         
         if servicManager.isConnectDBURL{
-            toastView = NickToastUIView()
-            toastView?.showView(supView:view, type: .download)
+           
+            DispatchQueue.main.async {
+                
+                self.toastView = NickToastUIView()
+                self.toastView?.showView(supView:self.tableView, type: .download)
+            }
+           
             
             if servicManager.isLogin{
                 

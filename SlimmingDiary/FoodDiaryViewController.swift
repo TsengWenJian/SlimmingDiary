@@ -134,18 +134,17 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! BodyTableViewCell
         
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! BodyTableViewCell
         
         let  diary = sectionArray[indexPath.section][indexPath.row]
         cell.titleLabel.text = diary.sampleName
         
         cell.bodyLabel.text = "\(diary.amount)" + diary.foodUnit + "(\(Int(diary.weight))克)"
         cell.rightLabel.text = String(Int(diary.calorie))
-        
-        
-        cell.leftImageView.image = diary.imageName == nil ? UIImage(named: "food"):UIImage(imageName: diary.imageName,
-                                                                                           search: .documentDirectory)
+        cell.leftImageView.image = diary.imageName == nil ? UIImage(named:"food"):UIImage(imageName:diary.imageName,
+                                                                                           search:.documentDirectory)
 
         
         
@@ -190,8 +189,9 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerCell = tableView.dequeueReusableCell(withIdentifier: "footerCell")as! FooterTableViewCell
         
+        
+        let footerCell = tableView.dequeueReusableCell(withIdentifier: "footerCell")as! FooterTableViewCell
         let recordCount = sectionArray[section].count
         
         footerCell.titleLabel.text = recordCount == 0 ?"尚未添加食物":"\(sectionArray[section].count) 項"

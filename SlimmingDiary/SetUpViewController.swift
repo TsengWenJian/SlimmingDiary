@@ -185,7 +185,7 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
             if manager.userUid == nil{
                 
                 cell.userNameTextField.text = "尚未登入"
-                cell.emailLabel.text = ""
+                cell.emailLabel.text = "Log in"
                 
                 
             }else{
@@ -239,8 +239,17 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
-        if indexPath.section == 1{
+        if indexPath.section == 0{
+            
+            if manager.userUid == nil{
+                
+                let nextPage = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                navigationController?.pushViewController(nextPage, animated: true)
+                
+                
+            }
+            
+        }else if indexPath.section == 1{
             
             
             if indexPath.row == 0{
@@ -248,6 +257,8 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
                 
                 if MFMailComposeViewController.canSendMail() {
                     present(emailVC, animated: true, completion: nil)
+                    
+                    
                 }else{
                     
                     
