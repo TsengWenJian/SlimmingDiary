@@ -184,7 +184,7 @@ class CalenderManager{
     
     func StringToDate(_ date:String)->Date{
         let formmater = DateFormatter()
-        formmater.dateFormat = "YYYY-M-d"
+        formmater.dateFormat = "YYYY-MM-dd"
         let date = formmater.date(from: date)!
         
         return Date(timeInterval: TimeInterval(TimeZone.current.secondsFromGMT()), since: date)
@@ -194,7 +194,7 @@ class CalenderManager{
     func dateToString(_ date:Date)->String{
         
         let formmater = DateFormatter()
-        formmater.dateFormat = "YYYY-M-d"
+        formmater.dateFormat = "YYYY-MM-dd"
         
 
         return formmater.string(from: date)
@@ -222,8 +222,21 @@ class CalenderManager{
     
     func myDateToString(_ myDate:MyDate)->String{
         
+        var monthStr:String = "\(myDate.month)"
+        var dayStr:String = "\(myDate.day)"
         
-        return "\(myDate.year)-\(myDate.month)-\(myDate.day)"
+        if myDate.month < 10{
+            
+          
+            monthStr = "0\(myDate.month)"
+        }
+        
+        if myDate.day < 10{
+            
+            dayStr = "0\(myDate.day)"
+        }
+        
+        return "\(myDate.year)-\(monthStr)-\(dayStr)"
         
     }
     

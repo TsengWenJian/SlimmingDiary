@@ -57,12 +57,14 @@ import UIKit
                 progress = 0
             }
         }
+        
+        
     }
     
     
     
     
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -74,13 +76,14 @@ import UIKit
         
     }
     
+       
     override func draw(_ rect: CGRect) {
         
-        
+         
         let startAngle:CGFloat = CGFloat(Double.pi * -1/2)
         let endAngle: CGFloat = CGFloat(Double.pi * 3/2)
         
-        
+        print("-----------ProgressDraw------------")
         
         
         if trackLayer != nil {
@@ -159,37 +162,13 @@ import UIKit
         
         titleLabel.textColor = titleTextColor
         titleLabel.font = UIFont.systemFont(ofSize:titleTextSize)
-        titleLabel.sizeToFit()
-        titleLabel.center = CGPoint(x:bounds.midX,
-                                    y:bounds.minY + lineWidth + labelMargin*2)
-         
-        
-        
-        
-        
-        
+
         subTitleLabel.textColor = subTitleTextColor
         subTitleLabel.font = UIFont.systemFont(ofSize:subTitleTextSize)
-        subTitleLabel.sizeToFit()
-        subTitleLabel.center = CGPoint(x:bounds.midX, y:bounds.midY)
-        
-        
-        
-        
-        
-        
         
         detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)
         detailLabel.textColor = detailTextColor
-        detailLabel.sizeToFit()
-        detailLabel.center = CGPoint(x:bounds.midX,
-                                     y:subTitleLabel.frame.maxY+labelMargin)
         
-        
-        
-        
-        
-    
         addSubview(titleLabel)
         addSubview(subTitleLabel)
         addSubview(detailLabel)
@@ -229,7 +208,7 @@ import UIKit
         detailLabel.text = text
         detailLabel.sizeToFit()
         detailLabel.center = CGPoint(x:bounds.midX,
-                                     y:subTitleLabel.frame.maxY+labelMargin)
+                                     y:subTitleLabel.frame.maxY+labelMargin*1.5)
         
         
         

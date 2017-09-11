@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+
 class SQLiteConnect {
     
     var db :OpaquePointer? = nil
@@ -20,6 +22,7 @@ class SQLiteConnect {
         
         checkDBisExist()
         db = openDatabase(path)
+        
         if db == nil {
             return nil
         }
@@ -38,7 +41,8 @@ class SQLiteConnect {
             do{
                 try fileManager.copyItem(atPath:originalPath!, toPath: path)
             }catch{
-                print("複製失敗")
+                
+                SHLog(message:"copy sqlite error")
             }
         }
 
@@ -110,6 +114,7 @@ class SQLiteConnect {
         if let orderBy = order {
             sql += " order by \(orderBy)"
         }
+        
         
         
         sqlite3_prepare_v2(self.db,sql.cString(using: String.Encoding.utf8), -1, &statement, nil)

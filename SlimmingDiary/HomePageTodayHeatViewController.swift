@@ -18,7 +18,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
 
     let bodyManager = BodyInformationManager.standard
     let profileManager = ProfileManager.standard
-    let foodManager = FoodMaster.standard
+    let foodMaster = FoodMaster.standard
     let sportMaster = SportMaster.standard
     let textView = UITextView()
     let rangeTextLabel = UILabel()
@@ -111,14 +111,19 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         
         let basic = Int(bodyManager.getDailyCaloriesRequired())
-        let food = Int(getTodayFoodCalorie())
-        let sport = Int(getTodaySportCaloree())
+        let food = Int(foodMaster.getTodayFoodCalorie())
+        let sport = Int(sportMaster.getTodaySportCaloree())
+
         
         
-        basicCalorieLabel.text = "\(basic)"
-        foodCalorieLabel.text = "\(food)"
-        sportCalorieLabel.text = "\(sport)"
-        resultCalorieLabel.text = "\(basic - food)"
+        DispatchQueue.main.async {
+            
+            self.basicCalorieLabel.text = "\(basic)"
+            self.foodCalorieLabel.text = "\(food)"
+            self.sportCalorieLabel.text = "\(sport)"
+            self.resultCalorieLabel.text = "\(basic - food)"
+        }
+       
         
     }
     
@@ -128,25 +133,6 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     }
     
     
-    func getTodaySportCaloree()->Double{
-        
-        let cond = "Sport_Diary.\(SPORTYDIARY_DETAILID)=\(SPORTDETAIL_ID) and \(SPORTYDIARY_DATE) = '\(CalenderManager.standard.currentDateString())'"
-        
-        
-        sportMaster.diaryType = .sportDiaryAndDetail
-        let sportDetail = sportMaster.getSportDetails(.diaryData, minute: nil, cond: cond, order: nil)
-        
-        var calorieSum:Double = 0
-        for sport in sportDetail{
-            
-            calorieSum += sport.calories
-            
-        }
-
-        return calorieSum
-        
-    }
-
     
     func doneBtnAction() {
         textView.resignFirstResponder()
@@ -154,20 +140,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
         
         
     }
-    
-    func getTodayFoodCalorie()->Double{
-        
-        let cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DATE) = '\(CalenderManager.standard.currentDateString())'"
-        foodManager.diaryType = .foodDiaryAndDetail
-        let foodDetail = foodManager.getFoodDetails(.diaryData, amount: nil, weight: nil, cond: cond, order: nil)
-        var calorieSum:Double = 0
-        for food in foodDetail{
-            
-            calorieSum += food.calorie
-            
-        }
-        return calorieSum
-    }
+
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         
@@ -178,7 +151,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     func textViewDidBeginEditing(_ textView: UITextView) {
         
         if textView.text == embraveDefault{
-            textView.text = ""
+           textView.text = ""
         }
         
         

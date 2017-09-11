@@ -217,6 +217,22 @@ class FoodMaster:DiaryManager{
         return array
     }
     
+    func getTodayFoodCalorie()->Double{
+        
+        let cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DATE) = '\(CalenderManager.standard.currentDateString())'"
+        diaryType = .foodDiaryAndDetail
+        let foodDetail = getFoodDetails(.diaryData, amount: nil, weight: nil, cond: cond, order: nil)
+        var calorieSum:Double = 0
+        
+        for food in foodDetail{
+            
+            calorieSum += food.calorie
+            
+        }
+        return calorieSum
+    }
+
+    
     
     func insertFoodDiary(diary:foodDiary){
         

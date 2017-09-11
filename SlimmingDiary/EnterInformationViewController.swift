@@ -50,14 +50,8 @@ class EnterInformationViewController: UIViewController {
         super.viewDidLoad()
         
         
-        
-        if manager.isInputDone{
-            goToHomePage()
-           return
-        }
-        
         weightProgress.setSubTitleText(text: "--")
-        
+
 
         
         
@@ -84,7 +78,7 @@ class EnterInformationViewController: UIViewController {
     
     }
     
-       
+    
     
     
     
@@ -105,6 +99,7 @@ class EnterInformationViewController: UIViewController {
             manager.setUserTargetWeight(myTargetWeight)
             manager.setUserOriginWeight(myWeight)
             manager.setUserBirthday(myBirthby)
+            manager.setTargetStep(10000)
             manager.setUserIsInputDone(true)
             
             
@@ -129,10 +124,7 @@ class EnterInformationViewController: UIViewController {
         }
         
         
-        
-        let alert = UIAlertController(title: "資料輸入不完全", message: "", preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "取消", style:.cancel, handler:nil)
-        alert.addAction(cancel)
+        let alert = UIAlertController(error:"請填寫完整哦")
         present(alert, animated: true, completion: nil)
         
         

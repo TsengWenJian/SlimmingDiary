@@ -33,7 +33,7 @@ extension UIView{
         
     }
 }
-
+//MARK: - Reachability
 extension Reachability{
     
     func checkInternetFunction() -> Bool {
@@ -51,11 +51,13 @@ extension Reachability{
     }
 }
 
+
+
 // MARK:- UIAlertController
 extension UIAlertController{
     
     convenience init(error:String?){
-        self.init(title: "", message: error, preferredStyle: .alert)
+        self.init(title:error, message:"", preferredStyle: .alert)
         let ok = UIAlertAction(title: "ok", style: .cancel, handler: nil)
         self.addAction(ok)
         

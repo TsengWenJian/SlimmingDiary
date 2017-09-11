@@ -79,6 +79,7 @@ class WeightDiaryViewController: UIViewController{
             
         }
         
+        
         let bmi  = String(format:"%0.1f",bodyManager.getBmi())
         weightView.setTitleText(text:bodyManager.getWeightType().rawValue)
         weightView.setTitleColor(bodyManager.getWeightTypeColor())

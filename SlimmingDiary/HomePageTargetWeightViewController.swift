@@ -43,26 +43,31 @@ class HomePageTargetWeightViewController: UIViewController {
       
         let  denominatorString = String(format:"%.1f", denominator)
         
-        if progress >= 100{
+        
+        DispatchQueue.main.async {
+            if progress >= 100{
+                
+                self.targetProgress.setTitleText(text:"恭喜")
+                self.targetProgress.setSubTitleText(text: "達成目標")
+                self.targetProgress.setDetailText(text: "")
+                
+                
+            }else{
+                self.targetProgress.setTitleText(text:"距離目標")
+                self.targetProgress.setSubTitleText(text:denominatorString)
+                self.targetProgress.setDetailText(text: "kg")
+                
+            }
             
-            targetProgress.setTitleText(text:"恭喜")
-            targetProgress.setSubTitleText(text: "達成目標")
-            targetProgress.setDetailText(text: "")
+            
+            
+            // if progress is not change don't again anim
+            if progress != self.targetProgress.getProgress(){
+                self.targetProgress.resetProgress(progress)
+            }
 
-            
-        }else{
-            targetProgress.setTitleText(text:"距離目標")
-            targetProgress.setSubTitleText(text:denominatorString)
-            targetProgress.setDetailText(text: "kg")
-            
         }
         
-        
-        
-        // if progress is not change don't again anim
-        if progress != targetProgress.getProgress(){
-             targetProgress.resetProgress(progress)
-        }
     }
     
     

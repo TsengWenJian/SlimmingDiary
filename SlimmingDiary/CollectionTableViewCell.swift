@@ -289,7 +289,6 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
                                                                           foodId:i.foodId,
                                                                           amount:i.amount,
                                                                           weight:i.weight)
-                        
                         let item:DiaryItem =  DiaryItem(image:i.image,
                                                         title:detail[0],
                                                         detail:detail[3])

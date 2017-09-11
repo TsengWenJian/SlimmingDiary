@@ -67,7 +67,7 @@ class AddSportTableViewController: UITableViewController {
             
         }
         
-        let alert = UIAlertController(error: "請輸入完整")
+        let alert = UIAlertController(error: "請填寫完整哦")
         present(alert, animated: true, completion: nil)
         
         

@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
     let manager = ProfileManager.standard
     let serviceManager = DataService.standard
     let toast  = NickToastUIView()
-
+    
     
     
     
@@ -34,6 +34,22 @@ class LoginViewController: UIViewController {
         loginBtn.layer.cornerRadius = 5
         fbLoginBtn.layer.cornerRadius = 5
         
+        if Thread.isMainThread {
+            print("isMainThread - isMainThread")
+            
+        }
+        
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         
     }
     
@@ -88,7 +104,7 @@ class LoginViewController: UIViewController {
             return
         }
         
-         toast.showView(supView: view, type: .logIn)
+        toast.showView(supView: view, type: .logIn)
         
         serviceManager.createAccount(name: name, email: email, password: password) { (error) in
             
@@ -197,7 +213,7 @@ class LoginViewController: UIViewController {
         
         
         guard let email = emailTextField.text,
-              let password = passWordTextFiled.text else{
+            let password = passWordTextFiled.text else{
                 
                 return
         }
@@ -211,18 +227,18 @@ class LoginViewController: UIViewController {
         }else{
             
             
-
+            
             
             if let myName = nameTextField.text,
-                  !myName.isEmpty {
+                !myName.isEmpty {
                 
                 register(name:myName,email:email,password:password)
-            
+                
             }else{
                 
                 
                 showAlertWithError(message:"The name is empty")
-
+                
             }
             
             

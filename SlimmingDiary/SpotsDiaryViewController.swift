@@ -65,7 +65,7 @@ class SpotsDiaryViewController:UIViewController{
         spotsDiaryTableView.reloadSections(IndexSet(integer:0), with: .automatic)
     }
     
-    func plusFood(sender:UIButton){
+    func plusSport(sender:UIButton){
         
         
         let nextPage = storyboard?.instantiateViewController(withIdentifier: "ChoiceFoodViewController") as! ChoiceFoodViewController
@@ -155,7 +155,7 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         
         let footerCell = tableView.dequeueReusableCell(withIdentifier: "footerCell") as!FooterTableViewCell
         footerCell.titleLabel.text = sportItems.count == 0 ?"尚未添加運動":"\(sportItems.count) 項"
-        footerCell.footerButton.addTarget(self, action: #selector(plusFood(sender:)), for: .touchUpInside)
+        footerCell.footerButton.addTarget(self, action: #selector(plusSport(sender:)), for: .touchUpInside)
     
         return footerCell.contentView
     }

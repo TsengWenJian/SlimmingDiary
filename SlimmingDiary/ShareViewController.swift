@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class ShareViewController: UIViewController {
     
     @IBOutlet weak var roundScrollView: UIScrollView!
@@ -36,40 +37,44 @@ class ShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setNavRoundScroll()
+        
+       
+        setNavRoundScrollView()
         
         if let VC  = self.childViewControllers[0] as? ShowRecordsTableViewController{
             
             recordsVC = VC
         }
         
-        loginStatusIsChange()
         
+        
+        loginStatusIsChange()
         NotificationCenter.default.addObserver(self,selector:#selector(loginStatusIsChange),
                                                name: NSNotification.Name(rawValue:"loginStatus"),
                                                object: nil)
   
-       
+     
         
         
         
     }
     
-    func setNavRoundScroll(){
+    func setNavRoundScrollView(){
         
         roundView.layer.cornerRadius = 15
         let scolBounds = roundScrollView.bounds
         roundScrollView.contentSize = roundScrollView.bounds.size
         
         
+        let itemWidth = scolBounds.width/2
         roundScrollView.contentInset = UIEdgeInsets(top:0,
-                                                    left:scolBounds.width/2,
+                                                    left:itemWidth,
                                                     bottom:0,
                                                     right:0)
         
         selectLabel.text = "全部"
         selectLabel.textAlignment = .center
-        selectLabel.frame.size = CGSize(width:scolBounds.width/2,
+        selectLabel.frame.size = CGSize(width:itemWidth,
                                         height:scolBounds.height)
         
         selectLabel.textColor = seagreen

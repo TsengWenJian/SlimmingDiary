@@ -158,6 +158,7 @@ struct myProgress{
         subTitleLabel.sizeToFit()
         subTitleLabel.font = UIFont.systemFont(ofSize: size)
         
+        
     }
     
     

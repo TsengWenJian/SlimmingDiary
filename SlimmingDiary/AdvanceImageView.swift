@@ -36,33 +36,31 @@ class AdvanceImageView: UIImageView {
         if let cachImage = UIImage(contentsOfFile:fullFileImageName.path){
             
             self.image = cachImage
-            
             return
-            
         }
-        
         
         if existTask != nil{
             existTask?.cancel()
             existTask = nil
-            
         }
         
         loadingView?.startAnimating()
         let config = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: config)
         
-        existTask = nil
         
+        
+
         
         let task = session.dataTask(with:url!) { (data, respone, error) in
             
             self.existTask = nil
             
+            
+            
             DispatchQueue.main.async {
-                
                 self.loadingView?.stopAnimating()
-                self.loadingView = nil
+               
             }
             
             if error != nil{
@@ -72,13 +70,13 @@ class AdvanceImageView: UIImageView {
             
             guard let myData = data else{
                 return
-                
             }
             
             
             let image = UIImage(data: myData)
             
             DispatchQueue.main.async {
+                
                 self.image = image
                 
             }
@@ -106,6 +104,7 @@ class AdvanceImageView: UIImageView {
             DispatchQueue.main.async {
                 self.loadingView?.frame = self.bounds
             }
+            
             loadingView?.color = UIColor.darkGray
             loadingView?.hidesWhenStopped = true
             addSubview(loadingView!)

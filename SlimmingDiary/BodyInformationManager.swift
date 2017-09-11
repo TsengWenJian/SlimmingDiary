@@ -85,8 +85,6 @@ class BodyInformationManager {
         let minWeight = standardWeight * (1-0.1)
         let maxWeight = standardWeight * (1+0.1)
         
-        
-        
         return "\(String(format:"%0.1f", minWeight))~\(String(format:"%0.1f",maxWeight))"
         
     }

@@ -17,7 +17,7 @@ class ProfileManager {
     
     let liftStyleArray = ["靜態或坐的工作","站立活動較多的工作","重度使用體力之工作"]
     let genderArray = ["女姓","男性"]
-    let presonalTitle = ["性別","身高","體重","目標體重","生日","生活型態"]
+    let presonalTitle = ["性別","身高","體重","目標體重","生日","生活型態","每日步數"]
     
     
     var isInputDone:Bool{
@@ -77,9 +77,14 @@ class ProfileManager {
         return UserDefaults.standard.string(forKey:"photo")
     }
     var userEmail:String?{
-        
-        
+    
         return UserDefaults.standard.string(forKey:"email")
+        
+    }
+    
+    var targetStep:Double{
+        
+         return UserDefaults.standard.double(forKey:"targetStep")
         
     }
     
@@ -178,6 +183,15 @@ class ProfileManager {
         
     }
     
+    func setTargetStep(_ step:Double){
+        
+        UserDefaults.standard.set(step, forKey: "targetStep")
+        UserDefaults.standard.synchronize()
+        
+        
+    }
+
+    
     
     func getUserData()->[String]{
         
@@ -196,7 +210,7 @@ class ProfileManager {
         }
         
         userArray.append(liftStyleArray[userLifeStyle])
-        userArray.append(String(userHeight))
+        userArray.append(String(Int(targetStep)))
         
         return userArray
         
@@ -210,9 +224,12 @@ class ProfileManager {
                let height = Double(data[1]),
                let weight = Double(data[2]),
                let targetWeight = Double(data[3]),
-               let liftStyle = liftStyleArray.index(of: data[5])else{
+               let liftStyle = liftStyleArray.index(of: data[5]),
+               let targetStep = Double(data[6])else{
             return
         }
+        
+        
         
         
         setUserGender(gender)
@@ -221,6 +238,7 @@ class ProfileManager {
         setUserTargetWeight(targetWeight)
         setUserBirthday(data[4])
         setUserlifeStyle(liftStyle)
+        setTargetStep(targetStep)
         
 
     }

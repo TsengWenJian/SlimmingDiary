@@ -78,12 +78,9 @@ class AddFoodViewController: UIViewController {
             return
         }
         
-        
-        let alert = UIAlertController(title: "輸入", message: "資料輸入不完全", preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "取消", style:.cancel, handler:nil)
-        alert.addAction(cancel)
+        let alert = UIAlertController(error: "請填寫完整哦")
         present(alert, animated: true, completion: nil)
-        
+    
         
         
         

@@ -53,7 +53,6 @@ struct ServiceDBKey {
 
 
 
-
 class DataService {
     
     static  let standard = DataService()

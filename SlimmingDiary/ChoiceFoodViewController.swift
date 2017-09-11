@@ -14,9 +14,7 @@ class ChoiceFoodViewController: UIViewController{
     @IBOutlet weak var tableViewButtomConstraint: NSLayoutConstraint!
     @IBOutlet weak var sliderViewLeading: NSLayoutConstraint!
     
-    
-    
-    
+
     @IBOutlet weak var containBtnView: UIView!
     @IBOutlet weak var buttonView: UIView!
     @IBOutlet weak var addCustomBtn: UIButton!
@@ -95,22 +93,34 @@ class ChoiceFoodViewController: UIViewController{
                 var newDateComponent = DateComponents()
                 newDateComponent.day = -7
                 let offset = TimeZone.current.secondsFromGMT()
-                let date = Date(timeInterval:TimeInterval(offset), since:Date())
+                let date = Date(timeInterval:TimeInterval(offset),since:Date())
+                
                 if  let  calculatedDate = Calendar.current.date(byAdding:newDateComponent,to:date){
+                    
+                   
                     let calDateString = calender.dateToString(calculatedDate)
                     
                     
+                    print(calDateString)
+                    
+                    
+                
                     if diaryType == .food{
                         
                         cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DATE) >= '\(calDateString)' group by \(FOODDIARY_DETAILID)"
+                        
                         order =  "\(FOODDIARY_DATE) desc"
                         
                     }else{
                         cond = "Sport_Diary.\(SPORTYDIARY_DETAILID)=\(SPORTDETAIL_ID) and \(SPORTYDIARY_DATE) >= '\(calDateString)' group by \(SPORTYDIARY_DETAILID)"
                         
+                        
                         order =  "\(SPORTYDIARY_DATE) desc"
                     }
                 }
+                
+                
+                
                 
             default:
                 
@@ -118,6 +128,7 @@ class ChoiceFoodViewController: UIViewController{
                 
                 
             }
+            
             
             if currentButton < 3{
                 if diaryType == .food{
@@ -130,6 +141,8 @@ class ChoiceFoodViewController: UIViewController{
                                                                   cond:cond,order:order)
                 }
             }
+            
+            
             
             choiceFoodTableView.reloadData()
             
@@ -156,8 +169,8 @@ class ChoiceFoodViewController: UIViewController{
         
         let customView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         customView.backgroundColor = coral
-        let p = UIBarButtonItem(customView:customView)
-        navigationItem.rightBarButtonItems = [p,plusSum]
+        let sum = UIBarButtonItem(customView:customView)
+        navigationItem.rightBarButtonItems = [sum,plusSum]
         sumLabel.textAlignment = .center
         sumLabel.frame = customView.bounds
         sumLabel.textColor = UIColor.white
@@ -278,9 +291,7 @@ class ChoiceFoodViewController: UIViewController{
         
         if actionType == .update{
             
-            
             selectItemsDone!(true)
-            
             
             
         }else{
@@ -314,26 +325,30 @@ class ChoiceFoodViewController: UIViewController{
         
         let point = sender.convert(CGPoint.zero, to: choiceFoodTableView)
         
+        
+        guard let indexPath = choiceFoodTableView.indexPathForRow(at: point),
+              let cell = choiceFoodTableView.cellForRow(at:indexPath) as? SearchTableViewCell,
+              let cellId = cell.id else{
+                
+                return
+        }
+
+        
         if diaryType == .food {
             
-            
-            guard let myDinnerTime = dinnerTime,
-                let indexPath = choiceFoodTableView.indexPathForRow(at: point),
-                let cell = choiceFoodTableView.cellForRow(at:indexPath) as? SearchTableViewCell,
-                let cellFoodId = cell.id else{
-                    
-                    return
+            guard let myDinnerTime = dinnerTime else{
+                return
             }
-            
             
             if !sender.isSelected{
                 
                 
-                foodMaster.switchIsOn.append(cellFoodId)
+                foodMaster.switchIsOn.append(cellId)
                 let  food = foodDiary(dinnerTime:myDinnerTime,
                                       amount:foodItemsArray[(indexPath.row)].amount,
                                       weight:foodItemsArray[indexPath.row].weight,
-                                      foodId:cellFoodId)
+                                      foodId:cellId)
+                
                 foodMaster.foodDiaryArrary.append(food)
                 sender.isSelected = true
                 
@@ -341,9 +356,10 @@ class ChoiceFoodViewController: UIViewController{
                 
             }else{
                 
-                guard let index = foodMaster.switchIsOn.index(of:cellFoodId) else{
+                guard let index = foodMaster.switchIsOn.index(of:cellId) else{
                     return
                 }
+                
                 foodMaster.switchIsOn.remove(at:index)
                 sender.isSelected = false
                 foodMaster.foodDiaryArrary.remove(at:index)
@@ -353,17 +369,8 @@ class ChoiceFoodViewController: UIViewController{
             
         }else{
             
-            guard let indexPath = choiceFoodTableView.indexPathForRow(at: point),
-                let cell = choiceFoodTableView.cellForRow(at:indexPath) as? SearchTableViewCell,
-                let cellId = cell.id else{
-                    
-                    return
-            }
-            
-            
             
             if !sender.isSelected{
-                
                 
                 sportMaster.switchIsOn.append(cellId)
                 let sport = sportDiary(minute:30,sportId:cellId,calories:sportItemsArray[indexPath.row].calories)
@@ -377,10 +384,10 @@ class ChoiceFoodViewController: UIViewController{
                 guard let index = sportMaster.switchIsOn.index(of:cellId) else{
                     return
                 }
+                
                 sportMaster.switchIsOn.remove(at:index)
                 sportMaster.sportDiaryArrary.remove(at:index)
                 sender.isSelected = false
-                
                 
             }
             
@@ -403,9 +410,12 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         
         if diaryType == .food{
             
+            
+            
             if foodItemsArray.count == 0 && !isSerach{
                 
                 defaultRowInSection = 1
+                
                 return defaultRowInSection
                 
             }else{
@@ -419,6 +429,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         }else{
             
             
+        
             
             if sportItemsArray.count == 0 && !isSerach{
                 

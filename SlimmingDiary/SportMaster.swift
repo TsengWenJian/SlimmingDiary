@@ -129,6 +129,26 @@ class SportMaster:DiaryManager{
         
     }
     
+    func getTodaySportCaloree()->Double{
+        
+        let cond = "Sport_Diary.\(SPORTYDIARY_DETAILID)=\(SPORTDETAIL_ID) and \(SPORTYDIARY_DATE) = '\(CalenderManager.standard.currentDateString())'"
+        
+        
+        diaryType = .sportDiaryAndDetail
+        let sportDetail = getSportDetails(.diaryData, minute: nil, cond: cond, order: nil)
+        
+        var calorieSum:Double = 0
+        for sport in sportDetail{
+            
+            calorieSum += sport.calories
+            
+        }
+        
+        return calorieSum
+        
+    }
+
+    
     
     func getSportDetails(_ detailType:DetailType,
                          minute:Int?,

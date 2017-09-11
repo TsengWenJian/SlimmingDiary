@@ -11,6 +11,7 @@ import UIKit
 
 
 class MainDiaryViewController: UIViewController{
+    
     @IBOutlet weak var btnBackgroundView: UIView!
     @IBOutlet weak var pageContainerView: UIView!
     @IBOutlet weak var spotsDiaryBtn: UIButton!
@@ -28,9 +29,6 @@ class MainDiaryViewController: UIViewController{
     var sportsDiaryVC:SpotsDiaryViewController!
     var weightDiaryVC:WeightDiaryViewController!
     var calendarPickVC:CalendarViewController!
-  
-    
-   
     var lastPage = 0
     
     
@@ -52,7 +50,7 @@ class MainDiaryViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-               
+                
         displayDateBtn.setTitle(calender.myDateToString(displayDate), for: .normal)
         
         
@@ -104,8 +102,6 @@ class MainDiaryViewController: UIViewController{
     
     
 
-
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
@@ -137,6 +133,7 @@ class MainDiaryViewController: UIViewController{
         if currentPage == 0{
             
             foodDiaryBtn.isSelected = true
+           
             
         }else if currentPage == 1{
             

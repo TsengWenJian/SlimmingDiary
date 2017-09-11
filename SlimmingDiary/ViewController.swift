@@ -19,6 +19,7 @@ class ViewController: UIViewController{
     let newsManger = RSSParserManager()
     var TodayHeatVC:HomePageTodayHeatViewController!
     var TargetWeightVC:HomePageTargetWeightViewController!
+    var todayStepVC:HomePageTodayStepViewController!
     var newsArray = [NewsItem]()
     var myRefresh = UIRefreshControl()
     
@@ -33,11 +34,6 @@ class ViewController: UIViewController{
         super.viewDidLoad()
         
         
-        
-        
-        
-        
-        checkIsLogInSetUserDefault()
         getNewsArray()
         
         homePageTableView.contentInset = UIEdgeInsets(top:pageHeightDefaultHeight,left:0,bottom:0, right: 0)
@@ -50,47 +46,16 @@ class ViewController: UIViewController{
         
         TodayHeatVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayHeatViewController") as! HomePageTodayHeatViewController
         TargetWeightVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTargetWeightViewController") as! HomePageTargetWeightViewController
-        
+        todayStepVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayStepViewController") as! HomePageTodayStepViewController
         
         pageVC.setViewControllers([TodayHeatVC],direction: .forward,animated: false,completion: nil)
         homePageTableView.refreshControl = myRefresh
         myRefresh.addTarget(self, action: #selector(getNewsArray), for: .valueChanged)
         
-       
-        
-               
-        
-    
-
-        
-        
         
         
     }
     
-    func checkIsLogInSetUserDefault(){
-        
-        let manager = DataService.standard
-        let profileManager = ProfileManager.standard
-        
-        
-        if manager.isLogin{
-            
-            if profileManager.userUid == nil{
-                
-                manager.userLogOut()
-                
-                
-                
-            }
-        }
-        
-        
-        
-        
-        
-        
-    }
     
     func getNewsArray(){
         
@@ -226,6 +191,10 @@ extension ViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSo
         
         if viewController.isKind(of:HomePageTodayHeatViewController.self){
             return TargetWeightVC
+            
+            
+        }else if viewController.isKind(of:HomePageTargetWeightViewController.self){
+            return todayStepVC
         }
         
         return nil
@@ -237,6 +206,8 @@ extension ViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSo
         
         if viewController.isKind(of:HomePageTargetWeightViewController.self){
             return TodayHeatVC
+        }else if viewController.isKind(of: HomePageTodayStepViewController.self){
+            return TargetWeightVC
         }
         
         return nil

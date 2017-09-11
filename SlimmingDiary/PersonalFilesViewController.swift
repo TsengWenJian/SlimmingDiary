@@ -45,7 +45,7 @@ class PersonalFilesViewController: UIViewController {
     var userPhotoIschanage = false
     
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,7 +54,7 @@ class PersonalFilesViewController: UIViewController {
         navigationItem.rightBarButtonItem = editBaritem
         
         
-       
+        
         userData = manager.getUserData()
         
     }
@@ -343,10 +343,11 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
-        
+        numberOfComponents = 2
         currentTouchRow = indexPath.row
         
         if indexPath.row == 0{
+            
             showGenderDialog()
             
         }else if indexPath.row > 0 && indexPath.row <= 3{
@@ -361,11 +362,21 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
             
             
         }else if indexPath.row == 4 {
-             launchDatePickerVC(parVC: self)
+            launchDatePickerVC(parVC: self)
+            
+        }else if indexPath.row == 5{
+            
+            showLifeStyleDialog()
             
         }else{
             
-            showLifeStyleDialog()
+            numberOfComponents = 1
+            numberOfRows = 100000
+            if  let begin = Double(userData[indexPath.row]){
+                setSelectRowOfbegin = begin
+                launchPickerVC(parVC:self)
+            }
+
             
         }
         
@@ -393,6 +404,7 @@ extension PersonalFilesViewController:DatePickerDelegate{
         
         let dateString =  CalenderManager.standard.dateToString(date)
         
+        
         userData[currentTouchRow] = dateString
         
     }
@@ -403,7 +415,11 @@ extension PersonalFilesViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double){
         
-        
+        // today step
+        if currentTouchRow == 6{
+              userData[currentTouchRow] = "\(Int(data))"
+            return
+        }
         userData[currentTouchRow] = "\(data)"
         
     }

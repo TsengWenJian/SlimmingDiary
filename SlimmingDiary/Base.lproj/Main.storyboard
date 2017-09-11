@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1AI-ku-wa2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="a6R-qt-l0I">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -204,7 +204,7 @@
                                 <color key="sectionIndexBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProgressTableViewCell" rowHeight="187" id="qoF-b4-Y5a" customClass="ProgressTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="351" height="187"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="351" height="187"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="qoF-b4-Y5a" id="Nj4-UR-OXA">
                                             <rect key="frame" x="0.0" y="0.0" width="351" height="187"/>
@@ -236,7 +236,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="44" id="GYd-bM-atx">
-                                        <rect key="frame" x="0.0" y="243" width="351" height="44"/>
+                                        <rect key="frame" x="0.0" y="242.5" width="351" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GYd-bM-atx" id="S97-Bk-KOj">
                                             <rect key="frame" x="0.0" y="0.0" width="351" height="44"/>
@@ -244,7 +244,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WeightDiaryBodyTableViewCell" rowHeight="90" id="8lL-ru-ZDp" customClass="WeightDiaryBodyTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="287" width="351" height="90"/>
+                                        <rect key="frame" x="0.0" y="286.5" width="351" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8lL-ru-ZDp" id="htP-Qq-Kht">
                                             <rect key="frame" x="0.0" y="0.0" width="351" height="90"/>
@@ -341,10 +341,10 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="vq4-Rd-xrb" customClass="BodyTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="351" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="351" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vq4-Rd-xrb" id="8RN-ta-ouO">
-                                            <rect key="frame" x="0.0" y="0.0" width="351" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="351" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -390,7 +390,7 @@
                                 <color key="separatorColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" rowHeight="59" id="dAx-dd-bYL" customClass="HeaderTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="351" height="59"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="351" height="59"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dAx-dd-bYL" id="KYX-fE-5en">
                                             <rect key="frame" x="0.0" y="0.0" width="351" height="59"/>
@@ -399,7 +399,7 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="64" id="Ihx-Vq-Snl" customClass="BodyTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="115" width="351" height="64"/>
+                                        <rect key="frame" x="0.0" y="114.5" width="351" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ihx-Vq-Snl" id="thE-aP-ie9">
                                             <rect key="frame" x="0.0" y="0.0" width="351" height="64"/>
@@ -407,7 +407,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="footerCell" rowHeight="59" id="hNK-Fc-nbh" customClass="FooterTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="179" width="351" height="59"/>
+                                        <rect key="frame" x="0.0" y="178.5" width="351" height="59"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hNK-Fc-nbh" id="i2q-Lm-fp4">
                                             <rect key="frame" x="0.0" y="0.0" width="351" height="59"/>
@@ -769,7 +769,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RightDetailCell" textLabel="YCM-sF-wmw" detailTextLabel="at5-UB-Fp7" style="IBUITableViewCellStyleValue1" id="wVL-E2-fiq">
-                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wVL-E2-fiq" id="6ZX-0X-Cdi">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -793,10 +793,10 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AddDataTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="TextFieldCell" id="5Vf-Ki-5rD" customClass="AddTextFieldTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="100" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Vf-Ki-5rD" id="PLT-HW-bFF">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="必填" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UAc-u1-QNY">
@@ -947,7 +947,7 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RightDetailCell" textLabel="Nz3-CG-jbJ" detailTextLabel="iJV-FK-V9c" style="IBUITableViewCellStyleValue1" id="ifQ-KZ-1mX">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ifQ-KZ-1mX" id="P3p-di-2jT">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -971,18 +971,18 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" id="gKH-fa-mwW" customClass="HeaderTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="100" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gKH-fa-mwW" id="5QN-hg-5N8">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AddDataTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="TextFieldCell" id="8xa-Ht-xok" customClass="AddTextFieldTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="144" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8xa-Ht-xok" id="btG-st-3sH">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="必填" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pvL-KT-f2Y">
@@ -1124,7 +1124,7 @@
                                         <inset key="separatorInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchCell" rowHeight="65" id="oeI-5w-EgQ" customClass="SearchTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="56" width="375" height="65"/>
+                                                <rect key="frame" x="0.0" y="55.5" width="375" height="65"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" tableViewCell="oeI-5w-EgQ" id="jjx-Zz-Ah0" customClass="SearchTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
@@ -1132,7 +1132,7 @@
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchDefaultTableViewCell" rowHeight="300" id="QKs-bf-uAJ" customClass="SearchDefaultTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="121" width="375" height="300"/>
+                                                <rect key="frame" x="0.0" y="120.5" width="375" height="300"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QKs-bf-uAJ" id="0oW-SL-gBp">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
@@ -1262,19 +1262,19 @@
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" id="Nc8-jS-nkq" customClass="HeaderTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nc8-jS-nkq" id="IXh-D5-wMJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailProgressCell" rowHeight="180" id="MOn-qT-caB" customClass="DetailProgressCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="100" width="375" height="180"/>
+                                        <rect key="frame" x="0.0" y="99.5" width="375" height="180"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MOn-qT-caB" id="0bd-aS-7eK">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="179"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="179.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vr3-Ly-65Z">
@@ -1400,10 +1400,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="uxS-CX-HAK" customClass="FoodDetailTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="280" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="279.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uxS-CX-HAK" id="Pva-ge-Osy">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z8X-hF-6GH">
@@ -1449,7 +1449,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="rightDetailCell" textLabel="49G-Xu-eed" detailTextLabel="x0C-7i-Od6" style="IBUITableViewCellStyleValue1" id="O13-DU-tOd">
-                                        <rect key="frame" x="0.0" y="324" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="323.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="O13-DU-tOd" id="Mum-oC-T3H">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -1473,10 +1473,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailImageTableViewCell" rowHeight="200" id="pe0-u7-7zA" customClass="DetailImageTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="368" width="375" height="200"/>
+                                        <rect key="frame" x="0.0" y="367.5" width="375" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pe0-u7-7zA" id="sQN-Ks-5kf">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="199"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="199.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera" translatesAutoresizingMaskIntoConstraints="NO" id="GKn-1C-1XI">
@@ -2076,7 +2076,7 @@
         <!--請輸入個人資料-->
         <scene sceneID="mRJ-xd-d7Z">
             <objects>
-                <viewController id="jSo-9u-KVK" customClass="EnterInformationViewController" customModule="SlimmingDiary" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EnterInformationViewController" id="jSo-9u-KVK" customClass="EnterInformationViewController" customModule="SlimmingDiary" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Riz-Bw-s72"/>
                         <viewControllerLayoutGuide type="bottom" id="uvI-J1-OlF"/>
@@ -2344,10 +2344,10 @@
             </objects>
             <point key="canvasLocation" x="783.20000000000005" y="-625.63718140929541"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--My Tab Bar View Controller-->
         <scene sceneID="ych-jp-Bf0">
             <objects>
-                <tabBarController storyboardIdentifier="FirstPage" automaticallyAdjustsScrollViewInsets="NO" id="a6R-qt-l0I" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="FirstPage" automaticallyAdjustsScrollViewInsets="NO" id="a6R-qt-l0I" customClass="MyTabBarViewController" customModule="SlimmingDiary" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleAspectFit" id="E7c-q7-I2e">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -2529,7 +2529,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8nP-WV-2O2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3271" y="2393"/>
+            <point key="canvasLocation" x="-2588" y="1684"/>
         </scene>
         <!--個人檔案-->
         <scene sceneID="YWY-mQ-o9b">
@@ -2549,7 +2549,7 @@
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RightDetail" textLabel="In5-eo-Wv5" detailTextLabel="oLz-n7-DoX" style="IBUITableViewCellStyleValue1" id="tZk-XL-D25">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tZk-XL-D25" id="R7w-sD-FTT">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -2573,10 +2573,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ProfileHeaderTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileHeaderTableViewCell" rowHeight="100" id="U9m-kj-dUn" customClass="ProfileHeaderTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="100" width="375" height="100"/>
+                                        <rect key="frame" x="0.0" y="99.5" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U9m-kj-dUn" id="w2h-I7-hHf">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fdb-bm-zOJ">
@@ -2658,10 +2658,10 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ProfileHeaderTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileHeaderTableViewCell" rowHeight="100" id="Vtp-Tb-POr" customClass="ProfileHeaderTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="100"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vtp-Tb-POr" id="P12-wi-gEl">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cbT-35-bMA">
@@ -2704,7 +2704,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="BasicCell" textLabel="aKo-fH-CSL" style="IBUITableViewCellStyleDefault" id="hV8-Hm-8tz">
-                                        <rect key="frame" x="0.0" y="156" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="155.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hV8-Hm-8tz" id="T73-LV-Xiu">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -2721,10 +2721,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoginBtnTableViewCell" id="1Hq-6g-DJO" customClass="LoginBtnTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="200" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="199.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Hq-6g-DJO" id="gd0-wv-7gJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aRP-OR-vrJ">
@@ -2747,7 +2747,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RightDetailCell" textLabel="aJn-fE-gRC" detailTextLabel="WH9-eU-10S" style="IBUITableViewCellStyleValue1" id="HZc-Jj-cW9">
-                                        <rect key="frame" x="0.0" y="244" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="243.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HZc-Jj-cW9" id="NhA-Wl-g0v">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -2867,6 +2867,61 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zAT-dD-4mB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5047" y="760"/>
+        </scene>
+        <!--Test View Controller-->
+        <scene sceneID="bcu-CO-N4J">
+            <objects>
+                <viewController id="hae-sx-LaS" customClass="TestViewController" customModule="SlimmingDiary" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="IJE-OY-wQf"/>
+                        <viewControllerLayoutGuide type="bottom" id="jM0-YV-ZdO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TP0-qG-kdD">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nl2-lp-ApB" customClass="NickProgress3UIView" customModule="SlimmingDiary" customModuleProvider="target">
+                                <rect key="frame" x="87" y="233.5" width="200" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="SoL-Bf-wGI"/>
+                                    <constraint firstAttribute="width" constant="200" id="gFu-Qy-Dp5"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="trackColor">
+                                        <color key="value" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                        <color key="value" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jvy-MR-Lz5">
+                                <rect key="frame" x="276" y="90" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nl2-lp-ApB" firstAttribute="centerY" secondItem="TP0-qG-kdD" secondAttribute="centerY" id="82o-nL-hiN"/>
+                            <constraint firstItem="nl2-lp-ApB" firstAttribute="centerX" secondItem="TP0-qG-kdD" secondAttribute="centerX" id="VIJ-ky-kbQ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="button" destination="jvy-MR-Lz5" id="Ig7-bZ-Naf"/>
+                        <outlet property="testView" destination="nl2-lp-ApB" id="Cw5-7o-KMJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="a6h-C2-I3q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1971" y="-544"/>
         </scene>
         <!--登入-->
         <scene sceneID="w9P-ga-vqf">
@@ -2999,7 +3054,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Hk3-Uv-xVd">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1AI-ku-wa2" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="EnterInformation" automaticallyAdjustsScrollViewInsets="NO" id="1AI-ku-wa2" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zby-5T-69I">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -3067,9 +3122,9 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zm4-cH-YfP">
                                         <rect key="frame" x="150.5" y="0.0" width="64" height="80"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RWI-GR-lGz">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="＋" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RWI-GR-lGz">
                                                 <rect key="frame" x="0.0" y="0.0" width="64" height="80"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                 <color key="textColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <color key="shadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3116,9 +3171,9 @@
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cai-IN-TFI">
                                         <rect key="frame" x="49.5" y="0.0" width="64" height="80"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvO-7D-M9v">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="－" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvO-7D-M9v">
                                                 <rect key="frame" x="0.0" y="0.0" width="64" height="80"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                 <color key="textColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <color key="shadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3135,9 +3190,9 @@
                                     <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="XZH-fa-D9s">
                                         <rect key="frame" x="251.5" y="0.0" width="64.5" height="80"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="=" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rMB-Ii-PHH">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="＝" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rMB-Ii-PHH">
                                                 <rect key="frame" x="0.0" y="0.0" width="64.5" height="80"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                                 <color key="shadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3303,7 +3358,7 @@
                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
-                                <color key="shadowColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
                         </subviews>
@@ -3322,6 +3377,63 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EJ9-R8-6WY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4076" y="2392"/>
+        </scene>
+        <!--Home Page Today Step View Controller-->
+        <scene sceneID="s0O-U2-Nfg">
+            <objects>
+                <viewController storyboardIdentifier="HomePageTodayStepViewController" id="jOw-Sb-ed0" customClass="HomePageTodayStepViewController" customModule="SlimmingDiary" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4MZ-pd-xfm"/>
+                        <viewControllerLayoutGuide type="bottom" id="4x9-FG-PK1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zLe-Xa-a0X">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今日步數" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Pg-k5-LhU">
+                                <rect key="frame" x="5" y="25" width="365" height="25"/>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
+                                <size key="shadowOffset" width="0.0" height="1"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Lp-q9-GR9" customClass="NickProgress3UIView" customModule="SlimmingDiary" customModuleProvider="target">
+                                <rect key="frame" x="107" y="55" width="160" height="160"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="160" id="CfP-ec-qg8"/>
+                                    <constraint firstAttribute="width" secondItem="8Lp-q9-GR9" secondAttribute="height" multiplier="1:1" id="fw1-YW-vDb"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                        <color key="value" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="1Pg-k5-LhU" secondAttribute="trailing" constant="5" id="Qp9-Oz-JMn"/>
+                            <constraint firstItem="1Pg-k5-LhU" firstAttribute="leading" secondItem="zLe-Xa-a0X" secondAttribute="leading" constant="5" id="cbj-YB-CgL"/>
+                            <constraint firstItem="1Pg-k5-LhU" firstAttribute="top" secondItem="4MZ-pd-xfm" secondAttribute="bottom" constant="5" id="jfB-9B-Q4n"/>
+                            <constraint firstItem="8Lp-q9-GR9" firstAttribute="width" secondItem="8Lp-q9-GR9" secondAttribute="height" multiplier="1:1" id="v3R-u5-nwe"/>
+                            <constraint firstItem="8Lp-q9-GR9" firstAttribute="centerX" secondItem="zLe-Xa-a0X" secondAttribute="centerX" id="wzj-gH-XXK"/>
+                            <constraint firstItem="8Lp-q9-GR9" firstAttribute="top" secondItem="1Pg-k5-LhU" secondAttribute="bottom" constant="5" id="xNQ-39-aD5"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="todayStepView" destination="8Lp-q9-GR9" id="Vfb-P2-ncD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rQL-fS-pt5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3392" y="2390"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="kHn-aT-4ll">
@@ -3357,7 +3469,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b7L-vy-26o" id="Ggu-D2-X5a">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="請添加紀錄" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5X-KQ-cmz">
@@ -3474,7 +3586,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CollectionTableViewCell" rowHeight="220" id="ugQ-D2-JEc" customClass="CollectionTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="375" height="220"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="220"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ugQ-D2-JEc" id="lc0-dQ-I99">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="220"/>
@@ -3619,7 +3731,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TextViewTableViewCell" rowHeight="100" id="zx7-Ww-2VS" customClass="TextViewTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="276" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="275.5" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zx7-Ww-2VS" id="UDS-tH-bXr">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -3740,7 +3852,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ShowRecordsTableViewCell" rowHeight="251" id="IGl-rI-yD8" customClass="ShowRecordsTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="375" height="251"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="251"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IGl-rI-yD8" id="I7h-5A-IWk">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="251"/>
@@ -3823,7 +3935,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ProfileHeaderTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="ProfileHeaderTableViewCell" rowHeight="100" id="6Dn-ka-aXQ" customClass="ProfileHeaderTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="307" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="306.5" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Dn-ka-aXQ" id="GqL-0X-WB5">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -3898,7 +4010,7 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReadCollectionTableViewCell" rowHeight="220" id="amy-j8-sp4" customClass="ReadCollectionTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="220"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="220"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="amy-j8-sp4" id="Ski-nV-uJE">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="220"/>
@@ -4015,7 +4127,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReadTextViewTableViewCell" rowHeight="121" id="GYh-jI-lJs" customClass="ReadTextViewTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="276" width="375" height="121"/>
+                                        <rect key="frame" x="0.0" y="275.5" width="375" height="121"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GYh-jI-lJs" id="7C2-Fi-7aq">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="121"/>
@@ -4163,7 +4275,7 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RightDetail" textLabel="AA3-Yh-gkk" detailTextLabel="EOe-eZ-iNi" style="IBUITableViewCellStyleValue1" id="pFQ-Tn-QMt">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pFQ-Tn-QMt" id="oSv-8Z-Raz">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -4187,7 +4299,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="BasicCell" textLabel="T5S-4j-bby" style="IBUITableViewCellStyleDefault" id="cVx-Lh-7oP">
-                                        <rect key="frame" x="0.0" y="100" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cVx-Lh-7oP" id="X5n-0H-OtJ">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -4207,10 +4319,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AddTextFieldTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddTextFieldTableViewCell" id="OvR-oX-nWG" customClass="AddTextFieldTableViewCell" customModule="SlimmingDiary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="144" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OvR-oX-nWG" id="J6j-ub-gcL">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="給個標題" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eD3-kp-Bgh">
