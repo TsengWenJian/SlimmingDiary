@@ -33,7 +33,7 @@ class AddFoodViewController: UIViewController {
         navigationItem.rightBarButtonItems = [insertItem]
         navigationItem.title = "新食物"
         
-        
+         PickerViewController.shared.delegate = self
         
     }
     
@@ -229,8 +229,7 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             setSelectRowOfbegin = doubleValue
         }
         
-        launchPickerVC(parVC: self)
-        
+       PickerViewController.shared.displayDialog(present: self)         
     }
     
     

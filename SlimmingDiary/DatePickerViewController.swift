@@ -8,21 +8,15 @@
 
 import UIKit
 
-func launchDatePickerVC(parVC:UIViewController){
-    let man = UIStoryboard(name: "Main", bundle: nil)
-    let picker = man.instantiateViewController(withIdentifier: "DatePickerViewController") as! DatePickerViewController
-    picker.delegate = parVC as? DatePickerDelegate
-    picker.displayPickViewDialog(present: parVC)
-}
 
-protocol DatePickerDelegate {
+protocol DatePickerDelegate:class{
     func getSelectDate(date:Date)
 }
 
 class DatePickerViewController: UIViewController {
 
     @IBOutlet weak var datePicker: UIDatePicker!
-     var delegate:DatePickerDelegate!
+    weak var delegate:DatePickerDelegate!
     
     
     override func viewDidLoad() {
@@ -40,9 +34,6 @@ class DatePickerViewController: UIViewController {
         hideDialog()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        delegate = nil
-    }
     
     func displayPickViewDialog(present:UIViewController){
         present.addChildViewController(self)
@@ -57,8 +48,7 @@ class DatePickerViewController: UIViewController {
         
     }
     
-   
-
+    
     
     @IBAction func confirmBtnAction(_ sender: UIButton) {
         

@@ -73,8 +73,7 @@ class SetUpViewController: UIViewController {
             
             if name.contains("Cache_"){
                 
-                
-                
+
                 let url = cachPath.appendingPathComponent(name)
                 
                 if action == .delete{

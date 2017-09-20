@@ -61,8 +61,6 @@ class ShowDiaryImageViewController: UIViewController {
     
     @IBAction func cancelBtn(_ sender: Any) {
         
-    
-            
              self.hideDialog()
 
         

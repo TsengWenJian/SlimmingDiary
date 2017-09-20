@@ -83,7 +83,7 @@ import UIKit
         let startAngle:CGFloat = CGFloat(Double.pi * -1/2)
         let endAngle: CGFloat = CGFloat(Double.pi * 3/2)
         
-        print("-----------ProgressDraw------------")
+        
         
         
         if trackLayer != nil {

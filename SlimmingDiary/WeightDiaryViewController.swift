@@ -33,12 +33,12 @@ class WeightDiaryViewController: UIViewController{
         let nibFooter = UINib(nibName: "FooterTableViewCell",bundle: nil)
         weightTableView.register(nibFooter, forCellReuseIdentifier: "footerCell")
         
-        NotificationCenter.default.addObserver(self, selector:#selector(setWeightDiary), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(refreshWeightDiary), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setWeightDiary()
+        refreshWeightDiary()
         
     }
     
@@ -47,7 +47,14 @@ class WeightDiaryViewController: UIViewController{
         
     }
     
-    func setWeightDiary(){
+    func refreshWeightDiary(){
+        
+        if  (self.parent?.parent as? MainDiaryViewController)?.currentPage != 2{
+            
+            return
+            
+        }
+
         
         weightDiaryArray.removeAll()
         weightMaster.diaryType = .weightDiary

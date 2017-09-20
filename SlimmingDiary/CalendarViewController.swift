@@ -9,16 +9,8 @@
 import UIKit
 
 
-func launchCalanderPickerVC(_ parentVC:UIViewController){
-    
-    let man = UIStoryboard(name: "Main", bundle: nil)
-    let picker = man.instantiateViewController(withIdentifier: "CalendarViewController") as! CalendarViewController
-    picker.delegate = parentVC as? CalendarPickDelegate
-    picker.displayCalendarPickDialog(parentVC)
-    
-}
 
-protocol CalendarPickDelegate {
+protocol CalendarPickDelegate:class {
     
     func getCalenderSelectDate(date:MyDate)
     
@@ -28,7 +20,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     @IBOutlet weak var calendarCollectionView: UICollectionView!
     @IBOutlet weak var titleDate: UILabel!
-    var delegate:CalendarPickDelegate!
+    weak var delegate:CalendarPickDelegate!
     let calender = CalenderManager.standard
     
     var MonthTotalDaysArray = [String](){
@@ -75,6 +67,8 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         
     }
     
+   
+    
     func displayCalendarPickDialog(_ parentViewController: UIViewController) {
         
         let basic = CABasicAnimation(keyPath: "position.y")
@@ -118,8 +112,12 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
 
         
     }
+    
+    
     @IBAction func hiddenBtn(_ sender: Any) {
         hideDialog()
+        calender.displayCalenderAction = false
+        
     }
     
     

@@ -9,8 +9,16 @@
 import UIKit
 
 class PrepareRecordViewController: UIViewController {
+    
+    
     let titleArray = ["名稱","開始日期","天數"]
-    var detailArray = ["","",""]
+    var detailArray:[String] = {
+        
+        var defaultDetails = [String]()
+        for x in 0..<3 {defaultDetails.append("")}
+        return defaultDetails
+        
+    }()
     
     @IBOutlet weak var prepareTableView: UITableView!
     @IBOutlet weak var titleImage: UIImageView!
@@ -21,10 +29,15 @@ class PrepareRecordViewController: UIViewController {
     var setSelectRowOfbegin:Double = 1
     var textFieldText:String?
     var checkIsSelectImage:Bool = false
-
+    var caldnderVC:CalendarViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
+        PickerViewController.shared.delegate = self
+        caldnderVC = storyboard?.instantiateViewController(withIdentifier: "CalendarViewController") as? CalendarViewController
+        caldnderVC?.delegate = self
+        
         
         
     }
@@ -46,6 +59,7 @@ class PrepareRecordViewController: UIViewController {
         }else{
             
             for (index,text) in detailArray.enumerated(){
+                
                 if text == ""{
                     
                     return   "請填寫\(titleArray[index])"
@@ -82,7 +96,7 @@ class PrepareRecordViewController: UIViewController {
         
     }
     
-
+    
 }
 //MARK: - UITableViewDelegate,UITableViewDataSource
 extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
@@ -135,9 +149,9 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetail", for: indexPath)
             cell.textLabel?.text = titleArray[indexPath.row]
-        
-                cell.detailTextLabel?.text = detailArray[indexPath.row]
-
+            
+            cell.detailTextLabel?.text = detailArray[indexPath.row]
+            
             
             return cell
         }
@@ -164,14 +178,13 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
         
         if indexPath.row == 1{
             
-            launchCalanderPickerVC(self)
+            caldnderVC?.displayCalendarPickDialog(self)
             
             
         }else if indexPath.row == 2{
             
             
-            launchPickerVC(parVC: self)
-            
+            PickerViewController.shared.displayDialog(present: self)
             
         }
         
@@ -190,9 +203,9 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
             
         }else{
             
-           
+            
             let nextPage = segue.destination as! MakeShareDiaryTableViewController
-                    
+            
             let back = UIBarButtonItem(title:"Back",style: .plain, target: nil, action: nil)
             navigationItem.backBarButtonItem = back
             nextPage.actionType = .insert

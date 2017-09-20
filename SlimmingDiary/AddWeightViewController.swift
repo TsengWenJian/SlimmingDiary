@@ -45,7 +45,7 @@ class AddWeightViewController: UIViewController{
         
         titleArray[0] = type.rawValue
         detailArray[0] = "\(weight)"
-        
+         PickerViewController.shared.delegate = self
         
     }
     
@@ -212,7 +212,7 @@ extension AddWeightViewController:UITableViewDelegate,UITableViewDataSource{
                 setSelectRowOfbegin = detail
             }
             
-            launchPickerVC(parVC: self)
+             PickerViewController.shared.displayDialog(present: self) 
             
         }
         

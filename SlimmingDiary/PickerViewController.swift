@@ -8,15 +8,8 @@
 
 import UIKit
 
-func launchPickerVC(parVC:UIViewController){
-    let man = UIStoryboard(name: "Main", bundle: nil)
-    let picker = man.instantiateViewController(withIdentifier: "PickerViewController") as! PickerViewController
-    picker.delegate = parVC as? PickerViewDelegate
-    picker.displayPickViewDialog(present: parVC)
-}
 
-
-protocol PickerViewDelegate {
+protocol PickerViewDelegate:class {
     
     var numberOfRows:Int{
         get set
@@ -31,19 +24,22 @@ protocol PickerViewDelegate {
     }
     
     func getSelectRow(data:Double)
-    
-    
-    
+
 }
 
 class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource{
+    
     @IBOutlet weak var dotLabel: UILabel!
     @IBOutlet weak var pickerView: UIPickerView!
     
-    var delegate:PickerViewDelegate?
+    weak var delegate:PickerViewDelegate?
     var interger:Double = 1
     var point:Double = 0
     var didSelectRowNumber:Double = 1.0
+    
+    static let shared = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PickerViewController")as! PickerViewController
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +84,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
     }
    
     
-    func displayPickViewDialog(present:UIViewController){
+    func displayDialog(present:UIViewController){
         
         
         present.addChildViewController(self)
@@ -103,10 +99,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        delegate = nil
-    }
-    
+       
     
     
     

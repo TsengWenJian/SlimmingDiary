@@ -71,8 +71,7 @@ class SportDetailViewController: UIViewController {
        
          navigationItem.rightBarButtonItem?.title = actionType.rawValue
          navigationItem.title = "\(actionType.rawValue)運動"
-    
-        
+     PickerViewController.shared.delegate = self
     }
     
     
@@ -81,14 +80,6 @@ class SportDetailViewController: UIViewController {
         
     }
     
-//    func launchPickerVC(){
-//        
-//        let pickerVC = storyboard?.instantiateViewController(withIdentifier:"PickerViewController") as? PickerViewController
-//        pickerVC?.delegate = self
-//        pickerVC?.displayPickViewDialog(present:self)
-//        
-//        
-//    }
 
     
     func insertSport(){
@@ -210,8 +201,7 @@ class SportDetailViewController: UIViewController {
     
     @IBAction func minuteBtnAction(_ sender: Any) {
         
-        launchPickerVC(parVC: self)
-        
+      PickerViewController.shared.displayDialog(present: self)
         
         
     }

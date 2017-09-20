@@ -99,9 +99,13 @@ class HomePageTodayStepViewController: UIViewController {
             
         }else{
             
-            self.todayStepView.setTitleText(text:"裝置")
-            self.todayStepView.setSubTitleText(text:"不支援")
+            DispatchQueue.main.async {
+                
+                self.todayStepView.setTitleText(text:"裝置")
+                self.todayStepView.setSubTitleText(text:"不支援")
 
+            }
+          
 
             
         }

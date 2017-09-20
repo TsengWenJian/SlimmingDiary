@@ -196,7 +196,7 @@ class CalenderManager{
         let formmater = DateFormatter()
         formmater.dateFormat = "YYYY-MM-dd"
         
-
+        
         return formmater.string(from: date)
         
     }
@@ -227,7 +227,7 @@ class CalenderManager{
         
         if myDate.month < 10{
             
-          
+            
             monthStr = "0\(myDate.month)"
         }
         
@@ -254,7 +254,7 @@ class CalenderManager{
             
         }else{
             
-    
+            
             if isAfterCurrentDay(date:date) {
                 
                 return DayType.afterDay

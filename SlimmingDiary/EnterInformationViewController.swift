@@ -22,7 +22,7 @@ class EnterInformationViewController: UIViewController {
     @IBOutlet weak var weightProgress: NickProgress2UIView!
     let manager = ProfileManager.standard
     let bodyManager = BodyInformationManager.standard
-    
+    var datePickerVC:DatePickerViewController?
     
     
     
@@ -32,7 +32,7 @@ class EnterInformationViewController: UIViewController {
     
     var gender:Int?{
         didSet{
-            if  let myGender = gender{
+            if let myGender = gender{
                 self.genderBtn.setTitle(manager.genderArray[myGender],for: .normal)
             }
         }
@@ -45,26 +45,29 @@ class EnterInformationViewController: UIViewController {
     var lifeStyle:Int? = 0
     var currentTouchBtn:Int = 0
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
         weightProgress.setSubTitleText(text: "--")
-
-
+        datePickerVC = storyboard?.instantiateViewController(withIdentifier: "DatePickerViewController") as? DatePickerViewController
+        datePickerVC?.delegate = self
+        PickerViewController.shared.delegate = self
+        
+        
         
         
     }
     
-       
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     
     
     func goToHomePage(){
@@ -75,7 +78,7 @@ class EnterInformationViewController: UIViewController {
             self.dismiss(animated: false, completion: nil)
             
         }
-    
+        
     }
     
     
@@ -117,7 +120,7 @@ class EnterInformationViewController: UIViewController {
             WeightMaster.standard.insertWeightDiary(addRecord)
             
             
-           goToHomePage()
+            goToHomePage()
             
             return
             
@@ -148,8 +151,7 @@ class EnterInformationViewController: UIViewController {
                 setSelectRowOfbegin = 60
             }
             
-            launchPickerVC(parVC: self)
-            
+            PickerViewController.shared.displayDialog(present: self)
             
         case 1:
             let alert = UIAlertController(title: "請選擇性別", message:"", preferredStyle:.actionSheet)
@@ -178,7 +180,7 @@ class EnterInformationViewController: UIViewController {
         case 2:
             
             
-           launchDatePickerVC(parVC:self)
+            datePickerVC?.displayPickViewDialog(present: self)
             break
         case 3:
             
@@ -193,7 +195,7 @@ class EnterInformationViewController: UIViewController {
                 
             }
             
-           launchPickerVC(parVC: self)
+          PickerViewController.shared.displayDialog(present: self)
             
             break
         case 4:
@@ -206,8 +208,7 @@ class EnterInformationViewController: UIViewController {
                 
             }
             
-              launchPickerVC(parVC: self)
-            
+           PickerViewController.shared.displayDialog(present: self)
             break
         default:
             
@@ -271,7 +272,7 @@ extension EnterInformationViewController:PickerViewDelegate{
         
         bodyManager.setBodyData(calHeight,calWeight,calGender)
         let bmi  = String(format:"%0.1f",bodyManager.getBmi())
-    
+        
         weightProgress.setTitleText(text:bodyManager.getWeightType().rawValue)
         weightProgress.setTitleColor(bodyManager.getWeightTypeColor())
         weightProgress.setDetailText(text:"理想體重:\(bodyManager.getIdealWeight())kg")

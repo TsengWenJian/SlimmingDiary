@@ -37,6 +37,7 @@ class PersonalFilesViewController: UIViewController {
     
     let manager = ProfileManager.standard
     let serviceManager = DataService.standard
+    var datePickerVC:DatePickerViewController?
     
     var numberOfRows:Int = 0
     var numberOfComponents:Int = 2
@@ -54,8 +55,13 @@ class PersonalFilesViewController: UIViewController {
         navigationItem.rightBarButtonItem = editBaritem
         
         
+        datePickerVC = storyboard?.instantiateViewController(withIdentifier: "DatePickerViewController") as? DatePickerViewController
+        datePickerVC?.delegate = self
+        
+        
         
         userData = manager.getUserData()
+          PickerViewController.shared.delegate = self
         
     }
     
@@ -66,11 +72,6 @@ class PersonalFilesViewController: UIViewController {
         super.didReceiveMemoryWarning()
         
     }
-    
-    
-    
-    
-    
     
     
     func showAlertError(error:String?){
@@ -356,13 +357,17 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
             
             if  let begin = Double(userData[indexPath.row]){
                 setSelectRowOfbegin = begin
-                launchPickerVC(parVC:self)
+             
+              
+                PickerViewController.shared.displayDialog(present: self)
+                
+                
             }
             
             
             
         }else if indexPath.row == 4 {
-            launchDatePickerVC(parVC: self)
+            datePickerVC?.displayPickViewDialog(present: self)
             
         }else if indexPath.row == 5{
             
@@ -374,7 +379,7 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
             numberOfRows = 100000
             if  let begin = Double(userData[indexPath.row]){
                 setSelectRowOfbegin = begin
-                launchPickerVC(parVC:self)
+                  PickerViewController.shared.displayDialog(present: self)
             }
 
             

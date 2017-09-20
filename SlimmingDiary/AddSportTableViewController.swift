@@ -27,6 +27,7 @@ class AddSportTableViewController: UITableViewController {
         navigationItem.rightBarButtonItems = [insertItem]
         
         navigationItem.title = "新運動"
+        PickerViewController.shared.delegate = self
         
         
     }
@@ -111,7 +112,7 @@ class AddSportTableViewController: UITableViewController {
             setSelectRowOfbegin = 200
         }
         
-        launchPickerVC(parVC: self)
+         PickerViewController.shared.displayDialog(present: self)
         self.view.endEditing(true)
         
         

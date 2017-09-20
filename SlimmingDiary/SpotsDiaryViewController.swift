@@ -45,6 +45,14 @@ class SpotsDiaryViewController:UIViewController{
     
     func refreshSectionArray(){
         
+        
+        if  (self.parent?.parent as? MainDiaryViewController)?.currentPage != 1{
+            
+            return
+            
+        }
+
+        
         sportItems.removeAll()
         
         let displayDate =  CalenderManager.standard.displayDateString()

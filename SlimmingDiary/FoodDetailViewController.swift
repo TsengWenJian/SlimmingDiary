@@ -68,8 +68,7 @@ class FoodDetailViewController: UIViewController{
         
         let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
         foodDetailsTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
-        
-        
+          PickerViewController.shared.delegate = self
 
         
     }
@@ -245,8 +244,7 @@ class FoodDetailViewController: UIViewController{
                     setSelectRowOfbegin = baginData
                 }
 
-                  launchPickerVC(parVC: self)
-                
+                 PickerViewController.shared.displayDialog(present: self)
             }
         }
     }

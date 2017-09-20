@@ -10,7 +10,7 @@ import UIKit
 
 class FoodDiaryViewController: UIViewController{
     @IBOutlet weak var diaryTableView: UITableView!
-    let dinnerTime = ["早餐","午餐","晚餐","其他"]
+    let dinnerTimes = ["早餐","午餐","晚餐","其他"]
     var isExpend = [true,true,true,true]
     var sectionArray = [[foodDetails]]()
     let master = FoodMaster.standard
@@ -31,7 +31,7 @@ class FoodDiaryViewController: UIViewController{
         diaryTableView.register(nibFooter, forCellReuseIdentifier: "footerCell")
 
         
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshSectionArray), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshSection), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
         
     
     }
@@ -39,7 +39,7 @@ class FoodDiaryViewController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         
         
-              refreshSectionArray()
+              refreshSection()
     
     }
     
@@ -50,7 +50,16 @@ class FoodDiaryViewController: UIViewController{
     }
     
     
-    func refreshSectionArray(){
+    func refreshSection(){
+        
+        
+        
+        if  (self.parent?.parent as? MainDiaryViewController)?.currentPage != 0{
+            
+            return
+           
+            
+        }
         
         
         sectionArray.removeAll()
@@ -59,8 +68,8 @@ class FoodDiaryViewController: UIViewController{
         
        
         master.diaryType = .foodDiaryAndDetail
-        for i in 0..<dinnerTime.count{
-            let cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DINNERTIME) = '\(dinnerTime[i])'and \(FOODDIARY_DATE) = '\(displayDate)'"
+        for i in 0..<dinnerTimes.count{
+            let cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DINNERTIME) = '\(dinnerTimes[i])'and \(FOODDIARY_DATE) = '\(displayDate)'"
             let dinnerDiary = master.getFoodDetails(.diaryData,amount:nil,weight:nil,cond:cond,order: nil)
             sectionArray.append(dinnerDiary)
         }
@@ -86,10 +95,10 @@ class FoodDiaryViewController: UIViewController{
         
         let section = sender.tag - 1500
         
-        for i in 0..<dinnerTime.count{
+        for i in 0..<dinnerTimes.count{
             if section == i{
                 let nextPage = storyboard?.instantiateViewController(withIdentifier: "ChoiceFoodViewController") as! ChoiceFoodViewController
-                nextPage.dinnerTime = dinnerTime[section]
+                nextPage.dinnerTime = dinnerTimes[section]
                 nextPage.diaryType = .food
                 
                 navigationController?.pushViewController(nextPage,animated: true)
@@ -121,7 +130,7 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return dinnerTime.count
+        return dinnerTimes.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -160,7 +169,7 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             let record = sectionArray[indexPath.section][indexPath.row]
             nextPage.foodId = record.foodDetailId
             nextPage.foodDiaryId = record.foodDiaryId
-            nextPage.dinnerTime = dinnerTime[indexPath.section]
+            nextPage.dinnerTime = dinnerTimes[indexPath.section]
             nextPage.lastPageVC = .update
             
             navigationController?.pushViewController(nextPage, animated: true)
@@ -207,7 +216,7 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as!HeaderTableViewCell
         
         
-        headerCell.titleLabel.text = dinnerTime[section]
+        headerCell.titleLabel.text = dinnerTimes[section]
         
         headerCell.totalCalorieLebel.text = {
             var calorieSum:Double = 0

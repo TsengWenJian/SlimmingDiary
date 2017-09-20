@@ -44,7 +44,7 @@ enum ToastType:String {
         
         
         
-         self.alpha = 1
+        self.alpha = 1
         
         self.backgroundColor = UIColor(red:0, green: 0, blue: 0, alpha:0.5)
         
@@ -80,20 +80,20 @@ enum ToastType:String {
             removefromView()
             
         }
- 
+        
         
     }
     
     
     func removefromView(){
         
-    
+        
         active = nil
         toastView.removeFromSuperview()
         self.removeFromSuperview()
         
         
-
+        
         
     }
 }

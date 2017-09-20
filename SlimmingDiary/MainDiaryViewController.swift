@@ -23,7 +23,7 @@ class MainDiaryViewController: UIViewController{
     var pageVCPan = UIPanGestureRecognizer()
     var pageVC: UIPageViewController!
     
-    var displayCalendar = false
+   
     var calender = CalenderManager.standard
     var foodDairyVC:FoodDiaryViewController!
     var sportsDiaryVC:SpotsDiaryViewController!
