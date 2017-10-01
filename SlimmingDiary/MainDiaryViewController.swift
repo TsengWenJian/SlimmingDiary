@@ -74,8 +74,7 @@ class MainDiaryViewController: UIViewController{
         
         
         
-        
-        
+      
         pageContainerView.addGestureRecognizer(pageVCPan)
         pageVCPan.delegate = self
 

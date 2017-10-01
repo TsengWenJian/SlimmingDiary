@@ -16,9 +16,6 @@ struct myProgress{
 
 }
 
-
-
-
 @IBDesignable class NickProgressUIView: UIView{
     
     
@@ -38,8 +35,7 @@ struct myProgress{
     var progressArray = [myProgress]()
     var progressLayerArray = [CAShapeLayer]()
 
-    
-    
+
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -124,8 +120,6 @@ struct myProgress{
             pr3.strokeEnd =  CGFloat(start)/100 + CGFloat(Double(progressArray[i].progess))/100.0
             layer.addSublayer(pr3)
             progressLayerArray.append(pr3)
-            
-            
             
             if anim{
                 

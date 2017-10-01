@@ -17,16 +17,19 @@ import UIKit
     
     
     @IBInspectable var lineWidth:CGFloat = 10
-    
     @IBInspectable var anim:Bool = false
     @IBInspectable var duration:Double = 0.5
-    @IBInspectable var titleTextSize:CGFloat = 18
-    @IBInspectable var subTitleTextSize:CGFloat = 18
-    @IBInspectable var detailTextSize:CGFloat = 14
+    @IBInspectable var titleTextSize:CGFloat = 18{
+        didSet{titleLabel.font = UIFont.systemFont(ofSize: titleTextSize)}
+    }
+    @IBInspectable var subTitleTextSize:CGFloat = 18{
+         didSet{subTitleLabel.font = UIFont.systemFont(ofSize: subTitleTextSize)}
+    }
+    @IBInspectable var detailTextSize:CGFloat = 14{
+         didSet{detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)}
+    }
     
-    
-    
-    
+
     private let titleLabel = UILabel()
     private let subTitleLabel = UILabel()
     private let detailLabel = UILabel()
@@ -53,13 +56,21 @@ import UIKit
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
+        initialSetup()
         
         
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        initialSetup()
+    }
+    
+    func initialSetup(){
+        
+        titleLabel.font = UIFont.systemFont(ofSize:titleTextSize)
+        subTitleLabel.font = UIFont.systemFont(ofSize:subTitleTextSize)
+        detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)
         
     }
     
@@ -67,15 +78,13 @@ import UIKit
     override func draw(_ rect: CGRect) {
         
         
-        // check is exist
+        //check is exist
         if trackLayer != nil{
-            
+
             return
-            
+
         }
-        
-        
-        
+    
         trackLayer = CAShapeLayer()
         let startAngle:CGFloat = CGFloat(Double.pi)
         let endAngle: CGFloat = CGFloat(Double.pi * 2)
@@ -89,11 +98,7 @@ import UIKit
                     startAngle:startAngle, endAngle:endAngle, clockwise: true)
         
         
-        
-        
-        
-        
-        
+    
         trackLayer?.frame = bounds
         trackLayer?.fillColor = UIColor.clear.cgColor
         trackLayer?.strokeColor = UIColor.gray.cgColor
@@ -205,16 +210,12 @@ import UIKit
         triangleLayer2.fillColor = crimson.cgColor
         
         
-        
-        
+
         pointerView.frame.origin = CGPoint.zero
         pointerView.layer.addSublayer(triangleLayer)
         pointerView.layer.addSublayer(triangleLayer2)
         
-        
-        
-        
-        
+    
         
         setProgressAnim()
         
@@ -228,31 +229,20 @@ import UIKit
         
         margin = insiderLayer.frame.height/10
         
-        titleLabel.font = UIFont.systemFont(ofSize:titleTextSize)
+        
         titleLabel.sizeToFit()
         titleLabel.center = CGPoint(x:center.x, y:insiderLayer.frame.minY+margin*2)
         
         
-        
-        subTitleLabel.font = UIFont.systemFont(ofSize:subTitleTextSize)
-        
+
         subTitleLabel.sizeToFit()
         subTitleLabel.center = center
         
-        
-        
-        
-        detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)
-        detailLabel.textColor = UIColor.gray
-        
+
         detailLabel.sizeToFit()
         detailLabel.center = CGPoint(x:center.x, y:bounds.height - detailLabel.frame.height)
         
-        
-        
-        
-        
-        
+    
         addSubview(titleLabel)
         addSubview(subTitleLabel)
         addSubview(detailLabel)
@@ -262,6 +252,8 @@ import UIKit
         
         
     }
+    
+   
     
     
     func setTitleColor(_ color:UIColor){
@@ -331,8 +323,6 @@ import UIKit
                                               y:insiderLayer.bounds.maxY),
                            radius:(bounds.size.width/3)+pointerView.frame.height/2+3,
                            startAngle:startAngle,endAngle:pointerEndAngle, clockwise: true)
-        
-        
         
         
         

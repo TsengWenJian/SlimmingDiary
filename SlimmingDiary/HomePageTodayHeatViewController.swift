@@ -123,6 +123,8 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
             self.sportCalorieLabel.text = "\(sport)"
             self.resultCalorieLabel.text = "\(basic - food)"
         }
+        
+        
        
         
     }

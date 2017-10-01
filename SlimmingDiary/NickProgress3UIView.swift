@@ -18,20 +18,29 @@ import UIKit
                                                     alpha: 0.95)
     
     
-    
-    
-    
-    
     @IBInspectable var startColor:UIColor = UIColor.gray
     @IBInspectable var endColor:UIColor = UIColor.gray
     
-    @IBInspectable var titleTextSize:CGFloat = 18
-    @IBInspectable var subTitleTextSize:CGFloat = 25
-    @IBInspectable var detailTextSize:CGFloat = 18
+    @IBInspectable var titleTextSize:CGFloat = 18{
+        didSet{titleLabel.font = UIFont.systemFont(ofSize:titleTextSize) }
+    }
     
-    @IBInspectable var titleTextColor:UIColor = UIColor.white
-    @IBInspectable var subTitleTextColor:UIColor = UIColor.white
-    @IBInspectable var detailTextColor:UIColor = UIColor.white
+    @IBInspectable var subTitleTextSize:CGFloat = 25{
+        didSet{subTitleLabel.font = UIFont.systemFont(ofSize:subTitleTextSize)}
+    }
+    @IBInspectable var detailTextSize:CGFloat = 18{
+        didSet{detailLabel.font = UIFont.systemFont(ofSize:detailTextSize) }
+    }
+    
+    @IBInspectable var titleTextColor:UIColor = UIColor.white{
+        didSet{ titleLabel.textColor = titleTextColor}
+    }
+    @IBInspectable var subTitleTextColor:UIColor = UIColor.white{
+        didSet{ subTitleLabel.textColor = subTitleTextColor}
+    }
+    @IBInspectable var detailTextColor:UIColor = UIColor.white{
+        didSet{ detailLabel.textColor = detailTextColor}
+    }
     
     
     
@@ -44,47 +53,45 @@ import UIKit
     private var labelMargin:CGFloat = 0
     
     
-    
+    func initialSetup(){
+        titleLabel.font = UIFont.systemFont(ofSize:titleTextSize)
+        subTitleLabel.font = UIFont.systemFont(ofSize:subTitleTextSize)
+        detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)
+        titleLabel.textColor = titleTextColor
+        subTitleLabel.textColor = subTitleTextColor
+        detailLabel.textColor = detailTextColor
+    }
     
     private var progress:Double = 0 {
         didSet{
+            
             if progress > 100{
                 progress = 100
             }
-            
             
             if progress <= 0{
                 progress = 0
             }
         }
-        
-        
     }
     
-    
-    
-    
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
+         initialSetup()
         
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+         initialSetup()
     }
     
-       
+    
     override func draw(_ rect: CGRect) {
         
-         
+        
         let startAngle:CGFloat = CGFloat(Double.pi * -1/2)
         let endAngle: CGFloat = CGFloat(Double.pi * 3/2)
-        
-        
-        
         
         if trackLayer != nil {
             return
@@ -111,8 +118,6 @@ import UIKit
         
         
         
-        
-        
         progressLayer.frame = bounds
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.strokeColor = trackColor.cgColor
@@ -133,7 +138,6 @@ import UIKit
         
         
         
-        
         endDotView = UIView(frame:CGRect(x: 0,
                                          y: 0,
                                          width:lineWidth,
@@ -142,8 +146,6 @@ import UIKit
         endDotView.layer.cornerRadius = lineWidth/2
         endDotView.backgroundColor = UIColor.black
         progressLayer.addSublayer(endDotView.layer)
-        
-        
         
         
         let gradientLayer = CAGradientLayer()
@@ -160,15 +162,6 @@ import UIKit
         
         
         
-        titleLabel.textColor = titleTextColor
-        titleLabel.font = UIFont.systemFont(ofSize:titleTextSize)
-
-        subTitleLabel.textColor = subTitleTextColor
-        subTitleLabel.font = UIFont.systemFont(ofSize:subTitleTextSize)
-        
-        detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)
-        detailLabel.textColor = detailTextColor
-        
         addSubview(titleLabel)
         addSubview(subTitleLabel)
         addSubview(detailLabel)
@@ -178,16 +171,12 @@ import UIKit
     
     
     
-    
-    
-    
     func setTitleText(text:String){
         
         titleLabel.text = text
         titleLabel.sizeToFit()
         titleLabel.center = CGPoint(x:bounds.midX,
                                     y:bounds.minY + lineWidth + labelMargin*2)
-        
         
         
     }
@@ -200,7 +189,6 @@ import UIKit
                                        y:bounds.midY)
         
         
-        
     }
     
     func setDetailText(text:String){
@@ -209,8 +197,6 @@ import UIKit
         detailLabel.sizeToFit()
         detailLabel.center = CGPoint(x:bounds.midX,
                                      y:subTitleLabel.frame.maxY+labelMargin*1.5)
-        
-        
         
     }
     
@@ -224,7 +210,6 @@ import UIKit
         
         
         if progress <= 0 {
-            
             progressLayer.isHidden = true
             return
         }
@@ -252,10 +237,10 @@ import UIKit
         orbit.calculationMode = kCAAnimationPaced
         orbit.isRemovedOnCompletion = false
         orbit.fillMode = kCAFillModeForwards
+        
         endDotView.layer.add(orbit,forKey:"endDote")
         
         
-
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.fromValue = 0
         animation.toValue = 1
@@ -273,7 +258,7 @@ import UIKit
     func resetProgress(_ progress:Double){
         self.progress = progress
         setProgressAnim()
-    
+        
     }
 }
 
