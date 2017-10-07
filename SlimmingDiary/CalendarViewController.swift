@@ -16,19 +16,22 @@ protocol CalendarPickDelegate:class {
     
 }
 
-class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource{
+class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource{
     
     @IBOutlet weak var calendarCollectionView: UICollectionView!
+    @IBOutlet weak var calenderViewHeight: NSLayoutConstraint!
     @IBOutlet weak var titleDate: UILabel!
     weak var delegate:CalendarPickDelegate!
-    let calender = CalenderManager.standard
-    
+    let calenderManager = CalenderManager.standard
+
+   
     var MonthTotalDaysArray = [String](){
         didSet{
             calendarCollectionView.reloadData()
             setTitleDate()
         }
     }
+    
     
     
     
@@ -40,8 +43,8 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     override func viewWillAppear(_ animated: Bool) {
         
-        calender.resetDisplayMonth()
-        MonthTotalDaysArray = calender.getMonthTotalDaysArray(type: .current)
+        calenderManager.resetDisplayMonth()
+        MonthTotalDaysArray = calenderManager.getMonthTotalDaysArray(type: .current)
         setTitleDate()
         
         
@@ -52,7 +55,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     
     @IBAction func swipeNextMonthAction(_ sender:UIButton) {
-        MonthTotalDaysArray = calender.getMonthTotalDaysArray(type: .next)
+        MonthTotalDaysArray = calenderManager.getMonthTotalDaysArray(type: .next)
         changeMonthTransition(transitionForm:kCATransitionFromRight)
       
     }
@@ -60,7 +63,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     
     @IBAction func swipePreviousMonthAction(_ sender: UIButton) {
-        MonthTotalDaysArray = calender.getMonthTotalDaysArray(type: .previous)
+        MonthTotalDaysArray = calenderManager.getMonthTotalDaysArray(type: .previous)
         changeMonthTransition(transitionForm:kCATransitionFromLeft)
       
         
@@ -71,14 +74,11 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func displayCalendarPickDialog(_ parentViewController: UIViewController) {
         
-        let basic = CABasicAnimation(keyPath: "position.y")
+        let basic = CABasicAnimation(keyPath:"position.y")
         basic.duration = 0.2
         basic.fromValue = -view.frame.size.width/2
         basic.toValue = view.frame.width/2
         self.calendarCollectionView.layer.add(basic, forKey: nil)
-        
-        
-        
         
         parentViewController.addChildViewController(self)
         parentViewController.view.addSubview(self.view)
@@ -116,13 +116,13 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     @IBAction func hiddenBtn(_ sender: Any) {
         hideDialog()
-        calender.displayCalenderAction = false
+        calenderManager.displayCalenderAction = false
         
     }
     
     
     func setTitleDate(){
-        titleDate.text = String(calender.displayMonth.year)+"年"+String(calender.displayMonth.month)+"月"
+        titleDate.text = String(calenderManager.displayMonth.year)+"年"+String(calenderManager.displayMonth.month)+"月"
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -131,11 +131,11 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return calender.weekArray.count
+            return calenderManager.weekArray.count
         } else {
             
             
-            return  calender.getMonthTotalDaysArray(type:.current).count
+            return  calenderManager.getMonthTotalDaysArray(type:.current).count
             
             
             
@@ -148,7 +148,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         
         if indexPath.row ==  0{
-            calendarCollectionView.frame.size = calendarCollectionView.collectionViewLayout.collectionViewContentSize
+            calenderViewHeight.constant = calendarCollectionView.collectionViewLayout.collectionViewContentSize.height
         }
 
         
@@ -159,7 +159,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         
         if indexPath.section == 0{
-            cell.day.text = calender.weekArray[indexPath.row]
+            cell.day.text = calenderManager.weekArray[indexPath.row]
             cell.day.textColor = blue
             return cell
             
@@ -173,9 +173,9 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
                 let day = Int(MonthTotalDaysArray[indexPath.row])
                 cell.day.text = MonthTotalDaysArray[indexPath.row]
                 
-                let myDate = MyDate(year:calender.displayMonth.year, month: calender.displayMonth.month, day: day!)
+                let myDate = MyDate(year:calenderManager.displayMonth.year, month: calenderManager.displayMonth.month, day: day!)
                 
-                switch  calender.checkDayType(date:myDate) {
+                switch  calenderManager.checkDayType(date:myDate) {
                     
                 case .displayDay:
                     
@@ -201,23 +201,24 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         return cell
     }
     
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+       
         
-        
-        let cellWidth = (calendarCollectionView.frame.size.width) / 7
+        let cellWidth = (UIScreen.main.bounds.width) / 7
         let size = CGSize(width:cellWidth, height:cellWidth)
         
-        //week
+        
         if indexPath.section == 0{
             
-            return CGSize(width:cellWidth,height:cellWidth/3*2)
+            return CGSize(width:cellWidth,height:cellWidth*0.66)
         }
         
         
         return size
     }
     
+    
+   
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell =  collectionView.cellForItem(at:indexPath) as! CalendarCollectionViewCell
@@ -226,18 +227,12 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         hideDialog()
         if  let day = Int(cell.day.text!){
             
-            let myDay = MyDate(year: calender.displayMonth.year,
-                               month: calender.displayMonth.month,
+            let myDay = MyDate(year: calenderManager.displayMonth.year,
+                               month: calenderManager.displayMonth.month,
                                day: day)
             
             delegate.getCalenderSelectDate(date:myDay)
             
-            
         }
-        
-        
-        
     }
-    
-    
 }

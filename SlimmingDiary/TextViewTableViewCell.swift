@@ -11,6 +11,7 @@ import UIKit
 class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
     @IBOutlet weak var textView: UITextView!
     var oneDiary:OneDiaryRecord?
+    var myTableView:UITableView?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,7 +44,7 @@ class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
 
     }
     
-    func doneBtnAction(){
+    @objc func doneBtnAction(){
         textView.resignFirstResponder()
         
 
@@ -77,7 +78,7 @@ class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
         var bounds = textView.bounds
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         let maxSize = CGSize(width: bounds.width, height:1000)
-        let newRect = NSString(string: textView.text).boundingRect(with:maxSize, options: options, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize:16)], context: nil)
+        let newRect = NSString(string: textView.text).boundingRect(with:maxSize, options: options, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize:16)], context: nil)
         
     
 
@@ -85,10 +86,11 @@ class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
         bounds.size = newSize;
         textView.bounds = bounds;
         
-        let tableView = self.superview?.superview as! UITableView
+       
         
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        
+        myTableView?.beginUpdates()
+        myTableView?.endUpdates()
         
     }
 

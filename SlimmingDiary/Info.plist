@@ -93,5 +93,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>取得照片將存入相簿中</string>
 </dict>
 </plist>

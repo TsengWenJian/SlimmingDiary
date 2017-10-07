@@ -554,6 +554,7 @@
 					6C4C7DEE1F6421A7000F83D1 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 93QT5L8PP6;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -564,6 +565,7 @@
 					6CBA0CCD1ED7BBDF00122595 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 93QT5L8PP6;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -813,7 +815,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Nick.SlimmingDiary.SlimmingDiaryWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -828,7 +831,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Nick.SlimmingDiary.SlimmingDiaryWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -969,7 +973,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = SlimmingDiary/BridgeHeader.h;
 				SWIFT_REFLECTION_METADATA_LEVEL = all;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -997,7 +1002,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = SlimmingDiary/BridgeHeader.h;
 				SWIFT_REFLECTION_METADATA_LEVEL = all;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;

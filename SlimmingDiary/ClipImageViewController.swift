@@ -14,11 +14,12 @@ protocol clipImageVCDelegate {
 
 class ClipImageViewController: UIViewController,UIScrollViewDelegate{
     @IBOutlet weak var imageView: UIImageView!
-    
     @IBOutlet weak var lightView: UIView!
     @IBOutlet weak var upShadowView: UIView!
+    
     var delegate:clipImageVCDelegate?
     var selectImage = UIImage()
+    
     @IBOutlet weak var scrollView: UIScrollView!
     
     

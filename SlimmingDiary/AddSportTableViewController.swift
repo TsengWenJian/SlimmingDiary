@@ -36,7 +36,7 @@ class AddSportTableViewController: UITableViewController {
         self.view.endEditing(true)
     }
     
-    func addSport(){
+    @objc func addSport(){
         
         var isWriteDone:Bool = true
         
@@ -138,7 +138,7 @@ class AddSportTableViewController: UITableViewController {
         }
     }
     
-    func textChange(_ sender:UITextField){
+    @objc func textChange(_ sender:UITextField){
         
         textFieldText = sender.text
         

@@ -43,7 +43,7 @@ class SpotsDiaryViewController:UIViewController{
     
     
     
-    func refreshSectionArray(){
+    @objc func refreshSectionArray(){
         
         
         if  (self.parent?.parent as? MainDiaryViewController)?.currentPage != 1{
@@ -67,13 +67,13 @@ class SpotsDiaryViewController:UIViewController{
     }
     
     
-    func sectionIsExpend(sender:UIButton){
+    @objc func sectionIsExpend(sender:UIButton){
         
         isExpend = !isExpend
         spotsDiaryTableView.reloadSections(IndexSet(integer:0), with: .automatic)
     }
     
-    func plusSport(sender:UIButton){
+    @objc func plusSport(sender:UIButton){
         
         
         let nextPage = storyboard?.instantiateViewController(withIdentifier: "ChoiceFoodViewController") as! ChoiceFoodViewController

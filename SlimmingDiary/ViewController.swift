@@ -15,16 +15,17 @@ class ViewController: UIViewController{
     var  pageHeightDefaultHeight:CGFloat = 214
     @IBOutlet weak var pageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var moveTopBtn: UIButton!
+    @IBOutlet weak var homePageTableView: UITableView!
+    @IBOutlet weak var pageContainerView: UIView!
     
     let newsManger = RSSParserManager()
-    var TodayHeatVC:HomePageTodayHeatViewController!
-    var TargetWeightVC:HomePageTargetWeightViewController!
-    var todayStepVC:HomePageTodayStepViewController!
+    var TodayHeatVC:HomePageTodayHeatViewController?
+    var TargetWeightVC:HomePageTargetWeightViewController?
+    var todayStepVC:HomePageTodayStepViewController?
     var newsArray = [NewsItem]()
     var myRefresh = UIRefreshControl()
     
-    @IBOutlet weak var homePageTableView: UITableView!
-    @IBOutlet weak var pageContainerView: UIView!
+  
     
     var showNotConnectCell:Bool = false
     
@@ -44,11 +45,13 @@ class ViewController: UIViewController{
         pageVC.delegate = self
         pageVC.dataSource = self
         
-        TodayHeatVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayHeatViewController") as! HomePageTodayHeatViewController
-        TargetWeightVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTargetWeightViewController") as! HomePageTargetWeightViewController
-        todayStepVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayStepViewController") as! HomePageTodayStepViewController
+        if let  TodayHeatVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayHeatViewController") as? HomePageTodayHeatViewController{
+              pageVC.setViewControllers([TodayHeatVC],direction: .forward,animated: false,completion: nil)
+        }
         
-        pageVC.setViewControllers([TodayHeatVC],direction: .forward,animated: false,completion: nil)
+        TargetWeightVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTargetWeightViewController") as? HomePageTargetWeightViewController
+        todayStepVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayStepViewController") as? HomePageTodayStepViewController
+        
         homePageTableView.refreshControl = myRefresh
         myRefresh.addTarget(self, action: #selector(getNewsArray), for: .valueChanged)
         
@@ -57,7 +60,7 @@ class ViewController: UIViewController{
     }
     
     
-    func getNewsArray(){
+    @objc func getNewsArray(){
         
         if newsManger.isConnect{
             
@@ -143,6 +146,7 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
         
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if !showNotConnectCell{
@@ -158,7 +162,6 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "DetailImageTableViewCell") as! DetailImageTableViewCell
             cell.selectImageView.image = UIImage(named:"not_connect")
-            
             
             return cell
             

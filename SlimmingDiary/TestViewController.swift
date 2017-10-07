@@ -25,7 +25,7 @@ class TestViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    func progess(){
+    @objc func progess(){
         
      
       

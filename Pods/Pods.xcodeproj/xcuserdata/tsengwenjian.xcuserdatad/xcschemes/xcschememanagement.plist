@@ -19,6 +19,16 @@
 			<key>orderHint</key>
 			<integer>6</integer>
 		</dict>
+		<key>FacebookCore.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
+		<key>FacebookLogin.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
 		<key>GTMSessionFetcher.xcscheme</key>
 		<dict>
 			<key>orderHint</key>

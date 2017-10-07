@@ -89,7 +89,7 @@ class ShareViewController: UIViewController {
         
     }
     
-    func loginStatusIsChange(){
+    @objc func loginStatusIsChange(){
         
         
         if currnetPage == 1{

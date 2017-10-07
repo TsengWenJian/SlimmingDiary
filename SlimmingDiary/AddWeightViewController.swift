@@ -53,12 +53,12 @@ class AddWeightViewController: UIViewController{
     
     
     //MARK:- Function
-    func cancelAction(sender:UIButton){
+    @objc func cancelAction(sender:UIButton){
         dismiss(animated: true, completion: nil)
     }
     
 
-    func confirmAction(sender:UIButton){
+    @objc func confirmAction(sender:UIButton){
         
         var imageName:String?
         

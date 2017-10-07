@@ -47,7 +47,7 @@ class WeightDiaryViewController: UIViewController{
         
     }
     
-    func refreshWeightDiary(){
+    @objc func refreshWeightDiary(){
         
         if  (self.parent?.parent as? MainDiaryViewController)?.currentPage != 2{
             
@@ -118,7 +118,7 @@ class WeightDiaryViewController: UIViewController{
     }
     
     
-    func sectionIsExpend(sender:UIButton){
+    @objc func sectionIsExpend(sender:UIButton){
         let section = sender.tag - 1000
         
         isExpend[section-1] = !isExpend[section-1]
@@ -127,7 +127,7 @@ class WeightDiaryViewController: UIViewController{
     
     
     
-    func plusWeight(sender:UIButton){
+    @objc func plusWeight(sender:UIButton){
         
         let section = sender.tag - 1500
         let type:WeightDiaryType = section == 1 ?.weight:.bodyFat

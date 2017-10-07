@@ -256,7 +256,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
         
     }
     
-    func deleteItem(_ sender:UIButton){
+    @objc func deleteItem(_ sender:UIButton){
         
         let tag = sender.tag - 1000
         diaryItems.remove(at:tag)

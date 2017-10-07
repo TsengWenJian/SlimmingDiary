@@ -35,7 +35,7 @@ class SetUpViewController: UIViewController {
         
     }
     
-    func  loginOrlogut(sender:UIButton){
+    @objc func  loginOrlogut(sender:UIButton){
         
         if manager.userUid == nil{
             

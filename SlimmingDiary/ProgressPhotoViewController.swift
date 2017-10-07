@@ -126,7 +126,7 @@ class ProgressPhotoViewController:UIViewController{
     }
     
     
-    func startTimer(){
+    @objc func startTimer(){
         photoCollectionView.isScrollEnabled = false
         photoCollectionView.allowsSelection = false
         
@@ -154,7 +154,7 @@ class ProgressPhotoViewController:UIViewController{
         
     }
     
-    func endTimer(){
+    @objc func endTimer(){
         
         photoCollectionView.isScrollEnabled = true
         photoCollectionView.allowsSelection = true
@@ -179,7 +179,7 @@ class ProgressPhotoViewController:UIViewController{
         
     }
     
-    func shareWightImage(){
+    @objc func shareWightImage(){
         
         
         isCompareBtn.isHidden = true
@@ -278,7 +278,7 @@ class ProgressPhotoViewController:UIViewController{
     
 }
 //MARK: -UICollectionViewDelegate,UICollectionViewDataSource
-extension ProgressPhotoViewController:UICollectionViewDelegate,UICollectionViewDataSource{
+extension ProgressPhotoViewController:UICollectionViewDelegateFlowLayout,UICollectionViewDataSource{
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return  1
@@ -306,8 +306,7 @@ extension ProgressPhotoViewController:UICollectionViewDelegate,UICollectionViewD
     }
     
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
-        
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = view.frame.width/4
         

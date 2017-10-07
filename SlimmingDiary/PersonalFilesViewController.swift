@@ -84,7 +84,7 @@ class PersonalFilesViewController: UIViewController {
     
     
     
-    func editUserData(sender:UIBarButtonItem){
+    @objc func editUserData(sender:UIBarButtonItem){
         
         
         // save basic body data into userDefault

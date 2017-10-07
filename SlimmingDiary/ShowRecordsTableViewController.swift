@@ -83,7 +83,7 @@ class ShowRecordsTableViewController: UITableViewController {
         
     }
     
-    func refreshPublicDiarys(){
+    @objc func refreshPublicDiarys(){
         
         if currentPage == 0{
             
@@ -107,7 +107,7 @@ class ShowRecordsTableViewController: UITableViewController {
     
     
     
-    func loginStatusIsChange(){
+    @objc func loginStatusIsChange(){
         
         
         servicManager.dbUserDiaryURL.removeAllObservers()
@@ -254,7 +254,7 @@ class ShowRecordsTableViewController: UITableViewController {
         
         let myDiary =  array.sorted{ (record1, record2)  in
             
-            return Int(record1.timestamp) > Int(record2.timestamp)
+            return Int(truncating: record1.timestamp) > Int(truncating: record2.timestamp)
         }
         
         return myDiary

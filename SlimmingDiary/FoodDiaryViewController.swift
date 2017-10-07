@@ -50,7 +50,7 @@ class FoodDiaryViewController: UIViewController{
     }
     
     
-    func refreshSection(){
+    @objc func refreshSection(){
         
         
         
@@ -82,7 +82,7 @@ class FoodDiaryViewController: UIViewController{
     
     
     
-    func sectionIsExpend(sender:UIButton){
+    @objc func sectionIsExpend(sender:UIButton){
         let section = sender.tag - 1000
         
         isExpend[section] = isExpend[section] == true ? false:true
@@ -91,7 +91,7 @@ class FoodDiaryViewController: UIViewController{
     
     
 
-    func plusFood(sender:UIButton){
+    @objc func plusFood(sender:UIButton){
         
         let section = sender.tag - 1500
         

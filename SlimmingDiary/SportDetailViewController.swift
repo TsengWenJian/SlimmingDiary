@@ -82,7 +82,7 @@ class SportDetailViewController: UIViewController {
     
 
     
-    func insertSport(){
+    @objc func insertSport(){
         
         guard let myDetail = detail else{
             return

@@ -158,7 +158,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
     
     
     
-    func setOpenStatus(){
+    @objc func setOpenStatus(){
         
         let title:String
         let imageString:String
@@ -245,7 +245,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
     
     
     
-    func uploadTitleImage(){
+    @objc func uploadTitleImage(){
         
         sumItem = calSumItem()
         
@@ -536,7 +536,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
     
     
     
-    func sectionIsExpend(sender:UIButton){
+    @objc func sectionIsExpend(sender:UIButton){
         
         let section = sender.tag - 1000
         sectionsIsExpend[section] = !sectionsIsExpend[section]
@@ -570,7 +570,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         if indexPath.row == textRow{
             
             let cell = tableView.dequeueReusableCell(withIdentifier:"TextViewTableViewCell",for: indexPath) as! TextViewTableViewCell
-            
+            cell.myTableView = timeLineTableView
             let diary = diarys[indexPath.section]
             cell.oneDiary = diary
             

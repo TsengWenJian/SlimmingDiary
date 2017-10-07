@@ -12,7 +12,7 @@ import UIKit
 typealias DoneHandlerDiarys = (Error?,[OneDiaryRecord])->()
 
 
-
+@objcMembers
 class OneDiaryRecord:NSObject{
     
     var food:[DiaryItem]?
@@ -53,7 +53,7 @@ class DiaryItem {
 }
 
 
-
+@objcMembers
 class ShareDiary:NSObject {
     
     var diaryId = String()
@@ -68,12 +68,10 @@ class ShareDiary:NSObject {
 }
 
 
-
+@objcMembers
 class UserData: NSObject {
-    
     var name:String?
     var imageURL:String?
-    
     
 }
 

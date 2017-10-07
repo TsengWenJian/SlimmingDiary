@@ -159,7 +159,7 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     
-    func setTitleText(sender:UITextField){
+    @objc func setTitleText(sender:UITextField){
         
         textFieldText = sender.text
         

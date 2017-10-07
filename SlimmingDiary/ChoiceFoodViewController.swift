@@ -99,11 +99,6 @@ class ChoiceFoodViewController: UIViewController{
                     
                    
                     let calDateString = calender.dateToString(calculatedDate)
-                    
-                    
-                    print(calDateString)
-                    
-                    
                 
                     if diaryType == .food{
                         
@@ -286,7 +281,7 @@ class ChoiceFoodViewController: UIViewController{
 
     }
     
-    func insertDiary(){
+    @objc func insertDiary(){
         
         
         if actionType == .update{
@@ -321,7 +316,7 @@ class ChoiceFoodViewController: UIViewController{
     
     
     
-    func switchStats(sender:UIButton){
+    @objc func switchStats(sender:UIButton){
         
         let point = sender.convert(CGPoint.zero, to: choiceFoodTableView)
         

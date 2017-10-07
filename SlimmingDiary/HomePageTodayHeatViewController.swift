@@ -136,7 +136,7 @@ class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
     
     
     
-    func doneBtnAction() {
+    @objc func doneBtnAction() {
         textView.resignFirstResponder()
         profileManager.setUserEmbrave(textView.text)
         

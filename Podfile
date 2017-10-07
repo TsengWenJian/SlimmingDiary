@@ -14,10 +14,12 @@ target 'SlimmingDiary' do
   pod 'FirebaseStorage'
   pod 'Firebase'
  
-
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'Bolts'
+  
+
+
 
 
 end

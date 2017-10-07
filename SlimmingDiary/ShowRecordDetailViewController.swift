@@ -56,7 +56,7 @@ class ShowRecordDetailViewController: UIViewController {
 
     }
     
-    func getDiaryDetail(){
+    @objc func getDiaryDetail(){
         
         
         
@@ -140,7 +140,7 @@ class ShowRecordDetailViewController: UIViewController {
     }
     
     
-    func editDiary(){
+    @objc func editDiary(){
         let nextPage = storyboard?.instantiateViewController(withIdentifier:"MakeShareDiaryTableViewController") as! MakeShareDiaryTableViewController
         
         nextPage.diarys = diarys
@@ -164,7 +164,7 @@ class ShowRecordDetailViewController: UIViewController {
     
     
     
-    func trashDiary(){
+    @objc func trashDiary(){
         
         let alert = UIAlertController(title:"刪除", message: "確定刪除這篇日記?", preferredStyle: .alert)
         let ok = UIAlertAction(title: "確定", style: .default) { (UIAlertAction) in
@@ -195,7 +195,7 @@ class ShowRecordDetailViewController: UIViewController {
     }
     
     
-    func sectionIsExpend(sender:UIButton){
+    @objc func sectionIsExpend(sender:UIButton){
         let section = sender.tag - 1000
         
         sectionsIsExpend[section] = !sectionsIsExpend[section]

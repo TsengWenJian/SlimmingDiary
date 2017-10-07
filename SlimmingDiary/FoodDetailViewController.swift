@@ -84,7 +84,7 @@ class FoodDetailViewController: UIViewController{
     
     
     
-    func saveFood(){
+    @objc func saveFood(){
         
         if lastPageVC == ActionType.insert{
             

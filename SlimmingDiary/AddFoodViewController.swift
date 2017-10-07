@@ -60,7 +60,7 @@ class AddFoodViewController: UIViewController {
     }
     
     
-    func insertFoodDetail(){
+    @objc func insertFoodDetail(){
         
         var isWriteDone:Bool = true
         
@@ -233,7 +233,7 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
     }
     
     
-    func textChanged(sender:UITextField){
+    @objc func textChanged(sender:UITextField){
         
         let indexPathRow = sender.tag - 100
         master.foodSelect[indexPathRow] = sender.text
