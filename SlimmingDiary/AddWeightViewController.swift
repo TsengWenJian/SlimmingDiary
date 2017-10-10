@@ -36,7 +36,7 @@ class AddWeightViewController: UIViewController{
     
     var numberOfRows:Int = 200
     var numberOfComponents:Int = 2
-    var setSelectRowOfbegin:Double = 1.0
+    var selectRowOfbegin:Double = 1.0
     
     
     
@@ -209,7 +209,7 @@ extension AddWeightViewController:UITableViewDelegate,UITableViewDataSource{
             
             if let detail = Double(detailArray[0]){
                 
-                setSelectRowOfbegin = detail
+                selectRowOfbegin = detail
             }
             
              PickerViewController.shared.displayDialog(present: self) 

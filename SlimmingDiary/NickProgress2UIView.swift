@@ -19,6 +19,7 @@ import UIKit
     @IBInspectable var lineWidth:CGFloat = 10
     @IBInspectable var anim:Bool = false
     @IBInspectable var duration:Double = 0.5
+    
     @IBInspectable var titleTextSize:CGFloat = 18{
         didSet{titleLabel.font = UIFont.systemFont(ofSize: titleTextSize)}
     }
@@ -36,6 +37,7 @@ import UIKit
     
     private var pointerProgress:Double = 0.1{
         didSet{
+            
             if pointerProgress > 40{
                 pointerProgress = 40
             }
@@ -43,16 +45,12 @@ import UIKit
             if pointerProgress <= 0{
                 pointerProgress = 0
             }
-            
         }
     }
     private var trackLayer:CAShapeLayer?
     private let pointerView = UIView()
     private let insiderLayer = CAShapeLayer()
     private var margin:CGFloat = 0
-    
-    
-    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -71,6 +69,7 @@ import UIKit
         titleLabel.font = UIFont.systemFont(ofSize:titleTextSize)
         subTitleLabel.font = UIFont.systemFont(ofSize:subTitleTextSize)
         detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)
+        detailLabel.textColor = UIColor.gray
         
     }
     
@@ -165,9 +164,7 @@ import UIKit
                           endAngle:endAngle,
                           clockwise:true)
         
-        
-        
-        
+    
         
         insiderLayer.backgroundColor = UIColor.clear.cgColor
         insiderLayer.fillColor = UIColor.clear.cgColor
@@ -249,8 +246,6 @@ import UIKit
         
         
         
-        
-        
     }
     
    
@@ -308,8 +303,6 @@ import UIKit
         
         
         
-        
-        
         let pointerPath = UIBezierPath()
         let startAngle:CGFloat = CGFloat(Double.pi)
         
@@ -324,8 +317,6 @@ import UIKit
                            radius:(bounds.size.width/3)+pointerView.frame.height/2+3,
                            startAngle:startAngle,endAngle:pointerEndAngle, clockwise: true)
         
-        
-        
         let orbit = CAKeyframeAnimation(keyPath:"position")
         orbit.duration = 1
         orbit.path = pointerPath.cgPath
@@ -334,8 +325,6 @@ import UIKit
         orbit.isRemovedOnCompletion = false
         orbit.fillMode = kCAFillModeForwards
         pointerView.layer.add(orbit,forKey:"pointer")
-        
-        
         
     }
     func getProgress()->Double{

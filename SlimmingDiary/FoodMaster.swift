@@ -135,15 +135,15 @@ class FoodMaster:DiaryManager{
     
     
     static let standard = FoodMaster()
-    var foodDiaryArrary = [foodDiary]()
-    var switchIsOn = [Int]()
+    var foodDiarys = [foodDiary]()
+    var switchIsOnIDs = [Int]()
     
     
     
     
     func removeFoodDiarysAndSwitch(){
-        foodDiaryArrary.removeAll()
-        switchIsOn.removeAll()
+        foodDiarys.removeAll()
+        switchIsOnIDs.removeAll()
         
     }
     
@@ -359,7 +359,7 @@ class FoodMaster:DiaryManager{
     
     
     // MARK : - AddFood 
-    let  addFoodTitle = ["名稱","單位(份)","重量(g)","熱量(kcal)","蛋白質(g)","脂肪(g)",
+    let  addFoodTitle = ["名稱","單位(杯)","重量(g)","熱量(kcal)","蛋白質(g)","脂肪(g)",
                          "反式脂肪(g)","飽和脂肪(g)","碳水化合物(g)","膳食纖維(mg)",
                          "糖質(g)","鈉(mg)","鉀(mg)","鈣(mg)","膽固醇(mg)"]
     

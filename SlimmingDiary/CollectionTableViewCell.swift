@@ -32,10 +32,10 @@ class CollectionTableViewCell:UITableViewCell{
         }
     }
     var currentTapItem = 0
-    var VC:MakeShareDiaryTableViewController?
+    var VC:MakeDiarysTableViewController?
     var diaryImageType:DiaryImageType = .food
     
-    var allDiarys = OneDiaryRecord(date:""){
+    var allDiarys = ADiary(date:""){
         
         didSet{
             
@@ -282,7 +282,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
                 
                 if self.diaryImageType == .food{
                     
-                    for i in FoodMaster.standard.foodDiaryArrary{
+                    for i in FoodMaster.standard.foodDiarys{
                         
                         let detail = FoodMaster.standard.getFoodDataArray(.insert,
                                                                           foodDiaryId:nil,
@@ -299,7 +299,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource,UICollectionViewDe
                 }else{
                     
                     
-                    for i in SportMaster.standard.sportDiaryArrary{
+                    for i in SportMaster.standard.sportDiarys{
                         
                         
                         SportMaster.standard.diaryType = .sportDetail

@@ -10,7 +10,7 @@ import UIKit
 
 class TextViewTableViewCell: UITableViewCell,UITextViewDelegate{
     @IBOutlet weak var textView: UITextView!
-    var oneDiary:OneDiaryRecord?
+    var oneDiary:ADiary?
     var myTableView:UITableView?
 
     override func awakeFromNib() {

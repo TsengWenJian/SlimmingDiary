@@ -15,9 +15,9 @@ class ProfileManager {
     
     static let standard = ProfileManager()
     
-    let liftStyleArray = ["靜態或坐的工作","站立活動較多的工作","重度使用體力之工作"]
-    let genderArray = ["女姓","男性"]
-    let presonalTitle = ["性別","身高","體重","目標體重","生日","生活型態","每日步數"]
+    let liftStyles = ["靜態或坐的工作","站立活動較多的工作","重度使用體力之工作"]
+    let genders = ["女姓","男性"]
+    let presonalTitles = ["性別","身高","體重","目標體重","生日","生活型態","每日步數"]
     
     
     var isInputDone:Bool{
@@ -88,9 +88,7 @@ class ProfileManager {
         
     }
     
-    
-    
-    
+
     
     //MARK : - Function setUserDefault
     
@@ -196,7 +194,7 @@ class ProfileManager {
     func getUserData()->[String]{
         
         var userArray = [String]()
-        userArray.append(genderArray[userGender])
+        userArray.append(genders[userGender])
         userArray.append(String(userHeight))
         userArray.append(String(userWeight))
         userArray.append(String(userTargetWeight))
@@ -209,7 +207,7 @@ class ProfileManager {
             userArray.append("2001-01-01")
         }
         
-        userArray.append(liftStyleArray[userLifeStyle])
+        userArray.append(liftStyles[userLifeStyle])
         userArray.append(String(Int(targetStep)))
         
         return userArray
@@ -220,16 +218,14 @@ class ProfileManager {
     func setUserData(data:[String]){
         
         
-        guard  let gender = genderArray.index(of: data[0]),
+        guard  let gender = genders.index(of: data[0]),
                let height = Double(data[1]),
                let weight = Double(data[2]),
                let targetWeight = Double(data[3]),
-               let liftStyle = liftStyleArray.index(of: data[5]),
+               let liftStyle = liftStyles.index(of: data[5]),
                let targetStep = Double(data[6])else{
             return
         }
-        
-        
         
         
         setUserGender(gender)
@@ -242,8 +238,6 @@ class ProfileManager {
         
 
     }
-    
-    
     
     
     func setUserServiceDataNill(){

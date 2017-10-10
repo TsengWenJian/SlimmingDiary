@@ -12,23 +12,22 @@ class FoodDetailViewController: UIViewController{
     
     @IBOutlet weak var collectBtn: UIButton!
     
-    
-    var lastPageVC:ActionType = .insert
-    var foodTitleArray = [String]()
-    var foodDataArray = [String]()
-    var foodUnitArray = [String]()
+    var actionType:ActionType = .insert
+    var foodTitles = [String]()
+    var foodDatas = [String]()
+    var foodUnits = [String]()
     var foodDiaryId:Int = 0
     var foodId:Int?
     var dinnerTime:String?
     var numberOfRows:Int = 0
     var numberOfComponents:Int = 0
-    var setSelectRowOfbegin:Double = 0
+    var selectRowOfbegin:Double = 0
     var correntRow:Int = 0
     var selectImage:UIImage?{
         didSet{ foodDetailsTableView.reloadData() }
     }
     
-    let master = FoodMaster.standard
+    let foodMaster = FoodMaster.standard
     
     
     
@@ -42,26 +41,26 @@ class FoodDetailViewController: UIViewController{
         
         
         
-        foodDataArray = master.getFoodDataArray(lastPageVC,
+        foodDatas = foodMaster.getFoodDataArray(actionType,
                                                 foodDiaryId:foodDiaryId,
                                                 foodId:foodId,
                                                 amount:nil,
                                                 weight:nil)
         
         
-        foodTitleArray = master.foodDetailTitles
-        foodUnitArray = master.foodDetailUnits
+        foodTitles = foodMaster.foodDetailTitles
+        foodUnits = foodMaster.foodDetailUnits
         
-        if master.isCollection == 1{
+        if foodMaster.isCollection == 1{
             collectBtn.isSelected = true
         }
         
         
-        selectImage = master.foodDetailImage
+        selectImage = foodMaster.foodDetailImage
         
         navigationItem.title = "食物資料"
         
-        let save = UIBarButtonItem(title:lastPageVC.rawValue, style: .done, target: self, action: #selector(saveFood))
+        let save = UIBarButtonItem(title:actionType.rawValue, style: .done, target: self, action: #selector(saveFood))
         navigationItem.rightBarButtonItems = [save]
         
         
@@ -86,10 +85,10 @@ class FoodDetailViewController: UIViewController{
     
     @objc func saveFood(){
         
-        if lastPageVC == ActionType.insert{
+        if actionType == ActionType.insert{
             
-            guard let myAmount = Double(foodDataArray[1]),
-                let myWeight = Double(foodDataArray[2]),
+            guard let myAmount = Double(foodDatas[1]),
+                let myWeight = Double(foodDatas[2]),
                 let myFoodId = foodId,
                 let myDinnerTime = dinnerTime else{
                     
@@ -107,13 +106,13 @@ class FoodDetailViewController: UIViewController{
             
             
             
-            if let index =  master.switchIsOn.index(of:myFoodId){
-                master.switchIsOn.remove(at:index)
-                master.foodDiaryArrary.remove(at:index)
+            if let index =  foodMaster.switchIsOnIDs.index(of:myFoodId){
+                foodMaster.switchIsOnIDs.remove(at:index)
+                foodMaster.foodDiarys.remove(at:index)
             }
             
-            master.switchIsOn.append(myFoodId)
-            master.foodDiaryArrary.append(diary)
+            foodMaster.switchIsOnIDs.append(myFoodId)
+            foodMaster.foodDiarys.append(diary)
             
             
         }else{
@@ -124,8 +123,8 @@ class FoodDetailViewController: UIViewController{
             let cond = "\(FOODDIARY_ID)=\(foodDiaryId)"
             var dict = [String:String]()
             
-            dict = ["\(FOODDIARY_AMOUNT)":"\(foodDataArray[1])",
-                "\(FOODDIARY_WEIGHT)":"\(foodDataArray[2])"]
+            dict = ["\(FOODDIARY_AMOUNT)":"\(foodDatas[1])",
+                "\(FOODDIARY_WEIGHT)":"\(foodDatas[2])"]
             
             if let image = selectImage{
                 
@@ -136,8 +135,8 @@ class FoodDetailViewController: UIViewController{
             }
             
             
-            master.diaryType = .foodDiary
-            master.updataDiary(cond:cond,rowInfo:dict)
+            foodMaster.diaryType = .foodDiary
+            foodMaster.updataDiary(cond:cond,rowInfo:dict)
             
             
         }
@@ -154,7 +153,7 @@ class FoodDetailViewController: UIViewController{
     @IBAction func collectBtnAction(_ sender: Any) {
         
         var iscollect:Int
-        master.diaryType = .foodDetail
+        foodMaster.diaryType = .foodDetail
         if collectBtn.isSelected{
             
             iscollect = 0
@@ -167,7 +166,7 @@ class FoodDetailViewController: UIViewController{
             
         }
         
-        master.updataDiary(cond: "\(FOODDETAIL_Id) =\(foodId!) ",
+        foodMaster.updataDiary(cond: "\(FOODDETAIL_Id) =\(foodId!) ",
             rowInfo: ["\(FOODDETAIL_COLLECTION)" :"'\(iscollect)'"])
         
         
@@ -240,8 +239,8 @@ class FoodDetailViewController: UIViewController{
                     
                 }
                 
-                if let baginData =  Double(foodDataArray[indexPath.row+1]){
-                    setSelectRowOfbegin = baginData
+                if let baginData =  Double(foodDatas[indexPath.row+1]){
+                    selectRowOfbegin = baginData
                 }
 
                  PickerViewController.shared.displayDialog(present: self)
@@ -263,7 +262,7 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
         if section == 1{
             
             headerCell.titleLabel.text = dinnerTime
-            headerCell.totalCalorieLebel.text = foodDataArray[0]
+            headerCell.totalCalorieLebel.text = foodDatas[0]
             return headerCell
             
         }else if section == 2{
@@ -323,7 +322,7 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
             return 3
             
         }else{
-            return foodTitleArray.count-3
+            return foodTitles.count-3
         }
         
     }
@@ -353,9 +352,9 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
             if indexPath.row <= 1{
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as!FoodDetailTableViewCell
-                cell.title.text = foodTitleArray[indexPath.row+1]
-                cell.dataLabel.text = foodDataArray[indexPath.row+1]
-                cell.unit.text = foodUnitArray[indexPath.row+1]
+                cell.title.text = foodTitles[indexPath.row+1]
+                cell.dataLabel.text = foodDatas[indexPath.row+1]
+                cell.unit.text = foodUnits[indexPath.row+1]
                 
                 
                 
@@ -366,7 +365,7 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProgressCell") as!DetailProgressCell
                 
                 
-                var total = master.total
+                var total = foodMaster.total
                 
                 
                 if total.isNaN{
@@ -374,9 +373,9 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                 }
                 
                 
-                if  let protein = Double(foodDataArray[4]),
-                    let fat = Double(foodDataArray[5]),
-                    let carbohydrates = Double(foodDataArray[8]) {
+                if  let protein = Double(foodDatas[4]),
+                    let fat = Double(foodDatas[5]),
+                    let carbohydrates = Double(foodDatas[8]) {
                     
                     
                     
@@ -386,9 +385,9 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                     
                     
                     
-                    cell.circleProgressRate.setTitleLabelText(text:foodDataArray[3],size:25)
+                    cell.circleProgressRate.setTitleLabelText(text:foodDatas[3],size:25)
                     cell.circleProgressRate.setSubTitleLabelText(text:"kcal",size:18)
-                    cell.circleProgressRate.setProgress(pro: [pro,pro2,pro3])
+                    cell.circleProgressRate.setProgress(pros: [pro,pro2,pro3])
                     
                     
                     cell.proteinLabel.text = "蛋白質 " +  calProportion(value:protein) + "%"
@@ -402,14 +401,14 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
         }else{
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "rightDetailCell")
-            var data = foodDataArray[indexPath.row+3]
+            var data = foodDatas[indexPath.row+3]
             
             if  data == "0.0"{
                 data = "-"
                 
             }
-            cell?.detailTextLabel?.text = data+foodUnitArray[indexPath.row+3]
-            cell?.textLabel?.text = foodTitleArray[indexPath.row+3]
+            cell?.detailTextLabel?.text = data+foodUnits[indexPath.row+3]
+            cell?.textLabel?.text = foodTitles[indexPath.row+3]
             
             return cell!
             
@@ -421,7 +420,7 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     func calProportion(value:Double)->String{
-        let total = master.total
+        let total = foodMaster.total
         let dataStr = String(format: "%.0f", round((value/total)*100))
         return  dataStr == "nan" ?"0":dataStr
         
@@ -465,24 +464,24 @@ extension FoodDetailViewController:PickerViewDelegate{
         
         if correntRow == 0{
             
-            foodDataArray[1] = "\(data)"
+            foodDatas[1] = "\(data)"
             
         }else {
             
-            foodDataArray[2] = "\(data)"
+            foodDatas[2] = "\(data)"
             
         }
         
         
-        guard let amount = Double(foodDataArray[1]),
-              let weight = Double(foodDataArray[2]) else{
+        guard let amount = Double(foodDatas[1]),
+              let weight = Double(foodDatas[2]) else{
                 return
         }
         
         
         
         
-        foodDataArray = master.getFoodDataArray(lastPageVC,
+        foodDatas = foodMaster.getFoodDataArray(actionType,
                                                 foodDiaryId:foodDiaryId,
                                                 foodId:foodId,
                                                 amount:amount,

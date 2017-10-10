@@ -11,25 +11,20 @@ import UIKit
 
 class HomePageTargetWeightViewController: UIViewController {
     
-    let manager = ProfileManager.standard
+    let profileManager = ProfileManager.standard
     
     @IBOutlet weak var targetProgress: NickProgress3UIView!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-          
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
-        
-        
-        
-        
-        
-        let denominator =  fabs(manager.userWeight - manager.userTargetWeight)
-        let molecular = fabs(manager.userOriginWeight - manager.userTargetWeight)
+        let denominator =  fabs(profileManager.userWeight - profileManager.userTargetWeight)
+        let molecular = fabs(profileManager.userOriginWeight - profileManager.userTargetWeight)
         var progress = (1-denominator/molecular)*100
         
         
@@ -38,10 +33,7 @@ class HomePageTargetWeightViewController: UIViewController {
             progress = 0
         }
         
-        
-        
-      
-        let  denominatorString = String(format:"%.1f", denominator)
+        let  denominatorStr = String(format:"%.1f", denominator)
         
         
         DispatchQueue.main.async {
@@ -54,12 +46,10 @@ class HomePageTargetWeightViewController: UIViewController {
                 
             }else{
                 self.targetProgress.setTitleText(text:"距離目標")
-                self.targetProgress.setSubTitleText(text:denominatorString)
+                self.targetProgress.setSubTitleText(text:denominatorStr)
                 self.targetProgress.setDetailText(text: "kg")
                 
             }
-            
-            
             
             // if progress is not change don't again anim
             if progress != self.targetProgress.getProgress(){

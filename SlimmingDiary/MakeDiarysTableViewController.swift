@@ -10,12 +10,11 @@ import UIKit
 import Firebase
 
 
-class MakeShareDiaryTableViewController: UITableViewController {
+class MakeDiarysTableViewController: UITableViewController {
     @IBOutlet var timeLineTableView: UITableView!
-    
-    
-    var diarys = [OneDiaryRecord]()
-    let master = FoodMaster.standard
+
+    var diarys = [ADiary]()
+    let foodMaster = FoodMaster.standard
     let sportMaster = SportMaster.standard
     let shareManager = shareDiaryManager.standard
     var diaryId = String()
@@ -24,7 +23,6 @@ class MakeShareDiaryTableViewController: UITableViewController {
         didSet{
             if trackUploadImageNumber == sumItem{
                 uploadDairyToDB(id:diaryId)
-                
             }
         }
     }
@@ -33,16 +31,14 @@ class MakeShareDiaryTableViewController: UITableViewController {
     var titleImage:UIImage?
     var day:Int?
     var beginDate:String?
+    var titleDiary:ShareDiary!
     var toastView = NickToastUIView()
     var serviceManager = DataService.standard
     var isLocked:Bool = false
     var trackIsLock:Bool = false
-    var sectionsIsExpend = [Bool]()
+    var sectionsIsExpanded = [Bool]()
     var actionType = ActionType.insert
-    var titleDiary:ShareDiary!
-    
-    
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,13 +75,11 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
     }
     
-    
-    
-    
+
     func setSectionExpend(sum:Int){
         
         for _ in 0..<sum{
-            sectionsIsExpend.append(true)
+            sectionsIsExpanded.append(true)
         }
         
     }
@@ -99,7 +93,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
         var newDateComponent = DateComponents()
         newDateComponent.day = 1
         
-        diarys = [OneDiaryRecord]()
+        diarys = [ADiary]()
         
         guard let myBeginDate = beginDate,
             let myDay = day else{
@@ -112,13 +106,13 @@ class MakeShareDiaryTableViewController: UITableViewController {
         
         for _ in 0..<myDay{
             
-            sectionsIsExpend.append(true)
+            sectionsIsExpanded.append(true)
             let diaryDate = calender.dateToString(calculatedDate)
             
             
-            master.diaryType = .foodDiaryAndDetail
+            foodMaster.diaryType = .foodDiaryAndDetail
             let cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DATE) = '\(diaryDate)'"
-            let foodDaiays = master.getFoodDetails(.diaryData,amount:nil,weight:nil,cond: cond,order: nil)
+            let foodDaiays = foodMaster.getFoodDetails(.diaryData,amount:nil,weight:nil,cond: cond,order: nil)
             var foodItems = [DiaryItem]()
             for item in foodDaiays{
                 
@@ -146,7 +140,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
             }
             
             
-            diarys.append(OneDiaryRecord(food:foodItems,sport:sportItems,text:"",date: diaryDate))
+            diarys.append(ADiary(food:foodItems,sport:sportItems,text:"",date: diaryDate))
             
             if let calDate =  Calendar.current.date(byAdding:newDateComponent,to:calculatedDate){
                 calculatedDate = calDate
@@ -210,7 +204,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
     }
     
     
-    func uploadDiaryWithItemsImage(diarys:[OneDiaryRecord]){
+    func uploadDiaryWithItemsImage(diarys:[ADiary]){
         
         for diary in diarys{
             
@@ -229,7 +223,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
     
     
     
-    func chickIsEmpty(diary:[OneDiaryRecord])->Bool{
+    func chickIsEmpty(diary:[ADiary])->Bool{
         
         var chickDiaryIsEmpty = true
         
@@ -499,7 +493,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
             
             if  sectionDay.food == nil && sectionDay.sport == nil && sectionDay.text == nil{
                 diarys.remove(at: indexPath.section)
-                sectionsIsExpend.remove(at:indexPath.section)
+                sectionsIsExpanded.remove(at:indexPath.section)
             }
             
             
@@ -517,7 +511,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if sectionsIsExpend[section]{
+        if sectionsIsExpanded[section]{
             
             var calRow = 0
             let sectionDay = diarys[section]
@@ -539,7 +533,7 @@ class MakeShareDiaryTableViewController: UITableViewController {
     @objc func sectionIsExpend(sender:UIButton){
         
         let section = sender.tag - 1000
-        sectionsIsExpend[section] = !sectionsIsExpend[section]
+        sectionsIsExpanded[section] = !sectionsIsExpanded[section]
         timeLineTableView.reloadSections(IndexSet(integer:section), with: .automatic)
         
     }

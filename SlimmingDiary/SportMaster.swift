@@ -91,16 +91,16 @@ class SportMaster:DiaryManager{
     
     
     static let standard = SportMaster()
-    var sportDiaryArrary = [sportDiary]()
-    var switchIsOn = [Int]()
+    var sportDiarys = [sportDiary]()
+    var switchIsOnIDs = [Int]()
     
     
     
    
     
     func removeSportDiarysAndSwitchIsOn(){
-        sportDiaryArrary.removeAll()
-        switchIsOn.removeAll()
+        sportDiarys.removeAll()
+        switchIsOnIDs.removeAll()
         
     }
     

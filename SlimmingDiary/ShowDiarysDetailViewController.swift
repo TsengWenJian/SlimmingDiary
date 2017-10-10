@@ -10,11 +10,9 @@ import UIKit
 import Firebase
 import MessageUI
 
-class ShowRecordDetailViewController: UIViewController {
+class ShowDiarysDetailViewController: UIViewController {
     
-    var diarys = [OneDiaryRecord]()
-    var shareDiary = ShareDiary()
-    var user:UserData?
+   
     
     
     @IBOutlet weak var detailLabel: UILabel!
@@ -25,9 +23,12 @@ class ShowRecordDetailViewController: UIViewController {
     @IBOutlet weak var recordsDetailTableView: UITableView!
     
     
-    var sectionsIsExpend = [Bool]()
+    var sectionsIsExpanded = [Bool]()
     var serviceManager = DataService.standard
     var shareManager = shareDiaryManager.standard
+    var diarys = [ADiary]()
+    var shareDiary = ShareDiary()
+    var user:UserData?
 
   
     
@@ -58,8 +59,6 @@ class ShowRecordDetailViewController: UIViewController {
     
     @objc func getDiaryDetail(){
         
-        
-        
         if serviceManager.isConnectDBURL == false{
             
             titleImageView.image = UIImage(named:"not_connect")
@@ -68,13 +67,10 @@ class ShowRecordDetailViewController: UIViewController {
                 
                 let alert = UIAlertController(error:notConnectInterent)
                 self.present(alert,animated:true, completion: nil)
-                
             }
-            
             return
             
         }
-        
         
         navigationItem.title = shareDiary.title
         titleImageView.loadWithURL(urlString: shareDiary.titleImageURL)
@@ -141,7 +137,7 @@ class ShowRecordDetailViewController: UIViewController {
     
     
     @objc func editDiary(){
-        let nextPage = storyboard?.instantiateViewController(withIdentifier:"MakeShareDiaryTableViewController") as! MakeShareDiaryTableViewController
+        let nextPage = storyboard?.instantiateViewController(withIdentifier:"MakeShareDiaryTableViewController") as! MakeDiarysTableViewController
         
         nextPage.diarys = diarys
         nextPage.actionType = .update
@@ -156,7 +152,7 @@ class ShowRecordDetailViewController: UIViewController {
     func setSectionExpend(sum:Int){
         
         for _ in 0..<sum{
-            sectionsIsExpend.append(true)
+            sectionsIsExpanded.append(true)
         }
         
     }
@@ -198,7 +194,7 @@ class ShowRecordDetailViewController: UIViewController {
     @objc func sectionIsExpend(sender:UIButton){
         let section = sender.tag - 1000
         
-        sectionsIsExpend[section] = !sectionsIsExpend[section]
+        sectionsIsExpanded[section] = !sectionsIsExpanded[section]
         recordsDetailTableView.reloadSections(IndexSet(integer:section), with: .automatic)
         
         // move 1point to touch off scrollViewDidScroll
@@ -210,7 +206,7 @@ class ShowRecordDetailViewController: UIViewController {
 
 
 //MARK: - UITableViewDelegate,UITableViewDataSource
-extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSource{
+extension ShowDiarysDetailViewController:UITableViewDelegate,UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -221,7 +217,7 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if sectionsIsExpend[section]{
+        if sectionsIsExpanded[section]{
             var calRow = 0
             let sectionDay = diarys[section]
             if sectionDay.food != nil{calRow+=1}
@@ -318,7 +314,7 @@ extension ShowRecordDetailViewController:UITableViewDelegate,UITableViewDataSour
     
 }
 //MARK: - UIScrollViewDelegate
-extension ShowRecordDetailViewController:UIScrollViewDelegate{
+extension ShowDiarysDetailViewController:UIScrollViewDelegate{
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y

@@ -9,7 +9,7 @@
 import UIKit
 
 
-class PersonalFilesViewController: UIViewController {
+class ProFileViewController: UIViewController {
     
     var userData = [String]() {
         didSet{
@@ -18,8 +18,6 @@ class PersonalFilesViewController: UIViewController {
     }
     
     @IBOutlet weak var personalFilesTableView: UITableView!
-    
-    
     
     
     var userPhoto:UIImage? = {
@@ -34,14 +32,13 @@ class PersonalFilesViewController: UIViewController {
     
     
     var userNameTextfield:UITextField?
-    
     let manager = ProfileManager.standard
     let serviceManager = DataService.standard
     var datePickerVC:DatePickerViewController?
     
     var numberOfRows:Int = 0
     var numberOfComponents:Int = 2
-    var setSelectRowOfbegin:Double = 1.0
+    var selectRowOfbegin:Double = 1.0
     var currentTouchRow:Int = 0
     var userPhotoIschanage = false
     
@@ -65,8 +62,7 @@ class PersonalFilesViewController: UIViewController {
         
     }
     
-    
-    
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -180,14 +176,14 @@ class PersonalFilesViewController: UIViewController {
         
         let alert = UIAlertController(title: "請選擇性別", message:"", preferredStyle:.actionSheet)
         
-        let boy = UIAlertAction(title:manager.genderArray[0], style: .default, handler: { (UIAlertAction) in
+        let boy = UIAlertAction(title:manager.genders[0], style: .default, handler: { (UIAlertAction) in
             
-            self.userData[self.currentTouchRow] = self.manager.genderArray[0]
+            self.userData[self.currentTouchRow] = self.manager.genders[0]
         })
         
         
-        let  girl = UIAlertAction(title:manager.genderArray[1], style: .default, handler: { (UIAlertAction) in
-            self.userData[self.currentTouchRow] = self.manager.genderArray[1]
+        let  girl = UIAlertAction(title:manager.genders[1], style: .default, handler: { (UIAlertAction) in
+            self.userData[self.currentTouchRow] = self.manager.genders[1]
             
         })
         
@@ -206,20 +202,20 @@ class PersonalFilesViewController: UIViewController {
         
         let alert = UIAlertController(title: "請選擇生活型態", message:"", preferredStyle:.actionSheet)
         
-        let light = UIAlertAction(title:manager.liftStyleArray[0], style: .default, handler: { (UIAlertAction) in
+        let light = UIAlertAction(title:manager.liftStyles[0], style: .default, handler: { (UIAlertAction) in
             
-            self.userData[self.currentTouchRow] = self.manager.liftStyleArray[0]
-            
-        })
-        
-        
-        let  middle = UIAlertAction(title:manager.liftStyleArray[1], style: .default, handler: { (UIAlertAction) in
-            self.userData[self.currentTouchRow] = self.manager.liftStyleArray[1]
+            self.userData[self.currentTouchRow] = self.manager.liftStyles[0]
             
         })
         
-        let  heavy = UIAlertAction(title:manager.liftStyleArray[2], style: .default, handler: { (UIAlertAction) in
-            self.userData[self.currentTouchRow] = self.manager.liftStyleArray[2]
+        
+        let  middle = UIAlertAction(title:manager.liftStyles[1], style: .default, handler: { (UIAlertAction) in
+            self.userData[self.currentTouchRow] = self.manager.liftStyles[1]
+            
+        })
+        
+        let  heavy = UIAlertAction(title:manager.liftStyles[2], style: .default, handler: { (UIAlertAction) in
+            self.userData[self.currentTouchRow] = self.manager.liftStyles[2]
         })
         
         let  cancel = UIAlertAction(title:"取消", style:.cancel, handler:nil)
@@ -252,7 +248,7 @@ class PersonalFilesViewController: UIViewController {
 
 
 //MARK: - UIImagePickerControllerDelegate,UINavigationControllerDelegate
-extension PersonalFilesViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+extension ProFileViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -284,7 +280,7 @@ extension PersonalFilesViewController:UIImagePickerControllerDelegate,UINavigati
 
 
 //MARK: - UITableViewDataSource,UITableViewDelegate
-extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
+extension ProFileViewController:UITableViewDataSource,UITableViewDelegate{
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -296,7 +292,7 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
         
         
         
-        return manager.presonalTitle.count
+        return manager.presonalTitles.count
     }
     
     
@@ -334,7 +330,7 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetail", for: indexPath)
-        cell.textLabel?.text = manager.presonalTitle[indexPath.row]
+        cell.textLabel?.text = manager.presonalTitles[indexPath.row]
         cell.detailTextLabel?.text = userData[indexPath.row]
         
         return cell
@@ -356,7 +352,7 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
             numberOfRows = 300
             
             if  let begin = Double(userData[indexPath.row]){
-                setSelectRowOfbegin = begin
+                selectRowOfbegin = begin
              
               
                 PickerViewController.shared.displayDialog(present: self)
@@ -378,7 +374,7 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
             numberOfComponents = 1
             numberOfRows = 100000
             if  let begin = Double(userData[indexPath.row]){
-                setSelectRowOfbegin = begin
+                selectRowOfbegin = begin
                   PickerViewController.shared.displayDialog(present: self)
             }
 
@@ -389,7 +385,7 @@ extension PersonalFilesViewController:UITableViewDataSource,UITableViewDelegate{
     
 }
 //MARK: - UITextFieldDelegate
-extension PersonalFilesViewController:UITextFieldDelegate{
+extension ProFileViewController:UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
@@ -403,7 +399,7 @@ extension PersonalFilesViewController:UITextFieldDelegate{
 
 
 //MARK: - DatePickerDelegate
-extension PersonalFilesViewController:DatePickerDelegate{
+extension ProFileViewController:DatePickerDelegate{
     
     func getSelectDate(date: Date) {
         
@@ -416,7 +412,7 @@ extension PersonalFilesViewController:DatePickerDelegate{
 }
 
 //MARK: - PickerViewDelegate
-extension PersonalFilesViewController:PickerViewDelegate{
+extension ProFileViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double){
         

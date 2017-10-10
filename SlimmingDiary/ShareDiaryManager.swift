@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-typealias DoneHandlerDiarys = (Error?,[OneDiaryRecord])->()
+typealias DoneHandlerDiarys = (Error?,[ADiary])->()
 
 
 @objcMembers
-class OneDiaryRecord:NSObject{
+class ADiary:NSObject{
     
     var food:[DiaryItem]?
     var sport:[DiaryItem]?
@@ -135,7 +135,7 @@ class shareDiaryManager {
         
         DataService.standard.dbDiaryContentURL.child(diaryID).observeSingleEvent(of:.childAdded, with: { (DataSnapshot) in
             
-            var myDiarys = [OneDiaryRecord]()
+            var myDiarys = [ADiary]()
             
             guard let diaryDictArray =  DataSnapshot.value as? [[String:AnyObject]] else{
                 
@@ -152,7 +152,7 @@ class shareDiaryManager {
                     return
                 }
                 
-                let da = OneDiaryRecord(food:self.dictArrayTurnDiaryItem(dict: foodItems),
+                let da = ADiary(food:self.dictArrayTurnDiaryItem(dict: foodItems),
                                         sport:self.dictArrayTurnDiaryItem(dict: sportItems),
                                         text:text,
                                         date:date)
@@ -196,7 +196,7 @@ class shareDiaryManager {
     }
     
     
-    func diarysTurnDict(day:OneDiaryRecord)->[String:AnyObject]?{
+    func diarysTurnDict(day:ADiary)->[String:AnyObject]?{
         
         
         let foodItems = itemsTurnDict(items:day.food)

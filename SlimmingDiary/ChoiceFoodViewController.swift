@@ -42,110 +42,30 @@ class ChoiceFoodViewController: UIViewController{
     var dinnerTime:String?
    
     
-    var foodItemsArray = [foodDetails](){
+    var foodItems = [foodDetails](){
         didSet{choiceFoodTableView.reloadData()}
         
     }
     
     
-    var sportItemsArray = [sportDetail](){
+    var sportItems = [sportDetail](){
         didSet{ choiceFoodTableView.reloadData()}
         
     }
     
     
-    
-    
-    var currentButton:Int = 0 {
+
+    var currentBtn:Int = 0 {
         
         didSet{
-            var cond:String?
-            var order:String?
-            addCustomBtn.isHidden = true
-            tableViewButtomConstraint.constant = 0
             
-            
-            switch currentButton {
-                
-            case 0:
-                
-                
-                foodMaster.diaryType = .foodDetail
-                sportMaster.diaryType = .sportDetail
-                cond = diaryType == .food ? "\(FOODDETAIL_COLLECTION) = '1'":"\(SPORTDETAIL_COLLECTION) = '1'"
-                
-            case 1:
-                
-                foodMaster.diaryType = .foodDetail
-                sportMaster.diaryType = .sportDetail
-                addCustomBtn.isHidden = false
-                tableViewButtomConstraint.constant = addCustomBtn.frame.height
-                cond = diaryType == .food ?"\(FOODDETAIL_CLASSIFICATION) = '自訂'":"\(SPORTDETAIL_CLASSIFICATION) = '自訂'"
-                
-                
-            case 2:
-                
-                foodMaster.diaryType = .foodDiaryAndDetail
-                sportMaster.diaryType = .sportDiaryAndDetail
-                
-                
-                let calender = CalenderManager()
-                var newDateComponent = DateComponents()
-                newDateComponent.day = -7
-                let offset = TimeZone.current.secondsFromGMT()
-                let date = Date(timeInterval:TimeInterval(offset),since:Date())
-                
-                if  let  calculatedDate = Calendar.current.date(byAdding:newDateComponent,to:date){
-                    
-                   
-                    let calDateString = calender.dateToString(calculatedDate)
-                
-                    if diaryType == .food{
-                        
-                        cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DATE) >= '\(calDateString)' group by \(FOODDIARY_DETAILID)"
-                        
-                        order =  "\(FOODDIARY_DATE) desc"
-                        
-                    }else{
-                        cond = "Sport_Diary.\(SPORTYDIARY_DETAILID)=\(SPORTDETAIL_ID) and \(SPORTYDIARY_DATE) >= '\(calDateString)' group by \(SPORTYDIARY_DETAILID)"
-                        
-                        
-                        order =  "\(SPORTYDIARY_DATE) desc"
-                    }
-                }
-                
-                
-                
-                
-            default:
-                
-                break
-                
-                
-            }
-            
-            
-            if currentButton < 3{
-                if diaryType == .food{
-                    
-                    foodItemsArray =  foodMaster.getFoodDetails(.defaultData,amount:nil,
-                                                             weight:nil,cond:cond,order:order)
-                }else{
-                    
-                    sportItemsArray = sportMaster.getSportDetails(.defaultData,minute:nil,
-                                                                  cond:cond,order:order)
-                }
-            }
-            
-            
-            
-            choiceFoodTableView.reloadData()
+            currentBtnChanged(currentBtn);
             
         }
     }
     
     var lastPage = 0
-    var isSerach:Bool = false
+    var isSerached:Bool = false
     let foodMaster = FoodMaster.standard
     let sportMaster = SportMaster.standard
     
@@ -183,13 +103,92 @@ class ChoiceFoodViewController: UIViewController{
     }
     
     
-    
     override func viewWillAppear(_ animated: Bool) {
         
-        let last =  currentButton
-        currentButton = last
+        let last =  currentBtn
+        currentBtn = last
         setNavSelectSum()
         
+    }
+    
+    func currentBtnChanged(_ number:Int){
+        var cond:String?
+        var order:String?
+        addCustomBtn.isHidden = true
+        tableViewButtomConstraint.constant = 0
+        
+        
+        switch number {
+            
+        case 0:
+            
+            
+            foodMaster.diaryType = .foodDetail
+            sportMaster.diaryType = .sportDetail
+            cond = diaryType == .food ? "\(FOODDETAIL_COLLECTION) = '1'":"\(SPORTDETAIL_COLLECTION) = '1'"
+            
+        case 1:
+            
+            foodMaster.diaryType = .foodDetail
+            sportMaster.diaryType = .sportDetail
+            addCustomBtn.isHidden = false
+            tableViewButtomConstraint.constant = addCustomBtn.frame.height
+            cond = diaryType == .food ?"\(FOODDETAIL_CLASSIFICATION) = '自訂'":"\(SPORTDETAIL_CLASSIFICATION) = '自訂'"
+            
+            
+        case 2:
+            
+            foodMaster.diaryType = .foodDiaryAndDetail
+            sportMaster.diaryType = .sportDiaryAndDetail
+            
+            
+            let calender = CalenderManager()
+            var newDateComponent = DateComponents()
+            newDateComponent.day = -7
+            let offset = TimeZone.current.secondsFromGMT()
+            let date = Date(timeInterval:TimeInterval(offset),since:Date())
+            
+            if  let  calculatedDate = Calendar.current.date(byAdding:newDateComponent,to:date){
+                
+                
+                let calDateString = calender.dateToString(calculatedDate)
+                
+                if diaryType == .food{
+                    
+                    cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DATE) >= '\(calDateString)' group by \(FOODDIARY_DETAILID)"
+                    
+                    order =  "\(FOODDIARY_DATE) desc"
+                    
+                }else{
+                    cond = "Sport_Diary.\(SPORTYDIARY_DETAILID)=\(SPORTDETAIL_ID) and \(SPORTYDIARY_DATE) >= '\(calDateString)' group by \(SPORTYDIARY_DETAILID)"
+                    
+                    
+                    order =  "\(SPORTYDIARY_DATE) desc"
+                }
+            }
+            
+            
+        default:
+            
+            break
+            
+            
+        }
+        
+        
+        if currentBtn < 3{
+            if diaryType == .food{
+                
+                foodItems =  foodMaster.getFoodDetails(.defaultData,amount:nil,
+                                                       weight:nil,cond:cond,order:order)
+            }else{
+                
+                sportItems = sportMaster.getSportDetails(.defaultData,minute:nil,
+                                                         cond:cond,order:order)
+            }
+        }
+        
+        choiceFoodTableView.reloadData()
     }
     
     //MARK: - IBAction
@@ -204,22 +203,22 @@ class ChoiceFoodViewController: UIViewController{
         
         if currentPage == 100 {
             
-            currentButton = 0
+            currentBtn = 0
             commonButton.isSelected = true
             
         }else if currentPage == 101 {
             
-            currentButton = 1
+            currentBtn = 1
             customBotton.isSelected = true
             
             
         }else{
-            currentButton = 2
+            currentBtn = 2
             recentlyButton.isSelected = true
             
         }
         
-        let offset = self.view.frame.width / 3.0 * CGFloat(currentButton)
+        let offset = self.view.frame.width / 3.0 * CGFloat(currentBtn)
         UIView.animate(withDuration: 0.1) {
             self.sliderViewLeading.constant = offset
             self.view.layoutIfNeeded()
@@ -260,7 +259,7 @@ class ChoiceFoodViewController: UIViewController{
     //MARK: - Fucction
     func setNavSelectSum(){
         
-        let count = diaryType == .food ? foodMaster.switchIsOn.count:sportMaster.switchIsOn.count
+        let count = diaryType == .food ? foodMaster.switchIsOnIDs.count:sportMaster.switchIsOnIDs.count
         let scale = CABasicAnimation(keyPath: "transform.scale")
         scale.duration = 0.1
         scale.fromValue = 1
@@ -293,7 +292,7 @@ class ChoiceFoodViewController: UIViewController{
             
             if diaryType == .food{
                 
-                for diary in  foodMaster.foodDiaryArrary{
+                for diary in  foodMaster.foodDiarys{
                     
                     foodMaster.insertFoodDiary(diary: diary)
                     
@@ -301,7 +300,7 @@ class ChoiceFoodViewController: UIViewController{
                 
             }else{
                 
-                for diary in sportMaster.sportDiaryArrary{
+                for diary in sportMaster.sportDiarys{
                     
                     sportMaster.insertWeightDiary(diary:diary)
                 }
@@ -338,26 +337,26 @@ class ChoiceFoodViewController: UIViewController{
             if !sender.isSelected{
                 
                 
-                foodMaster.switchIsOn.append(cellId)
+                foodMaster.switchIsOnIDs.append(cellId)
                 let  food = foodDiary(dinnerTime:myDinnerTime,
-                                      amount:foodItemsArray[(indexPath.row)].amount,
-                                      weight:foodItemsArray[indexPath.row].weight,
+                                      amount:foodItems[(indexPath.row)].amount,
+                                      weight:foodItems[indexPath.row].weight,
                                       foodId:cellId)
                 
-                foodMaster.foodDiaryArrary.append(food)
+                foodMaster.foodDiarys.append(food)
                 sender.isSelected = true
                 
                 
                 
             }else{
                 
-                guard let index = foodMaster.switchIsOn.index(of:cellId) else{
+                guard let index = foodMaster.switchIsOnIDs.index(of:cellId) else{
                     return
                 }
                 
-                foodMaster.switchIsOn.remove(at:index)
+                foodMaster.switchIsOnIDs.remove(at:index)
                 sender.isSelected = false
-                foodMaster.foodDiaryArrary.remove(at:index)
+                foodMaster.foodDiarys.remove(at:index)
                 
             }
             
@@ -367,21 +366,21 @@ class ChoiceFoodViewController: UIViewController{
             
             if !sender.isSelected{
                 
-                sportMaster.switchIsOn.append(cellId)
-                let sport = sportDiary(minute:30,sportId:cellId,calories:sportItemsArray[indexPath.row].calories)
-                sportMaster.sportDiaryArrary.append(sport)
+                sportMaster.switchIsOnIDs.append(cellId)
+                let sport = sportDiary(minute:30,sportId:cellId,calories:sportItems[indexPath.row].calories)
+                sportMaster.sportDiarys.append(sport)
                 sender.isSelected = true
                 
                 
                 
             }else{
                 
-                guard let index = sportMaster.switchIsOn.index(of:cellId) else{
+                guard let index = sportMaster.switchIsOnIDs.index(of:cellId) else{
                     return
                 }
                 
-                sportMaster.switchIsOn.remove(at:index)
-                sportMaster.sportDiaryArrary.remove(at:index)
+                sportMaster.switchIsOnIDs.remove(at:index)
+                sportMaster.sportDiarys.remove(at:index)
                 sender.isSelected = false
                 
             }
@@ -407,7 +406,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             
             
             
-            if foodItemsArray.count == 0 && !isSerach{
+            if foodItems.count == 0 && !isSerached{
                 
                 defaultRowInSection = 1
                 
@@ -418,7 +417,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
                 defaultRowInSection = 0
             }
             
-            return foodItemsArray.count
+            return foodItems.count
             
             
         }else{
@@ -426,7 +425,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             
         
             
-            if sportItemsArray.count == 0 && !isSerach{
+            if sportItems.count == 0 && !isSerached{
                 
                 defaultRowInSection = 1
                 
@@ -438,7 +437,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             
             
             
-            return sportItemsArray.count
+            return sportItems.count
             
         }
         
@@ -476,13 +475,13 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             
             
             
-            if currentButton == 0{
+            if currentBtn == 0{
                 
                 defaultImageName = "searchStar"
                 defaultTitle = "點擊 Star 的都會在這裡"
                 
                 
-            }else if currentButton == 1{
+            }else if currentBtn == 1{
                 
                  defaultImageName = "searchAdd"
                  defaultTitle = "來增加些新項目吧！"
@@ -507,14 +506,14 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         if diaryType == .food{
             
             
-            let foodDetails = foodItemsArray[indexPath.row]
+            let foodDetails = foodItems[indexPath.row]
             searchCell.titleLabel.text = foodDetails.sampleName
             searchCell.switchButton.addTarget(self, action: #selector(switchStats),for: .touchUpInside)
-            searchCell.id = foodItemsArray[indexPath.row].foodDetailId
+            searchCell.id = foodItems[indexPath.row].foodDetailId
             searchCell.bodyLabel.text = "1\(foodDetails.foodUnit)(\(Int(foodDetails.weight))克)"
             
             
-            if foodMaster.switchIsOn.contains(foodItemsArray[indexPath.row].foodDetailId){
+            if foodMaster.switchIsOnIDs.contains(foodItems[indexPath.row].foodDetailId){
                 
                 searchCell.switchButton.isSelected = true
                 
@@ -532,14 +531,14 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         }else{
             
             
-            let sportDetail = sportItemsArray[indexPath.row]
+            let sportDetail = sportItems[indexPath.row]
             searchCell.titleLabel.text = sportDetail.sampleName
             searchCell.switchButton.addTarget(self, action: #selector(switchStats),for: .touchUpInside)
             searchCell.id = sportDetail.detailId
             searchCell.bodyLabel.text = "\(sportDetail.minute)分 \(sportDetail.calories) 卡"
             
             
-            if sportMaster.switchIsOn.contains(sportItemsArray[indexPath.row].detailId){
+            if sportMaster.switchIsOnIDs.contains(sportItems[indexPath.row].detailId){
                 
                 searchCell.switchButton.isSelected = true
                 
@@ -567,9 +566,9 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         
         if diaryType == .food{
             let nextPage = storyboard?.instantiateViewController(withIdentifier:"FoodDetailViewController") as! FoodDetailViewController
-            nextPage.foodId = foodItemsArray[indexPath.row].foodDetailId
+            nextPage.foodId = foodItems[indexPath.row].foodDetailId
             nextPage.dinnerTime = dinnerTime
-            nextPage.lastPageVC = .insert
+            nextPage.actionType = .insert
             navigationController?.pushViewController(nextPage, animated: true)
             
             
@@ -579,7 +578,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             
             nextpage.actionType = .insert
             
-            nextpage.detail = sportItemsArray[indexPath.row]
+            nextpage.detail = sportItems[indexPath.row]
             navigationController?.pushViewController(nextpage, animated: true)
             
             
@@ -595,7 +594,7 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
         }
         
         
-        if currentButton == 1{
+        if currentBtn == 1{
             return true
         }
         
@@ -613,23 +612,23 @@ extension ChoiceFoodViewController:UITableViewDelegate,UITableViewDataSource{
             
 
             
-            if currentButton == 1{
+            if currentBtn == 1{
                 
                 if diaryType == .food{
                     
-                    let id = foodItemsArray[indexPath.row].foodDetailId
+                    let id = foodItems[indexPath.row].foodDetailId
                     let cond =  "\(FOODDETAIL_Id) = \(id)"
                     foodMaster.diaryType = .foodDetail
                     foodMaster.updataDiary(cond: cond,
                                            rowInfo: [FOODDETAIL_CLASSIFICATION:"'其他'"])
-                    foodItemsArray.remove(at:indexPath.row)
+                    foodItems.remove(at:indexPath.row)
                     
                 }else{
                     
-                    let id = sportItemsArray[indexPath.row].detailId
+                    let id = sportItems[indexPath.row].detailId
                     let cond =  "\(SPORTDETAIL_ID) = \(id)"
                     sportMaster.diaryType = .sportDetail
-                    sportItemsArray.remove(at: indexPath.row)
+                    sportItems.remove(at: indexPath.row)
                     sportMaster.updataDiary(cond: cond,
                                             rowInfo: [SPORTDETAIL_CLASSIFICATION:"'其他'"])
                     
@@ -667,7 +666,7 @@ extension ChoiceFoodViewController:UISearchBarDelegate{
         if diaryType == .food{
             let cond = "\(FOODDETAIL_SAMPLENAME) like'%"+searchText+"%'"
             foodMaster.diaryType = .foodDetail
-            foodItemsArray = foodMaster.getFoodDetails(.defaultData,
+            foodItems = foodMaster.getFoodDetails(.defaultData,
                                                     amount:nil,
                                                     weight:nil,
                                                     cond:cond,
@@ -677,7 +676,7 @@ extension ChoiceFoodViewController:UISearchBarDelegate{
             
             let cond = "\(SPORTDETAIL_SAMPLENAME) like'%"+searchText+"%'"
             sportMaster.diaryType = .sportDetail
-            sportItemsArray = sportMaster.getSportDetails(.defaultData, minute: nil, cond: cond, order: nil)
+            sportItems = sportMaster.getSportDetails(.defaultData, minute: nil, cond: cond, order: nil)
             
             
             
@@ -689,10 +688,10 @@ extension ChoiceFoodViewController:UISearchBarDelegate{
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
          defaultRowInSection = 1
-        if isSerach{
-            isSerach = false
-            changeBtnViewTop(isUp:isSerach)
-            currentButton = lastPage
+        if isSerached{
+            isSerached = false
+            changeBtnViewTop(isUp:isSerached)
+            currentBtn = lastPage
         }
         
         searchBar.resignFirstResponder()
@@ -704,8 +703,8 @@ extension ChoiceFoodViewController:UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText.isEmpty{
-            foodItemsArray.removeAll()
-            sportItemsArray.removeAll()
+            foodItems.removeAll()
+            sportItems.removeAll()
             
         }
         
@@ -714,14 +713,14 @@ extension ChoiceFoodViewController:UISearchBarDelegate{
         
         defaultRowInSection = 0
         searchBar.setShowsCancelButton(true, animated:true)
-        foodItemsArray.removeAll()
-        sportItemsArray.removeAll()
+        foodItems.removeAll()
+        sportItems.removeAll()
         
-        if !isSerach{
-            isSerach = true
-            changeBtnViewTop(isUp:isSerach)
-            lastPage = currentButton
-            currentButton = 3
+        if !isSerached{
+            isSerached = true
+            changeBtnViewTop(isUp:isSerached)
+            lastPage = currentBtn
+            currentBtn = 3
             
         }
         

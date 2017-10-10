@@ -32,8 +32,8 @@ struct myProgress{
     private let path = UIBezierPath()
     private let titleLabel = UILabel()
     private let subTitleLabel = UILabel()
-    var progressArray = [myProgress]()
-    var progressLayerArray = [CAShapeLayer]()
+    var myProgresses = [myProgress]()
+    var progressLayers = [CAShapeLayer]()
 
 
     
@@ -49,8 +49,6 @@ struct myProgress{
     
 
     override func draw(_ rect: CGRect) {
-        
-        
         
         if trackLayer == nil{
             trackLayer = CAShapeLayer()
@@ -93,16 +91,16 @@ struct myProgress{
     
     
     //根據progressArray 來增加CAShapeLayer
-    fileprivate func addProgressLayerArray(){
+    private func addProgressLayerArray(){
         
         var start:Double = 0
         
-        for i in 0..<progressArray.count{
+        for i in 0..<myProgresses.count{
             
             
             let pr3  = CAShapeLayer()
             pr3.fillColor = UIColor.clear.cgColor
-            pr3.strokeColor = progressArray[i].color.cgColor
+            pr3.strokeColor = myProgresses[i].color.cgColor
             pr3.lineWidth = lineWidth
             pr3.shadowColor = UIColor.black.cgColor
             pr3.shadowRadius = 1
@@ -113,13 +111,13 @@ struct myProgress{
             
             
             if i != 0{
-                start += progressArray[i-1].progess
+                start += myProgresses[i-1].progess
                 
             }
             pr3.strokeStart = CGFloat(0 + start)/100
-            pr3.strokeEnd =  CGFloat(start)/100 + CGFloat(Double(progressArray[i].progess))/100.0
+            pr3.strokeEnd =  CGFloat(start)/100 + CGFloat(Double(myProgresses[i].progess))/100.0
             layer.addSublayer(pr3)
-            progressLayerArray.append(pr3)
+            progressLayers.append(pr3)
             
             if anim{
                 
@@ -127,15 +125,15 @@ struct myProgress{
                 animation.fromValue =  pr3.strokeStart
                 animation.toValue = pr3.strokeEnd
                 animation.duration = 1
-                pr3.add(animation, forKey: "")
+                pr3.add(animation, forKey:nil)
                 
             }
         }
     }
     
     
-    func setProgress(pro:[myProgress]){
-        progressArray = pro
+    func setProgress(pros:[myProgress]){
+        myProgresses = pros
         
     }
     

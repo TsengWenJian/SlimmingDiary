@@ -20,7 +20,7 @@ class EnterInformationViewController: UIViewController {
     
     
     @IBOutlet weak var weightProgress: NickProgress2UIView!
-    let manager = ProfileManager.standard
+    let profileManager = ProfileManager.standard
     let bodyManager = BodyInformationManager.standard
     var datePickerVC:DatePickerViewController?
     
@@ -28,12 +28,12 @@ class EnterInformationViewController: UIViewController {
     
     var numberOfRows:Int = 0
     var numberOfComponents:Int = 2
-    var setSelectRowOfbegin:Double = 1.0
+    var selectRowOfbegin:Double = 1.0
     
     var gender:Int?{
         didSet{
             if let myGender = gender{
-                self.genderBtn.setTitle(manager.genderArray[myGender],for: .normal)
+                self.genderBtn.setTitle(profileManager.genders[myGender],for: .normal)
             }
         }
     }
@@ -55,9 +55,7 @@ class EnterInformationViewController: UIViewController {
         datePickerVC?.delegate = self
         PickerViewController.shared.delegate = self
         
-        
-        
-        
+    
     }
     
     
@@ -83,8 +81,6 @@ class EnterInformationViewController: UIViewController {
     
     
     
-    
-    
     @IBAction func inputDoneAction(_ sender: Any) {
         
         
@@ -95,15 +91,15 @@ class EnterInformationViewController: UIViewController {
             let myGender = gender,
             let myTargetWeight = targetWeight{
             
-            manager.setUserGender(myGender)
-            manager.setUserHeight(myHeight)
-            manager.setUserWeight(myWeight)
-            manager.setUserlifeStyle(myLifeStyle)
-            manager.setUserTargetWeight(myTargetWeight)
-            manager.setUserOriginWeight(myWeight)
-            manager.setUserBirthday(myBirthby)
-            manager.setTargetStep(10000)
-            manager.setUserIsInputDone(true)
+            profileManager.setUserGender(myGender)
+            profileManager.setUserHeight(myHeight)
+            profileManager.setUserWeight(myWeight)
+            profileManager.setUserlifeStyle(myLifeStyle)
+            profileManager.setUserTargetWeight(myTargetWeight)
+            profileManager.setUserOriginWeight(myWeight)
+            profileManager.setUserBirthday(myBirthby)
+            profileManager.setTargetStep(10000)
+            profileManager.setUserIsInputDone(true)
             
             
             let calManager = CalenderManager.standard
@@ -145,10 +141,10 @@ class EnterInformationViewController: UIViewController {
             numberOfRows = 200
             
             if let mytarget = targetWeight{
-                setSelectRowOfbegin = mytarget
+                selectRowOfbegin = mytarget
             }else{
                 
-                setSelectRowOfbegin = 60
+                selectRowOfbegin = 60
             }
             
             PickerViewController.shared.displayDialog(present: self)
@@ -156,13 +152,13 @@ class EnterInformationViewController: UIViewController {
         case 1:
             let alert = UIAlertController(title: "請選擇性別", message:"", preferredStyle:.actionSheet)
             
-            let boy = UIAlertAction(title:manager.genderArray[0], style: .default, handler: { (UIAlertAction) in
+            let boy = UIAlertAction(title:profileManager.genders[0], style: .default, handler: { (UIAlertAction) in
                 self.gender = 0
                 self.setWeightProgressData()
             })
             
             
-            let  girl = UIAlertAction(title:manager.genderArray[1], style: .default, handler: { (UIAlertAction) in
+            let  girl = UIAlertAction(title:profileManager.genders[1], style: .default, handler: { (UIAlertAction) in
                 self.gender = 1
                 self.setWeightProgressData()
             })
@@ -189,9 +185,9 @@ class EnterInformationViewController: UIViewController {
             if let myHeight = height{
                 
                 
-                setSelectRowOfbegin = myHeight
+                selectRowOfbegin = myHeight
             }else{
-                setSelectRowOfbegin = 160
+                selectRowOfbegin = 160
                 
             }
             
@@ -202,9 +198,9 @@ class EnterInformationViewController: UIViewController {
             
             numberOfRows = 200
             if let myWeight = weight{
-                setSelectRowOfbegin = myWeight
+                selectRowOfbegin = myWeight
             }else{
-                setSelectRowOfbegin = 60
+                selectRowOfbegin = 60
                 
             }
             
@@ -291,13 +287,13 @@ extension EnterInformationViewController:UIPickerViewDelegate,UIPickerViewDataSo
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         
-        return manager.liftStyleArray.count
+        return profileManager.liftStyles.count
     }
     
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
-        return manager.liftStyleArray[row]
+        return profileManager.liftStyles[row]
         
     }
     

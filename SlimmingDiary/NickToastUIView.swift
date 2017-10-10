@@ -18,13 +18,10 @@ enum ToastType:String {
 
 @IBDesignable class NickToastUIView: UIView {
     
-    var active:UIActivityIndicatorView?
-    var toastView = UIView()
+   private var active:UIActivityIndicatorView?
+   private var toastView = UIView()
     
-    
-    
-    
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         

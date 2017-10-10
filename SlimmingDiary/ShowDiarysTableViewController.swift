@@ -12,7 +12,7 @@ import Firebase
 
 
 
-class ShowRecordsTableViewController: UITableViewController {
+class ShowDiarysTableViewController: UITableViewController {
     
     var recordArray = [ShareDiary]()
     var userDict = [String:UserData]()
@@ -155,7 +155,7 @@ class ShowRecordsTableViewController: UITableViewController {
                     let user = UserData()
                     user.name = userDict[ServiceDBKey.userName] as? String
                     user.imageURL = userDict[ServiceDBKey.userImageURL] as? String
-                    self.userDict[record.userId] = user
+                    self.userDict[record.userId] = user;
                     
                     
                     if self.currentPage == 0 {
@@ -405,7 +405,7 @@ class ShowRecordsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
-        let nextPage = storyboard?.instantiateViewController(withIdentifier: "ShowRecordDetailViewController") as! ShowRecordDetailViewController
+        let nextPage = storyboard?.instantiateViewController(withIdentifier: "ShowRecordDetailViewController") as! ShowDiarysDetailViewController
         
         if currentPage == 0{
             
@@ -429,7 +429,7 @@ class ShowRecordsTableViewController: UITableViewController {
                     
                 }else{
                     
-                    nexPage = storyboard?.instantiateViewController(withIdentifier: "PersonalFilesViewController") as! PersonalFilesViewController
+                    nexPage = storyboard?.instantiateViewController(withIdentifier: "PersonalFilesViewController") as! ProFileViewController
                     
                 }
                 

@@ -19,7 +19,7 @@ protocol PickerViewDelegate:class {
         get set
     }
     
-    var setSelectRowOfbegin:Double{
+    var selectRowOfbegin:Double{
         get set
     }
     
@@ -62,8 +62,8 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
             return
         }
         
-        interger = floor(de.setSelectRowOfbegin)
-        point = (de.setSelectRowOfbegin - interger)*10
+        interger = floor(de.selectRowOfbegin)
+        point = (de.selectRowOfbegin - interger)*10
         let s  = Float(point)
         
         

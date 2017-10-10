@@ -15,10 +15,9 @@ class ShowDiaryImageViewController: UIViewController {
     var currentItem = 0
     
     @IBOutlet weak var containerScrollView: UIView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         
         scrollView.contentSize = CGSize(width:CGFloat(diaryItems.count) * containerScrollView.frame.width,
@@ -35,34 +34,34 @@ class ShowDiaryImageViewController: UIViewController {
             
             
             
-          
+            
             imageView.contentMode = .scaleAspectFit
             
             
             if let url = item.imageURL{
-                  imageView.loadImageCacheWithURL(urlString:url)
+                imageView.loadImageCacheWithURL(urlString:url)
             }
-
-            scrollView.addSubview(imageView)
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: imageView.frame.width, height:50))
-            label.text = "\(item.title) \(item.detail) 大卡"
-            label.textColor = UIColor.white
-            label.textAlignment = .center
-            imageView.addSubview(label)
             
-       }
+            scrollView.addSubview(imageView)
+            let titlelabel = UILabel(frame: CGRect(x: 0, y: 0, width: imageView.frame.width, height:50))
+            titlelabel.text = "\(item.title) \(item.detail) 大卡"
+            titlelabel.textColor = UIColor.white
+            titlelabel.textAlignment = .center
+            imageView.addSubview(titlelabel)
+            
+        }
         
         let currentImagePoint = CGPoint(x:containerScrollView.frame.width * CGFloat(currentItem), y: 0)
         scrollView.setContentOffset(currentImagePoint, animated: false)
-
+        
         
     }
     
     
     @IBAction func cancelBtn(_ sender: Any) {
         
-             self.hideDialog()
-
+        self.hiddleDialog()
+        
         
     }
     
@@ -78,23 +77,20 @@ class ShowDiaryImageViewController: UIViewController {
         }
         present.addChildViewController(self)
         present.view.addSubview(self.view)
-        
         didMove(toParentViewController: self)
     }
     
-    func hideDialog(){
+    func hiddleDialog(){
         self.willMove(toParentViewController: nil)
         self.view.removeFromSuperview()
         self.removeFromParentViewController()
         
     }
-
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
+    }
     
-}
-    
-
 }
 

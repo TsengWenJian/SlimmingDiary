@@ -11,9 +11,9 @@ import UIKit
 class FoodDiaryViewController: UIViewController{
     @IBOutlet weak var diaryTableView: UITableView!
     let dinnerTimes = ["早餐","午餐","晚餐","其他"]
-    var isExpend = [true,true,true,true]
+    var isExpanded = [true,true,true,true]
     var sectionArray = [[foodDetails]]()
-    let master = FoodMaster.standard
+    let foodMaster = FoodMaster.standard
     
     
     
@@ -54,23 +54,17 @@ class FoodDiaryViewController: UIViewController{
         
         
         
-        if  (self.parent?.parent as? MainDiaryViewController)?.currentPage != 0{
-            
-            return
-           
-            
-        }
+        if(self.parent?.parent as? MainDiaryViewController)?.currentPage != 0 {return}
         
         
         sectionArray.removeAll()
         
         let displayDate =  CalenderManager.standard.displayDateString()
+        foodMaster.diaryType = .foodDiaryAndDetail
         
-       
-        master.diaryType = .foodDiaryAndDetail
         for i in 0..<dinnerTimes.count{
             let cond = "Food_Diary.\(FOODDIARY_DETAILID)=\(FOODDETAIL_Id) and \(FOODDIARY_DINNERTIME) = '\(dinnerTimes[i])'and \(FOODDIARY_DATE) = '\(displayDate)'"
-            let dinnerDiary = master.getFoodDetails(.diaryData,amount:nil,weight:nil,cond:cond,order: nil)
+            let dinnerDiary = foodMaster.getFoodDetails(.diaryData,amount:nil,weight:nil,cond:cond,order: nil)
             sectionArray.append(dinnerDiary)
         }
         
@@ -80,12 +74,10 @@ class FoodDiaryViewController: UIViewController{
     }
     
     
-    
-    
     @objc func sectionIsExpend(sender:UIButton){
         let section = sender.tag - 1000
         
-        isExpend[section] = isExpend[section] == true ? false:true
+        isExpanded[section] = isExpanded[section] == true ? false:true
         diaryTableView.reloadSections(IndexSet(integer:section), with: .automatic)
     }
     
@@ -136,7 +128,7 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         
-        return  isExpend[section] == true ? sectionArray[section].count:0
+        return  isExpanded[section] == true ? sectionArray[section].count:0
         
     }
     
@@ -170,7 +162,7 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             nextPage.foodId = record.foodDetailId
             nextPage.foodDiaryId = record.foodDiaryId
             nextPage.dinnerTime = dinnerTimes[indexPath.section]
-            nextPage.lastPageVC = .update
+            nextPage.actionType = .update
             
             navigationController?.pushViewController(nextPage, animated: true)
             
@@ -186,9 +178,9 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
             
             let rowRecord = sectionArray[indexPath.section][indexPath.row]
             let cond =  "\(FOODDIARY_ID) = \(rowRecord.foodDiaryId)"
-            master.diaryType = .foodDiary
-            master.deleteDiary(cond: cond)
-            master.deleteImage(imageName:rowRecord.imageName)
+            foodMaster.diaryType = .foodDiary
+            foodMaster.deleteDiary(cond: cond)
+            foodMaster.deleteImage(imageName:rowRecord.imageName)
             sectionArray[indexPath.section].remove(at:indexPath.row)
            
 

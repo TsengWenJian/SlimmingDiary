@@ -29,7 +29,7 @@ class MyTabBarViewController: UITabBarController {
 
         }
         
-        checkIsLogInSetUserDefault()
+        checkIsLogIn()
         
         
 
@@ -37,7 +37,7 @@ class MyTabBarViewController: UITabBarController {
     }
     
     
-    func checkIsLogInSetUserDefault(){
+    func checkIsLogIn(){
         
         let manager = DataService.standard
         let profileManager = ProfileManager.standard
@@ -46,7 +46,6 @@ class MyTabBarViewController: UITabBarController {
         if manager.isLogin{
             
             if profileManager.userUid == nil{
-                
                 manager.userLogOut()
                 
             }

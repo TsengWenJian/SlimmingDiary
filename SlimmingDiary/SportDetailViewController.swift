@@ -22,9 +22,9 @@ class SportDetailViewController: UIViewController {
     var actionType:ActionType = .insert
     var numberOfRows:Int = 200
     var numberOfComponents:Int = 1
-    var setSelectRowOfbegin:Double = 30
+    var selectRowOfbegin:Double = 30
     
-    let master = SportMaster.standard
+    let sportMaster = SportMaster.standard
     var selectImage:UIImage?
     
     
@@ -101,20 +101,20 @@ class SportDetailViewController: UIViewController {
             
             
             // if isExist replace
-            if let index =  master.switchIsOn.index(of:myDetail.detailId){
-                master.switchIsOn.remove(at:index)
-                master.sportDiaryArrary.remove(at:index)
+            if let index =  sportMaster.switchIsOnIDs.index(of:myDetail.detailId){
+                sportMaster.switchIsOnIDs.remove(at:index)
+                sportMaster.sportDiarys.remove(at:index)
             }
             
-            master.switchIsOn.append(myDetail.detailId)
-            master.sportDiaryArrary.append(diary)
+            sportMaster.switchIsOnIDs.append(myDetail.detailId)
+            sportMaster.sportDiarys.append(diary)
             
             
         }else{
             
             
             let cond = "\(SPORTYDIARY_ID) = '\(myDetail.diaryId)'"
-            master.diaryType = .sportDiary
+            sportMaster.diaryType = .sportDiary
     
             var dict = [String:String]()
             
@@ -131,7 +131,7 @@ class SportDetailViewController: UIViewController {
             
             
             
-            master.updataDiary(cond:cond, rowInfo:dict)
+            sportMaster.updataDiary(cond:cond, rowInfo:dict)
         
         }
         
@@ -176,7 +176,7 @@ class SportDetailViewController: UIViewController {
         }
         
         var iscollect:Int
-        master.diaryType = .sportDetail
+        sportMaster.diaryType = .sportDetail
         
         if collectionBtn.isSelected{
             
@@ -189,8 +189,8 @@ class SportDetailViewController: UIViewController {
             collectionBtn.isSelected = true
             
         }
-       master.diaryType = .sportDetail
-       master.updataDiary(cond: "\(SPORTDETAIL_ID) = '\(myDetail.detailId)' ",
+       sportMaster.diaryType = .sportDetail
+       sportMaster.updataDiary(cond: "\(SPORTDETAIL_ID) = '\(myDetail.detailId)' ",
        rowInfo: [SPORTDETAIL_COLLECTION :"'\(iscollect)'"])
         
     

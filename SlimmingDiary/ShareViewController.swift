@@ -15,7 +15,7 @@ class ShareViewController: UIViewController {
     @IBOutlet weak var roundView: UIView!
     @IBOutlet weak var addDiaryBtn: UIButton!
     let selectLabel = UILabel()
-    var recordsVC:ShowRecordsTableViewController?
+    var recordsVC:ShowDiarysTableViewController?
     
     var currnetPage = 0{
         didSet{
@@ -41,7 +41,7 @@ class ShareViewController: UIViewController {
        
         setNavRoundScrollView()
         
-        if let VC  = self.childViewControllers[0] as? ShowRecordsTableViewController{
+        if let VC  = self.childViewControllers[0] as? ShowDiarysTableViewController{
             
             recordsVC = VC
         }

@@ -17,7 +17,7 @@ class SetUpViewController: UIViewController {
     var cachesSize:Double = 0
     
     @IBOutlet weak var setUpTableView: UITableView!
-    let manager = ProfileManager.standard
+    let profileManager = ProfileManager.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +37,7 @@ class SetUpViewController: UIViewController {
     
     @objc func  loginOrlogut(sender:UIButton){
         
-        if manager.userUid == nil{
+        if profileManager.userUid == nil{
             
             let nextPage = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             navigationController?.pushViewController(nextPage, animated: true)
@@ -47,7 +47,7 @@ class SetUpViewController: UIViewController {
         }else{
             
             DataService.standard.userLogOut()
-            manager.setUserServiceDataNill()
+            profileManager.setUserServiceDataNill()
             
         }
         
@@ -126,8 +126,6 @@ extension SetUpViewController:MFMailComposeViewControllerDelegate{
 extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
     
     
-    
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return 3
@@ -170,48 +168,44 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
     }
     
     
-    
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
         
         if indexPath.section == 0{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileHeaderTableViewCell", for: indexPath) as! ProfileHeaderTableViewCell
+            let profileCell = tableView.dequeueReusableCell(withIdentifier: "ProfileHeaderTableViewCell", for: indexPath) as! ProfileHeaderTableViewCell
             
             
-            if manager.userUid == nil{
+            if profileManager.userUid == nil{
                 
-                cell.userNameTextField.text = "尚未登入"
-                cell.emailLabel.text = "Log in"
+                profileCell.userNameTextField.text = "尚未登入"
+                profileCell.emailLabel.text = "Log in"
                 
                 
             }else{
                 
-                cell.userNameTextField.text = manager.userName
-                cell.emailLabel.text = manager.userEmail
+                profileCell.userNameTextField.text = profileManager.userName
+                profileCell.emailLabel.text = profileManager.userEmail
                 
                 
             }
             
-            cell.userPhoto.image = UIImage().checkUserPhoto()
+            profileCell.userPhoto.image = UIImage().checkUserPhoto()
             
-            return cell
+            return profileCell
             
             
             
         }else if indexPath.section == 2{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "LoginBtnTableViewCell", for: indexPath) as! LoginBtnTableViewCell
             
-            
-            
+            let loginCell = tableView.dequeueReusableCell(withIdentifier: "LoginBtnTableViewCell", for: indexPath) as! LoginBtnTableViewCell
+        
             var btnTitle:String
             btnTitle = DataService.standard.userUid == nil ? "登入":"登出"
-            cell.loginBtn.setTitle(btnTitle, for: .normal)
-            cell.loginBtn.addTarget(self, action: #selector(loginOrlogut), for:.touchUpInside)
+            loginCell.loginBtn.setTitle(btnTitle, for: .normal)
+            loginCell.loginBtn.addTarget(self, action: #selector(loginOrlogut), for:.touchUpInside)
             
-            return cell
+            return loginCell
         }
         
         
@@ -226,11 +220,11 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
         }else{
             
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell",for:indexPath)
-            cell.textLabel?.text = titleArray[indexPath.row]
-            cell.detailTextLabel?.text = "\(cachesSize.roundTo(places:1))MB"
+            let rightCell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell",for:indexPath)
+            rightCell.textLabel?.text = titleArray[indexPath.row]
+            rightCell.detailTextLabel?.text = "\(cachesSize.roundTo(places:1))MB"
             
-            return cell
+            return rightCell
             
         }
         
@@ -240,7 +234,7 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
         
         if indexPath.section == 0{
             
-            if manager.userUid == nil{
+            if profileManager.userUid == nil{
                 
                 let nextPage = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
                 navigationController?.pushViewController(nextPage, animated: true)
@@ -253,21 +247,12 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
             
             if indexPath.row == 0{
                 let emailVC = configureMessage()
-                
                 if MFMailComposeViewController.canSendMail() {
                     present(emailVC, animated: true, completion: nil)
                     
-                    
-                }else{
-                    
-                    
                 }
-                
-                
-                
-                
             }else if indexPath.row == 1{
-                let nextPage = storyboard?.instantiateViewController(withIdentifier: "PersonalFilesViewController") as!PersonalFilesViewController
+                let nextPage = storyboard?.instantiateViewController(withIdentifier: "PersonalFilesViewController") as!ProFileViewController
                 navigationController?.pushViewController(nextPage, animated: true)
                 
                 

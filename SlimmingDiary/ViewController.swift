@@ -12,13 +12,13 @@ import Firebase
 
 class ViewController: UIViewController{
     
-    var  pageHeightDefaultHeight:CGFloat = 214
+    var  pageVCDefaultHeight:CGFloat = 214
     @IBOutlet weak var pageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var moveTopBtn: UIButton!
     @IBOutlet weak var homePageTableView: UITableView!
     @IBOutlet weak var pageContainerView: UIView!
     
-    let newsManger = RSSParserManager()
+    let newsManager = RSSParserManager()
     var TodayHeatVC:HomePageTodayHeatViewController?
     var TargetWeightVC:HomePageTargetWeightViewController?
     var todayStepVC:HomePageTodayStepViewController?
@@ -37,7 +37,7 @@ class ViewController: UIViewController{
         
         getNewsArray()
         
-        homePageTableView.contentInset = UIEdgeInsets(top:pageHeightDefaultHeight,left:0,bottom:0, right: 0)
+        homePageTableView.contentInset = UIEdgeInsets(top:pageVCDefaultHeight,left:0,bottom:0, right: 0)
         
         var pageVC = UIPageViewController()
         pageVC = self.childViewControllers.first as! UIPageViewController
@@ -45,8 +45,9 @@ class ViewController: UIViewController{
         pageVC.delegate = self
         pageVC.dataSource = self
         
-        if let  TodayHeatVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayHeatViewController") as? HomePageTodayHeatViewController{
-              pageVC.setViewControllers([TodayHeatVC],direction: .forward,animated: false,completion: nil)
+        if let  todayVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayHeatViewController") as? HomePageTodayHeatViewController{
+               TodayHeatVC = todayVC
+              pageVC.setViewControllers([todayVC],direction: .forward,animated: false,completion: nil)
         }
         
         TargetWeightVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTargetWeightViewController") as? HomePageTargetWeightViewController
@@ -62,10 +63,10 @@ class ViewController: UIViewController{
     
     @objc func getNewsArray(){
         
-        if newsManger.isConnect{
+        if newsManager.isConnect{
             
             showNotConnectCell = false
-            newsManger.downloadList { (error, result) in
+            newsManager.downloadList { (error, result) in
                 
                 if let err = error{
                     
@@ -209,6 +210,7 @@ extension ViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSo
         
         if viewController.isKind(of:HomePageTargetWeightViewController.self){
             return TodayHeatVC
+            
         }else if viewController.isKind(of: HomePageTodayStepViewController.self){
             return TargetWeightVC
         }

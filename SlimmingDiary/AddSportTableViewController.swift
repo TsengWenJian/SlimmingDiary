@@ -16,13 +16,13 @@ class AddSportTableViewController: UITableViewController {
     var detailArray = ["","",""]
     var numberOfRows:Int = 2000
     var numberOfComponents:Int = 2
-    var setSelectRowOfbegin:Double = 0
+    var selectRowOfbegin:Double = 0
     var currentTouchRow = 0
-    var textFieldText:String?
+    var sportName:String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+    
         let insertItem = UIBarButtonItem(title:"加入", style: .done, target: self, action: #selector(addSport))
         navigationItem.rightBarButtonItems = [insertItem]
         
@@ -41,7 +41,7 @@ class AddSportTableViewController: UITableViewController {
         var isWriteDone:Bool = true
         
         for detail in detailArray{
-            if detail.isEmpty || textFieldText == nil{
+            if detail.isEmpty || sportName == nil{
                 isWriteDone = false
                 break
             }
@@ -102,14 +102,14 @@ class AddSportTableViewController: UITableViewController {
         }
         
         if indexPath.row == 1{
-            setSelectRowOfbegin = 30
+            selectRowOfbegin = 30
             numberOfComponents = 1
             
         }else if indexPath.row == 2 {
             
             
             numberOfComponents = 2
-            setSelectRowOfbegin = 200
+            selectRowOfbegin = 200
         }
         
          PickerViewController.shared.displayDialog(present: self)
@@ -140,17 +140,14 @@ class AddSportTableViewController: UITableViewController {
     
     @objc func textChange(_ sender:UITextField){
         
-        textFieldText = sender.text
+        sportName = sender.text
         
         if let text = sender.text {
             detailArray[0] = text
         }
     }
     
-    
-      
 }
-
 
 
 //MARK: - PickerViewDelegate
@@ -164,8 +161,7 @@ extension AddSportTableViewController:PickerViewDelegate{
         }else{
             
             detailArray[currentTouchRow] = String(format: "%.1f", data)
-            
-            
+        
         }
         
         tableView.reloadData()

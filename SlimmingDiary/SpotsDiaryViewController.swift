@@ -11,7 +11,7 @@ import UIKit
 class SpotsDiaryViewController:UIViewController{
     @IBOutlet weak var spotsDiaryTableView: UITableView!
     
-    var isExpend:Bool = false
+    var isExpanded:Bool = false
     var sportItems = [sportDetail](){
         
         didSet{spotsDiaryTableView.reloadData()}
@@ -69,7 +69,7 @@ class SpotsDiaryViewController:UIViewController{
     
     @objc func sectionIsExpend(sender:UIButton){
         
-        isExpend = !isExpend
+        isExpanded = !isExpanded
         spotsDiaryTableView.reloadSections(IndexSet(integer:0), with: .automatic)
     }
     
@@ -109,7 +109,7 @@ extension SpotsDiaryViewController:UITableViewDelegate,UITableViewDataSource{
         
         
         
-        return isExpend == true ?sportItems.count:0
+        return isExpanded == true ?sportItems.count:0
     }
     
     

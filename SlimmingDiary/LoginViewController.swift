@@ -20,12 +20,10 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var fbLoginBtn: UIButton!
     @IBOutlet weak var containerTextFieldsView: UIView!
     @IBOutlet weak var emailTextField: UITextField!
-    let manager = ProfileManager.standard
+    
+    let profileManager = ProfileManager.standard
     let serviceManager = DataService.standard
-    let toast  = NickToastUIView()
-    
-    
-    
+    let toastView  = NickToastUIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,30 +32,13 @@ class LoginViewController: UIViewController {
         loginBtn.layer.cornerRadius = 5
         fbLoginBtn.layer.cornerRadius = 5
         
-        if Thread.isMainThread {
-            print("isMainThread - isMainThread")
-            
-        }
-        
-        
-        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
     }
-    
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -72,11 +53,11 @@ class LoginViewController: UIViewController {
             return
         }
         
-        toast.showView(supView:view,type:.logIn)
+        toastView.showView(supView:view,type:.logIn)
         serviceManager.singInWithEmail(email: email, password: password) { (error) in
             
             if let err = error {
-                self.toast.removefromView()
+                self.toastView.removefromView()
                 self.showAlertWithError(message:err.localizedDescription)
                 
                 return
@@ -104,14 +85,14 @@ class LoginViewController: UIViewController {
             return
         }
         
-        toast.showView(supView: view, type: .logIn)
+        toastView.showView(supView: view, type: .logIn)
         
         serviceManager.createAccount(name: name, email: email, password: password) { (error) in
             
             
             if let  err = error {
                 
-                self.toast.removefromView()
+                self.toastView.removefromView()
                 self.showAlertWithError(message:err.localizedDescription)
                 return
             }
@@ -121,7 +102,7 @@ class LoginViewController: UIViewController {
                 
                 
                 if let err = error{
-                    self.toast.removefromView()
+                    self.toastView.removefromView()
                     self.showAlertWithError(message:err.localizedDescription)
                     
                     return
@@ -144,11 +125,11 @@ class LoginViewController: UIViewController {
         
         
         
-        toast.showView(supView: self.view,type: .logIn)
+        toastView.showView(supView: self.view,type: .logIn)
         serviceManager.longInWithFB(VC:self) { (error) in
             
             if let err = error{
-                self.toast.removefromView()
+                self.toastView.removefromView()
                 self.showAlertWithError(message: err.localizedDescription)
                 return
             }
@@ -177,20 +158,20 @@ class LoginViewController: UIViewController {
             return
         }
         
-        self.manager.setUid(user.uid)
-        self.manager.setUserName(name)
-        self.manager.setUserEmail(user.email)
+        self.profileManager.setUid(user.uid)
+        self.profileManager.setUserName(name)
+        self.profileManager.setUserEmail(user.email)
         self.serviceManager.isLogin = true
         
         if let url = imageURLStr {
             
             //Save image into caches
             let photoName = "Profile_\(user.uid)"
-            self.manager.setPhotName(photoName)
+            self.profileManager.setPhotName(photoName)
             serviceManager.downloadImageSaveWithCaches(URLStr:url,imageName:photoName){ (error) in
                 
                 DispatchQueue.main.async {
-                    self.toast.removefromView()
+                    self.toastView.removefromView()
                     self.navigationController?.popViewController(animated: true)
                     
                 }
@@ -199,7 +180,7 @@ class LoginViewController: UIViewController {
         }else{
             
             DispatchQueue.main.async {
-                self.toast.removefromView()
+                self.toastView.removefromView()
                 self.navigationController?.popViewController(animated: true)
                 
             }

@@ -31,7 +31,6 @@ class MainDiaryViewController: UIViewController{
     var calendarPickVC:CalendarViewController!
     var lastPage = 0
     
-    
     var displayDate:MyDate = CalenderManager.standard.displayDate{
         
         didSet{

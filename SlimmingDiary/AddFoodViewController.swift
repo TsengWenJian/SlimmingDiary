@@ -10,21 +10,17 @@ import UIKit
 
 class AddFoodViewController: UIViewController {
     
-    let master = FoodMaster.standard
+    let foodMaster = FoodMaster.standard
     var numberOfRows:Int = 0
     var numberOfComponents:Int = 0
-    var setSelectRowOfbegin:Double = 0
+    var selectRowOfbegin:Double = 0
     var currentTouchRow = 0
-    let sectionTitle = ["食物","營養"]
+    let sectionTitles = ["食物","營養"]
     
     @IBOutlet weak var addFoodTableView: UITableView!
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        
-        
-      
         
         let nibHeader = UINib(nibName: "HeaderTableViewCell",bundle: nil)
         addFoodTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
@@ -38,16 +34,9 @@ class AddFoodViewController: UIViewController {
     }
     
     
-    
-    
-
-    
-    
     deinit {
-        master.resetFoodSelect()
+        foodMaster.resetFoodSelect()
     }
-    
-    
     
     
     override func didReceiveMemoryWarning() {
@@ -65,7 +54,7 @@ class AddFoodViewController: UIViewController {
         var isWriteDone:Bool = true
         
         for i in 0..<4{
-            if master.foodSelect[i] == nil{
+            if foodMaster.foodSelect[i] == nil{
                 isWriteDone = false
             }
         }
@@ -73,7 +62,7 @@ class AddFoodViewController: UIViewController {
         
         if isWriteDone{
             
-            master.insertFoodDetail()
+            foodMaster.insertFoodDetail()
             navigationController?.popViewController(animated: true)
             return
         }
@@ -81,9 +70,7 @@ class AddFoodViewController: UIViewController {
         let alert = UIAlertController(error: "請填寫完整哦")
         present(alert, animated: true, completion: nil)
     
-        
-        
-        
+
     }
     
 }
@@ -93,7 +80,7 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return sectionTitle.count
+        return sectionTitles.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -103,7 +90,7 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             return 3
         }
         
-        return master.addFoodTitle.count-3
+        return foodMaster.addFoodTitle.count-3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -115,17 +102,17 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             if indexPath.row <= 1{
                 
                 let cell =  tableView.dequeueReusableCell(withIdentifier:"TextFieldCell")  as!AddTextFieldTableViewCell
-                cell.titleLabel.text = master.addFoodTitle[indexPath.row]
+                cell.titleLabel.text = foodMaster.addFoodTitle[indexPath.row]
                 
                 
                 let rightString:String?
                 
-                if master.foodSelect[indexPath.row] == nil{
+                if foodMaster.foodSelect[indexPath.row] == nil{
                     rightString = "必填"
                     
                 }else{
                     
-                    rightString = master.foodSelect[indexPath.row]
+                    rightString = foodMaster.foodSelect[indexPath.row]
                     
                 }
                 
@@ -140,15 +127,15 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
                 
                 
                 let cell =  tableView.dequeueReusableCell(withIdentifier:"RightDetailCell");
-                cell?.textLabel?.text = master.addFoodTitle[indexPath.row]
+                cell?.textLabel?.text = foodMaster.addFoodTitle[indexPath.row]
                 
                 let rightString:String?
                 
-                if master.foodSelect[indexPath.row] == nil{
+                if foodMaster.foodSelect[indexPath.row] == nil{
                     rightString = "必填"
                 }else{
                     
-                    rightString = master.foodSelect[indexPath.row]
+                    rightString = foodMaster.foodSelect[indexPath.row]
                     
                 }
                 
@@ -163,18 +150,18 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             
             
             let cell =  tableView.dequeueReusableCell(withIdentifier:"RightDetailCell");
-            cell?.textLabel?.text = master.addFoodTitle[indexPath.row+3]
-            cell?.detailTextLabel?.text = master.foodSelect[indexPath.row+3]
+            cell?.textLabel?.text = foodMaster.addFoodTitle[indexPath.row+3]
+            cell?.detailTextLabel?.text = foodMaster.foodSelect[indexPath.row+3]
             
             if indexPath.row == 0{
                 
                 let detailString:String?
                 
-                if master.foodSelect[indexPath.row+3] == nil{
+                if foodMaster.foodSelect[indexPath.row+3] == nil{
                     detailString = "必填"
                 }else{
                     
-                    detailString = master.foodSelect[indexPath.row+3]
+                    detailString = foodMaster.foodSelect[indexPath.row+3]
                     
                 }
                 cell?.detailTextLabel?.text = detailString
@@ -182,11 +169,11 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             }else{
                 let detailString:String?
                 
-                if master.foodSelect[indexPath.row+3] == nil{
+                if foodMaster.foodSelect[indexPath.row+3] == nil{
                     detailString = "可選"
                 }else{
                     
-                    detailString = master.foodSelect[indexPath.row+3]
+                    detailString = foodMaster.foodSelect[indexPath.row+3]
                 }
                 cell?.detailTextLabel?.text = detailString
                 
@@ -208,7 +195,7 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
                 
                 numberOfRows = 1000
                 numberOfComponents = 1
-                setSelectRowOfbegin = 1
+                selectRowOfbegin = 1
             }else{
                 return
             }
@@ -218,15 +205,14 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             currentTouchRow = indexPath.row+3
             numberOfRows = 1000
             numberOfComponents = 2
-            setSelectRowOfbegin = 1
+            selectRowOfbegin = 1
             
         }
         
         
-        
-        if  let select = master.foodSelect[currentTouchRow],
+        if  let select = foodMaster.foodSelect[currentTouchRow],
             let doubleValue = Double(select){
-            setSelectRowOfbegin = doubleValue
+            selectRowOfbegin = doubleValue
         }
         
        PickerViewController.shared.displayDialog(present: self)         
@@ -236,18 +222,15 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
     @objc func textChanged(sender:UITextField){
         
         let indexPathRow = sender.tag - 100
-        master.foodSelect[indexPathRow] = sender.text
+        foodMaster.foodSelect[indexPathRow] = sender.text
         
     }
-    
-    
-    
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as!HeaderTableViewCell
-        headerCell.titleLabel.text = sectionTitle[section]
+        headerCell.titleLabel.text = sectionTitles[section]
         headerCell.totalCalorieLebel.text = nil
         headerCell.rightLabel.text = nil
         
@@ -258,7 +241,6 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 44
     }
-    
     
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -272,9 +254,8 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
 extension AddFoodViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double) {
-        
-        
-        master.foodSelect[currentTouchRow] = String(data)
+    
+        foodMaster.foodSelect[currentTouchRow] = String(data)
         addFoodTableView.reloadData()
         
         

@@ -16,7 +16,6 @@ class HomePageTodayStepViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,13 +38,7 @@ class HomePageTodayStepViewController: UIViewController {
             dateComp.minute = 0
             dateComp.second = 0
             
-            
-            
-            
             let midnightOfToday = calender.date(from:dateComp)
-            
-            
-            
             self.pedometer.queryPedometerData(from: midnightOfToday!, to: Date(), withHandler: { (data, error2) in
                 
                 if let numberOfSteps = data?.numberOfSteps {
@@ -82,19 +75,12 @@ class HomePageTodayStepViewController: UIViewController {
                         self.todayStepView.setDetailText(text: "步")
                         
                         // if progress is not change don't again anim
-                        
-                        
                         if progress != self.todayStepView.getProgress(){
                             self.todayStepView.resetProgress(progress)
                         }
                         
                     }
-                    
-                    
-                    
                 }
-                
-                
             })
             
         }else{
@@ -105,13 +91,7 @@ class HomePageTodayStepViewController: UIViewController {
                 self.todayStepView.setSubTitleText(text:"不支援")
 
             }
-          
-
-            
         }
-        
-        
-        
     }
     
     

@@ -11,7 +11,7 @@ import UIKit
 class ReadCollectionTableViewCell: UITableViewCell {
 
     
-    var VC:ShowRecordDetailViewController?
+    var VC:ShowDiarysDetailViewController?
     var diaryImageType:DiaryImageType = .food
     
     @IBOutlet weak var titleLabel: UILabel!

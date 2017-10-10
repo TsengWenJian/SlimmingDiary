@@ -25,8 +25,7 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
             return
         }
         
-       
-        
+   
         if !reach.checkInternetFunction(){
             
             DispatchQueue.main.async {

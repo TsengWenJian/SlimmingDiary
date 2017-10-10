@@ -8,14 +8,14 @@
 
 import UIKit
 
-class PrepareRecordViewController: UIViewController {
+class PrepareDiarysViewController: UIViewController {
     
     
     let titleArray = ["名稱","開始日期","天數"]
     var detailArray:[String] = {
         
         var defaultDetails = [String]()
-        for x in 0..<3 {defaultDetails.append("")}
+        for _ in 0..<3 {defaultDetails.append("")}
         return defaultDetails
         
     }()
@@ -26,7 +26,7 @@ class PrepareRecordViewController: UIViewController {
     
     var numberOfRows:Int = 7
     var numberOfComponents:Int = 1
-    var setSelectRowOfbegin:Double = 1
+    var selectRowOfbegin:Double = 1
     var textFieldText:String?
     var checkIsSelectImage:Bool = false
     var caldnderVC:CalendarViewController?
@@ -37,8 +37,6 @@ class PrepareRecordViewController: UIViewController {
         PickerViewController.shared.delegate = self
         caldnderVC = storyboard?.instantiateViewController(withIdentifier: "CalendarViewController") as? CalendarViewController
         caldnderVC?.delegate = self
-        
-        
         
     }
     
@@ -76,8 +74,7 @@ class PrepareRecordViewController: UIViewController {
         self.view.endEditing(true)
     }
     
-    
-    
+
     
     @IBAction func addTitleImageAction(_ sender: Any) {
         
@@ -99,7 +96,7 @@ class PrepareRecordViewController: UIViewController {
     
 }
 //MARK: - UITableViewDelegate,UITableViewDataSource
-extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
+extension PrepareDiarysViewController:UITableViewDelegate,UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -204,7 +201,7 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
         }else{
             
             
-            let nextPage = segue.destination as! MakeShareDiaryTableViewController
+            let nextPage = segue.destination as! MakeDiarysTableViewController
             
             let back = UIBarButtonItem(title:"Back",style: .plain, target: nil, action: nil)
             navigationItem.backBarButtonItem = back
@@ -224,7 +221,7 @@ extension PrepareRecordViewController:UITableViewDelegate,UITableViewDataSource{
 
 
 //MARK: - CalendarPickDelegate
-extension PrepareRecordViewController:CalendarPickDelegate{
+extension PrepareDiarysViewController:CalendarPickDelegate{
     
     func getCalenderSelectDate(date:MyDate) {
         
@@ -238,7 +235,7 @@ extension PrepareRecordViewController:CalendarPickDelegate{
 
 
 //MARK: - UIImagePickerControllerDelegate,UINavigationControllerDelegate
-extension PrepareRecordViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+extension PrepareDiarysViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -259,7 +256,7 @@ extension PrepareRecordViewController:UIImagePickerControllerDelegate,UINavigati
     }
     
 }
-extension PrepareRecordViewController:clipImageVCDelegate{
+extension PrepareDiarysViewController:clipImageVCDelegate{
     
     func clipImageDone(image: UIImage) {
         titleImage.image = image.resizeImage(maxLength:1024)
@@ -270,7 +267,7 @@ extension PrepareRecordViewController:clipImageVCDelegate{
 }
 
 //MARK: - PickerViewDelegate
-extension PrepareRecordViewController:PickerViewDelegate{
+extension PrepareDiarysViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double){
         

@@ -11,14 +11,11 @@ import UIKit
 
 class AdvanceImageView: UIImageView {
     
-    var loadingView:UIActivityIndicatorView?
-    var existTask:URLSessionDataTask?
+   private var loadingView:UIActivityIndicatorView?
+   private var existTask:URLSessionDataTask?
     
-    
-    
-    
+
     func loadWithURL(urlString:String){
-        
         
         
         image = nil
@@ -30,7 +27,6 @@ class AdvanceImageView: UIImageView {
         guard let fullFileImageName = cachesURL?.appendingPathComponent(hashString) else{
             return
         }
-        
         
         
         if let cachImage = UIImage(contentsOfFile:fullFileImageName.path){
@@ -48,10 +44,7 @@ class AdvanceImageView: UIImageView {
         let config = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: config)
         
-        
-        
-
-        
+    
         let task = session.dataTask(with:url!) { (data, respone, error) in
             
             self.existTask = nil
