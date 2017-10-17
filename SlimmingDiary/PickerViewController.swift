@@ -11,23 +11,12 @@ import UIKit
 
 protocol PickerViewDelegate:class {
     
-    var numberOfRows:Int{
-        get set
-    }
-    
-    var numberOfComponents:Int{
-        get set
-    }
-    
-    var selectRowOfbegin:Double{
-        get set
-    }
     
     func getSelectRow(data:Double)
 
 }
 
-class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource{
+class PickerViewController: UIViewController{
     
     @IBOutlet weak var dotLabel: UILabel!
     @IBOutlet weak var pickerView: UIPickerView!
@@ -36,11 +25,12 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
     var interger:Double = 1
     var point:Double = 0
     var didSelectRowNumber:Double = 1.0
+    var numberOfRows = 1
+    var numberOfComponents = 1
+    var selectRowOfbegin:Double = 0
     
-    static let shared = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PickerViewController")as! PickerViewController
-    
-    
-    
+    static let shared = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PickerViewController") as! PickerViewController
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,28 +40,24 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
           hideDialog()
     }
     
-    
-    
+   
     
     override func viewWillAppear(_ animated: Bool) {
         
         pickerView.reloadAllComponents()
         dotLabel.isHidden = true
         
-        guard let de = delegate else{
-            return
-        }
+
         
-        interger = floor(de.selectRowOfbegin)
-        point = (de.selectRowOfbegin - interger)*10
+        interger = floor(selectRowOfbegin)
+        point = (selectRowOfbegin - interger)*10
         let s  = Float(point)
         
         
         
         pickerView.selectRow(Int(interger-1), inComponent: 0, animated: true)
         
-        
-        if delegate?.numberOfComponents == 2{
+        if numberOfComponents == 2{
             dotLabel.isHidden = false
             pickerView.selectRow(Int(s), inComponent: 1, animated: true)
         }
@@ -82,6 +68,8 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         super.didReceiveMemoryWarning()
         
     }
+    
+    
    
     
     func displayDialog(present:UIViewController){
@@ -101,27 +89,23 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
     
        
     
-    
-    
+
     @IBAction func comfirmButton(_ sender: Any) {
-        
-        
         
         didSelectRowNumber = interger+point
         delegate?.getSelectRow(data:didSelectRowNumber.roundTo(places: 1))
         hideDialog()
-        
-        
+    
     }
-    
-   
-    
-    
+
+}
+//MARK: - UIPickerViewDelegate,UIPickerViewDataSource
+extension PickerViewController:UIPickerViewDelegate,UIPickerViewDataSource{
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         
         if  component == 0{
-            return delegate!.numberOfRows
+            return numberOfRows
             
         }
         return 10
@@ -141,7 +125,7 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
     
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return  delegate!.numberOfComponents
+        return  numberOfComponents
     }
     
     
@@ -158,5 +142,4 @@ class PickerViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDa
         }
         
     }
-
 }

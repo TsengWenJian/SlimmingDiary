@@ -77,7 +77,7 @@ class ShareViewController: UIViewController {
         selectLabel.frame.size = CGSize(width:itemWidth,
                                         height:scolBounds.height)
         
-        selectLabel.textColor = seagreen
+        selectLabel.textColor = #colorLiteral(red: 0, green: 0.5690457821, blue: 0.5746168494, alpha: 1)
         selectLabel.frame.origin = CGPoint(x:0,y:0)
         selectLabel.layer.cornerRadius = 13
         selectLabel.clipsToBounds = true

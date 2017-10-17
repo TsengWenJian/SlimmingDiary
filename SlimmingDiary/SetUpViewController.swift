@@ -252,7 +252,7 @@ extension SetUpViewController:UITableViewDataSource,UITableViewDelegate{
                     
                 }
             }else if indexPath.row == 1{
-                let nextPage = storyboard?.instantiateViewController(withIdentifier: "PersonalFilesViewController") as!ProFileViewController
+                let nextPage = storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as!ProfileViewController
                 navigationController?.pushViewController(nextPage, animated: true)
                 
                 

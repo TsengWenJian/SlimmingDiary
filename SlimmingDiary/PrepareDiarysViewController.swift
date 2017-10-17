@@ -24,9 +24,6 @@ class PrepareDiarysViewController: UIViewController {
     @IBOutlet weak var titleImage: UIImageView!
     
     
-    var numberOfRows:Int = 7
-    var numberOfComponents:Int = 1
-    var selectRowOfbegin:Double = 1
     var textFieldText:String?
     var checkIsSelectImage:Bool = false
     var caldnderVC:CalendarViewController?
@@ -35,12 +32,14 @@ class PrepareDiarysViewController: UIViewController {
         super.viewDidLoad()
         
         PickerViewController.shared.delegate = self
+        PickerViewController.shared.numberOfRows = 7
+        PickerViewController.shared.numberOfComponents = 1
+        PickerViewController.shared.selectRowOfbegin = 1
+        
         caldnderVC = storyboard?.instantiateViewController(withIdentifier: "CalendarViewController") as? CalendarViewController
         caldnderVC?.delegate = self
         
     }
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -74,7 +73,7 @@ class PrepareDiarysViewController: UIViewController {
         self.view.endEditing(true)
     }
     
-
+    
     
     @IBAction func addTitleImageAction(_ sender: Any) {
         
@@ -256,6 +255,7 @@ extension PrepareDiarysViewController:UIImagePickerControllerDelegate,UINavigati
     }
     
 }
+//MARK: - clipImageVCDelegate
 extension PrepareDiarysViewController:clipImageVCDelegate{
     
     func clipImageDone(image: UIImage) {

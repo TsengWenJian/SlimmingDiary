@@ -16,7 +16,7 @@ protocol CalendarPickDelegate:class {
     
 }
 
-class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource{
+class CalendarViewController: UIViewController{
     
     @IBOutlet weak var calendarCollectionView: UICollectionView!
     @IBOutlet weak var calenderViewHeight: NSLayoutConstraint!
@@ -33,8 +33,6 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
     }
     
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,10 +44,6 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
         calenderManager.resetDisplayMonth()
         MonthTotalDaysArray = calenderManager.getMonthTotalDaysArray(type: .current)
         setTitleDate()
-        
-        
-        
-        
     }
    
     
@@ -86,7 +80,6 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
         
         
         
-        
     }
     
     
@@ -114,17 +107,21 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
     }
     
     
-    @IBAction func hiddenBtn(_ sender: Any) {
+    @IBAction func hideBtn(_ sender: Any) {
         hideDialog()
         calenderManager.displayCalenderAction = false
         
     }
     
-    
+
     func setTitleDate(){
         titleDate.text = String(calenderManager.displayMonth.year)+"年"+String(calenderManager.displayMonth.month)+"月"
     }
     
+   
+}
+//MARK: - UICollectionViewDelegateFlowLayout,UICollectionViewDataSource
+extension CalendarViewController:UICollectionViewDelegateFlowLayout,UICollectionViewDataSource{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return  2
     }
@@ -134,15 +131,12 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
             return calenderManager.weekArray.count
         } else {
             
-            
             return  calenderManager.getMonthTotalDaysArray(type:.current).count
-            
-            
             
         }
         
     }
-
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -150,9 +144,9 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
         if indexPath.row ==  0{
             calenderViewHeight.constant = calendarCollectionView.collectionViewLayout.collectionViewContentSize.height
         }
-
         
-    
+        
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CalendarCollectionViewCell
         
         cell.shadowView.isHidden = true
@@ -160,12 +154,12 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
         
         if indexPath.section == 0{
             cell.day.text = calenderManager.weekArray[indexPath.row]
-            cell.day.textColor = blue
+            cell.day.textColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
             return cell
             
         }else{
             
-        
+            
             cell.day.text = ""
             
             if MonthTotalDaysArray[indexPath.row] != ""{
@@ -202,7 +196,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-       
+        
         
         let cellWidth = (UIScreen.main.bounds.width) / 7
         let size = CGSize(width:cellWidth, height:cellWidth)
@@ -218,7 +212,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
     }
     
     
-   
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell =  collectionView.cellForItem(at:indexPath) as! CalendarCollectionViewCell
@@ -236,3 +230,5 @@ class CalendarViewController: UIViewController,UICollectionViewDelegateFlowLayou
         }
     }
 }
+
+

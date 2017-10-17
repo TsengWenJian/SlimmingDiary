@@ -136,10 +136,16 @@ import UIKit
         trackLayer?.addSublayer(endDotsLayer)
         
         
+        let orangered = UIColor(red: 1, green: 69/255, blue: 0/255, alpha: 1)
+        let mediumseagreen = UIColor(red: 60/255, green: 179/255, blue: 113/255, alpha: 1)
+        let crimson = UIColor(red: 220/255, green: 20/255, blue: 60/255, alpha: 1)
+       
+
+        
         
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = CGRect(x:bounds.minX, y: bounds.minY, width: bounds.width, height: bounds.width+lineWidth/2)
-        gradientLayer.colors = [mediumseagreen.cgColor,gold.cgColor,orangered.cgColor]
+        gradientLayer.colors = [mediumseagreen.cgColor,orangered.cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 1)
         gradientLayer.endPoint = CGPoint(x: 1, y:1)
         gradientLayer.locations = [0.0,0.7,1]

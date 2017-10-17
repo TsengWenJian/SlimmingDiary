@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomePageTodayHeatViewController: UIViewController,UITextViewDelegate{
+class TodayHeatViewController: UIViewController,UITextViewDelegate{
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var TodayHeatView: UIView!
     @IBOutlet weak var foodCalorieLabel: UILabel!

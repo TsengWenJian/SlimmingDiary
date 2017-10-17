@@ -31,9 +31,6 @@ class MyTabBarViewController: UITabBarController {
         
         checkIsLogIn()
         
-        
-
-        // Do any additional setup after loading the view.
     }
     
     
@@ -52,8 +49,6 @@ class MyTabBarViewController: UITabBarController {
         }
         
     }
-
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

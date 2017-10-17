@@ -19,9 +19,9 @@ class ViewController: UIViewController{
     @IBOutlet weak var pageContainerView: UIView!
     
     let newsManager = RSSParserManager()
-    var TodayHeatVC:HomePageTodayHeatViewController?
-    var TargetWeightVC:HomePageTargetWeightViewController?
-    var todayStepVC:HomePageTodayStepViewController?
+    var TodayHeatVC:TodayHeatViewController?
+    var TargetWeightVC:TargetWeightViewController?
+    var todayStepVC:TodayStepViewController?
     var newsArray = [NewsItem]()
     var myRefresh = UIRefreshControl()
     
@@ -45,13 +45,13 @@ class ViewController: UIViewController{
         pageVC.delegate = self
         pageVC.dataSource = self
         
-        if let  todayVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayHeatViewController") as? HomePageTodayHeatViewController{
+        if let  todayVC = storyboard?.instantiateViewController(withIdentifier: "TodayHeatViewController") as? TodayHeatViewController{
                TodayHeatVC = todayVC
               pageVC.setViewControllers([todayVC],direction: .forward,animated: false,completion: nil)
         }
         
-        TargetWeightVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTargetWeightViewController") as? HomePageTargetWeightViewController
-        todayStepVC = storyboard?.instantiateViewController(withIdentifier: "HomePageTodayStepViewController") as? HomePageTodayStepViewController
+        TargetWeightVC = storyboard?.instantiateViewController(withIdentifier: "TargetWeightViewController") as? TargetWeightViewController
+        todayStepVC = storyboard?.instantiateViewController(withIdentifier: "TodayStepViewController") as? TodayStepViewController
         
         homePageTableView.refreshControl = myRefresh
         myRefresh.addTarget(self, action: #selector(getNewsArray), for: .valueChanged)
@@ -193,11 +193,11 @@ extension ViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSo
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
         
-        if viewController.isKind(of:HomePageTodayHeatViewController.self){
+        if viewController.isKind(of:TodayHeatViewController.self){
             return TargetWeightVC
             
             
-        }else if viewController.isKind(of:HomePageTargetWeightViewController.self){
+        }else if viewController.isKind(of:TargetWeightViewController.self){
             return todayStepVC
         }
         
@@ -208,10 +208,10 @@ extension ViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSo
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
         
-        if viewController.isKind(of:HomePageTargetWeightViewController.self){
+        if viewController.isKind(of:TargetWeightViewController.self){
             return TodayHeatVC
             
-        }else if viewController.isKind(of: HomePageTodayStepViewController.self){
+        }else if viewController.isKind(of: TodayStepViewController.self){
             return TargetWeightVC
         }
         

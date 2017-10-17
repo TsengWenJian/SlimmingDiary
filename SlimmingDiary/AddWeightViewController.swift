@@ -30,13 +30,12 @@ class AddWeightViewController: UIViewController{
     var weightId:Int?
     
     
-    let proFileManager = ProfileManager.standard
+    let profileManager = ProfileManager.standard
     let weightMaster = WeightMaster.standard
+    let pickerVC = PickerViewController.shared
     
     
-    var numberOfRows:Int = 200
-    var numberOfComponents:Int = 2
-    var selectRowOfbegin:Double = 1.0
+   
     
     
     
@@ -45,7 +44,10 @@ class AddWeightViewController: UIViewController{
         
         titleArray[0] = type.rawValue
         detailArray[0] = "\(weight)"
-         PickerViewController.shared.delegate = self
+        pickerVC.delegate = self
+        pickerVC.numberOfRows = 300
+        pickerVC.numberOfComponents = 2
+        pickerVC.selectRowOfbegin = 1.0
         
     }
     
@@ -94,7 +96,7 @@ class AddWeightViewController: UIViewController{
             if calender.displayDateString() == calender.currentDateString() || calender.isAfterCurrentDay(date:calender.displayDate){
                 
                 if titleArray[0] == "體重"{
-                proFileManager.setUserWeight(weight)
+                profileManager.setUserWeight(weight)
                 }
                 
             }
@@ -209,10 +211,10 @@ extension AddWeightViewController:UITableViewDelegate,UITableViewDataSource{
             
             if let detail = Double(detailArray[0]){
                 
-                selectRowOfbegin = detail
+                pickerVC.selectRowOfbegin = detail
             }
             
-             PickerViewController.shared.displayDialog(present: self) 
+            pickerVC.displayDialog(present: self)
             
         }
         

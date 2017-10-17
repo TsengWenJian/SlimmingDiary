@@ -11,11 +11,9 @@ import UIKit
 class AddFoodViewController: UIViewController {
     
     let foodMaster = FoodMaster.standard
-    var numberOfRows:Int = 0
-    var numberOfComponents:Int = 0
-    var selectRowOfbegin:Double = 0
     var currentTouchRow = 0
     let sectionTitles = ["食物","營養"]
+    let picker = PickerViewController.shared
     
     @IBOutlet weak var addFoodTableView: UITableView!
     
@@ -29,7 +27,10 @@ class AddFoodViewController: UIViewController {
         navigationItem.rightBarButtonItems = [insertItem]
         navigationItem.title = "新食物"
         
-         PickerViewController.shared.delegate = self
+        picker.delegate = self
+        picker.numberOfRows = 1000
+        picker.numberOfComponents = 0
+        picker.selectRowOfbegin = 1
         
     }
     
@@ -193,9 +194,8 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             
             if indexPath.row == 2{
                 
-                numberOfRows = 1000
-                numberOfComponents = 1
-                selectRowOfbegin = 1
+                picker.numberOfComponents = 1
+                
             }else{
                 return
             }
@@ -203,19 +203,18 @@ extension AddFoodViewController:UITableViewDataSource,UITableViewDelegate{
             
         }else{
             currentTouchRow = indexPath.row+3
-            numberOfRows = 1000
-            numberOfComponents = 2
-            selectRowOfbegin = 1
+            picker.numberOfComponents = 2
+            
             
         }
         
         
         if  let select = foodMaster.foodSelect[currentTouchRow],
             let doubleValue = Double(select){
-            selectRowOfbegin = doubleValue
+            picker.selectRowOfbegin = doubleValue
         }
         
-       PickerViewController.shared.displayDialog(present: self)         
+      picker.displayDialog(present:self)
     }
     
     
@@ -257,7 +256,6 @@ extension AddFoodViewController:PickerViewDelegate{
     
         foodMaster.foodSelect[currentTouchRow] = String(data)
         addFoodTableView.reloadData()
-        
         
     }
     

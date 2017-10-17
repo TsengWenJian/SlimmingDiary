@@ -405,7 +405,7 @@ class ShowDiarysTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
-        let nextPage = storyboard?.instantiateViewController(withIdentifier: "ShowRecordDetailViewController") as! ShowDiarysDetailViewController
+        let nextPage = storyboard?.instantiateViewController(withIdentifier: "ShowDiarysDetailViewController") as! ShowDiarysDetailViewController
         
         if currentPage == 0{
             
@@ -429,7 +429,7 @@ class ShowDiarysTableViewController: UITableViewController {
                     
                 }else{
                     
-                    nexPage = storyboard?.instantiateViewController(withIdentifier: "PersonalFilesViewController") as! ProFileViewController
+                    nexPage = storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
                     
                 }
                 

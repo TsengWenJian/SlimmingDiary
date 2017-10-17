@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol clipImageVCDelegate {
+protocol clipImageVCDelegate:class {
     func clipImageDone(image:UIImage)
 }
 
@@ -17,7 +17,7 @@ class ClipImageViewController: UIViewController,UIScrollViewDelegate{
     @IBOutlet weak var lightView: UIView!
     @IBOutlet weak var upShadowView: UIView!
     
-    var delegate:clipImageVCDelegate?
+    weak var delegate:clipImageVCDelegate?
     var selectImage = UIImage()
     
     @IBOutlet weak var scrollView: UIScrollView!

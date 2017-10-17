@@ -19,9 +19,8 @@ class FoodDetailViewController: UIViewController{
     var foodDiaryId:Int = 0
     var foodId:Int?
     var dinnerTime:String?
-    var numberOfRows:Int = 0
-    var numberOfComponents:Int = 0
-    var selectRowOfbegin:Double = 0
+    var pickVC = PickerViewController.shared
+   
     var correntRow:Int = 0
     var selectImage:UIImage?{
         didSet{ foodDetailsTableView.reloadData() }
@@ -67,7 +66,11 @@ class FoodDetailViewController: UIViewController{
         
         let nibHeader = UINib(nibName: "HeaderTableViewCell", bundle: nil)
         foodDetailsTableView.register(nibHeader, forCellReuseIdentifier: "headerCell")
-          PickerViewController.shared.delegate = self
+        
+        pickVC.delegate = self
+        pickVC.numberOfRows = 0
+        pickVC.numberOfComponents = 0
+        pickVC.selectRowOfbegin = 0
 
         
     }
@@ -228,22 +231,22 @@ class FoodDetailViewController: UIViewController{
                 
                 if indexPath.row == 0{
                     
-                    numberOfRows = 30
-                    numberOfComponents = 2
+                    pickVC.numberOfRows = 30
+                    pickVC.numberOfComponents = 2
                     
                     
                 }else{
                     
-                    numberOfRows = 2000
-                    numberOfComponents = 1
+                    pickVC.numberOfRows = 2000
+                    pickVC.numberOfComponents = 1
                     
                 }
                 
-                if let baginData =  Double(foodDatas[indexPath.row+1]){
-                    selectRowOfbegin = baginData
+                if let baginValue =  Double(foodDatas[indexPath.row+1]){
+                    pickVC.selectRowOfbegin = baginValue
                 }
 
-                 PickerViewController.shared.displayDialog(present: self)
+                pickVC.displayDialog(present: self)
             }
         }
     }
@@ -379,9 +382,9 @@ extension FoodDetailViewController:UITableViewDelegate,UITableViewDataSource{
                     
                     
                     
-                    let pro = myProgress(progess:(ceil((protein/total)*100)),color:blue)
-                    let pro2 = myProgress(progess:(ceil((fat/total)*100)), color:seagreen)
-                    let pro3 = myProgress(progess:(ceil((carbohydrates/total)*100)), color:coral)
+                    let pro = myProgress(progess:(ceil((protein/total)*100)),color:#colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1))
+                    let pro2 = myProgress(progess:(ceil((fat/total)*100)), color:#colorLiteral(red: 0, green: 0.5690457821, blue: 0.5746168494, alpha: 1))
+                    let pro3 = myProgress(progess:(ceil((carbohydrates/total)*100)), color:#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1))
                     
                     
                     

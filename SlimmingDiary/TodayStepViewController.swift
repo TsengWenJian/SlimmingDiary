@@ -9,7 +9,7 @@
 import UIKit
 import CoreMotion
 
-class HomePageTodayStepViewController: UIViewController {
+class TodayStepViewController: UIViewController {
     @IBOutlet weak var todayStepView: NickProgress3UIView!
     let pedometer = CMPedometer()
     

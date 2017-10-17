@@ -16,8 +16,6 @@ class SQLiteConnect {
     let path :String = NSHomeDirectory() + "/Documents/sqlite3.sqlite"
     
     
-    
-    
     init?() {
         
         checkDBisExist()

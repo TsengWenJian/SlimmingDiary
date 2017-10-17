@@ -9,7 +9,7 @@
 
 import UIKit
 
-class HomePageTargetWeightViewController: UIViewController {
+class TargetWeightViewController: UIViewController {
     
     let profileManager = ProfileManager.standard
     

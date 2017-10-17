@@ -14,20 +14,21 @@ class AddSportTableViewController: UITableViewController {
     
     let titleArray = ["名稱","多久(分鐘)","消耗卡路里"]
     var detailArray = ["","",""]
-    var numberOfRows:Int = 2000
-    var numberOfComponents:Int = 2
-    var selectRowOfbegin:Double = 0
     var currentTouchRow = 0
     var sportName:String?
+    let pickVC = PickerViewController.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         let insertItem = UIBarButtonItem(title:"加入", style: .done, target: self, action: #selector(addSport))
         navigationItem.rightBarButtonItems = [insertItem]
         
         navigationItem.title = "新運動"
-        PickerViewController.shared.delegate = self
+        pickVC.delegate = self
+        pickVC.numberOfRows = 2000
+        pickVC.numberOfComponents = 2
+        pickVC.selectRowOfbegin = 0
         
         
     }
@@ -59,7 +60,7 @@ class AddSportTableViewController: UITableViewController {
             master.diaryType = .sportDetail
             master.insertDiary(rowInfo: [SPORTDETAIL_CLASSIFICATION:"'自訂'",
                                          SPORTDETAIL_SAMPLENAME:"'\(detailArray[0])'",
-                                         SPORTDETAIL_EMTS:"'\(emts.roundTo(places: 1))'"])
+                SPORTDETAIL_EMTS:"'\(emts.roundTo(places: 1))'"])
             
             
             navigationController?.popViewController(animated: true)
@@ -102,17 +103,17 @@ class AddSportTableViewController: UITableViewController {
         }
         
         if indexPath.row == 1{
-            selectRowOfbegin = 30
-            numberOfComponents = 1
+            pickVC.selectRowOfbegin = 30
+            pickVC.numberOfComponents = 1
             
         }else if indexPath.row == 2 {
             
             
-            numberOfComponents = 2
-            selectRowOfbegin = 200
+            pickVC.numberOfComponents = 2
+            pickVC.selectRowOfbegin = 200
         }
         
-         PickerViewController.shared.displayDialog(present: self)
+        PickerViewController.shared.displayDialog(present: self)
         self.view.endEditing(true)
         
         
@@ -161,7 +162,7 @@ extension AddSportTableViewController:PickerViewDelegate{
         }else{
             
             detailArray[currentTouchRow] = String(format: "%.1f", data)
-        
+            
         }
         
         tableView.reloadData()

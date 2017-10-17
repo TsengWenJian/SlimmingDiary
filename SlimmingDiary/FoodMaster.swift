@@ -403,8 +403,7 @@ class FoodMaster:DiaryManager{
     
     }
     
-    
-    
+
     func insertFoodDetail(){
         
         var dict = [String:String]()

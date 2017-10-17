@@ -36,8 +36,6 @@ class SpotsDiaryViewController:UIViewController{
         NotificationCenter.default.addObserver(self, selector: #selector(refreshSectionArray), name: NSNotification.Name(rawValue: "changeDiaryData"), object:nil)
 
         
-    
-        
     }
     
     

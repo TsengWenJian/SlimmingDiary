@@ -79,7 +79,7 @@ class ShowDiarysDetailViewController: UIViewController {
         
         if shareDiary.userId == serviceManager.userUid{
             
-            let btn = UIBarButtonItem(barButtonSystemItem:.trash,target: self, action:#selector(trashDiary))
+            let btn = UIBarButtonItem(barButtonSystemItem:.trash,target: self, action:#selector(deleteDiary))
             let editImage = UIImage(named:"edit")
             let edit = UIBarButtonItem(image:editImage, style: .plain, target: self, action:#selector(editDiary))
             
@@ -137,7 +137,7 @@ class ShowDiarysDetailViewController: UIViewController {
     
     
     @objc func editDiary(){
-        let nextPage = storyboard?.instantiateViewController(withIdentifier:"MakeShareDiaryTableViewController") as! MakeDiarysTableViewController
+        let nextPage = storyboard?.instantiateViewController(withIdentifier:"MakeDiarysTableViewController") as! MakeDiarysTableViewController
         
         nextPage.diarys = diarys
         nextPage.actionType = .update
@@ -158,9 +158,7 @@ class ShowDiarysDetailViewController: UIViewController {
     }
     
     
-    
-    
-    @objc func trashDiary(){
+    @objc func deleteDiary(){
         
         let alert = UIAlertController(title:"刪除", message: "確定刪除這篇日記?", preferredStyle: .alert)
         let ok = UIAlertAction(title: "確定", style: .default) { (UIAlertAction) in
@@ -170,7 +168,6 @@ class ShowDiarysDetailViewController: UIViewController {
             self.serviceManager.dbDiaryContentURL.child(self.shareDiary.diaryId).removeValue()
             self.serviceManager.dbUserDiaryURL.child(self.shareDiary.userId).child(self.shareDiary.diaryId).removeValue()
            
-            
             self.navigationController?.popViewController(animated: true)
             
             
@@ -237,7 +234,6 @@ extension ShowDiarysDetailViewController:UITableViewDelegate,UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        
         var calRow:Int = 0
         var foodRow:Int = 0
         
@@ -288,7 +284,6 @@ extension ShowDiarysDetailViewController:UITableViewDelegate,UITableViewDataSour
         
         return cell
     }
-    
     
     
     

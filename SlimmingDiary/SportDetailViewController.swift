@@ -20,12 +20,9 @@ class SportDetailViewController: UIViewController {
     
     
     var actionType:ActionType = .insert
-    var numberOfRows:Int = 200
-    var numberOfComponents:Int = 1
-    var selectRowOfbegin:Double = 30
-    
     let sportMaster = SportMaster.standard
     var selectImage:UIImage?
+    let pickerVC = PickerViewController.shared
     
     
     var detail:sportDetail?{
@@ -43,8 +40,8 @@ class SportDetailViewController: UIViewController {
                 self.sampleNameLabel.text = myDetail.sampleName
                 
                 if self.detail?.imageName != nil,
-                   self.actionType == .update{
-                   self.imageView.image = UIImage(imageName:myDetail.imageName, search: .documentDirectory)
+                    self.actionType == .update{
+                    self.imageView.image = UIImage(imageName:myDetail.imageName, search: .documentDirectory)
                     
                 }
             }
@@ -67,11 +64,14 @@ class SportDetailViewController: UIViewController {
         if detail?.collection == 1{
             collectionBtn.isSelected = true
         }
- 
-       
-         navigationItem.rightBarButtonItem?.title = actionType.rawValue
-         navigationItem.title = "\(actionType.rawValue)運動"
-     PickerViewController.shared.delegate = self
+        
+        
+        navigationItem.rightBarButtonItem?.title = actionType.rawValue
+        navigationItem.title = "\(actionType.rawValue)運動"
+        pickerVC.delegate = self
+        pickerVC.numberOfRows = 300
+        pickerVC.numberOfComponents = 1
+        pickerVC.selectRowOfbegin = 30
     }
     
     
@@ -80,7 +80,7 @@ class SportDetailViewController: UIViewController {
         
     }
     
-
+    
     
     @objc func insertSport(){
         
@@ -90,7 +90,7 @@ class SportDetailViewController: UIViewController {
         
         if actionType == .insert{
             
-           
+            
             
             var diary = sportDiary(minute: myDetail.minute,
                                    sportId:myDetail.detailId,
@@ -115,12 +115,12 @@ class SportDetailViewController: UIViewController {
             
             let cond = "\(SPORTYDIARY_ID) = '\(myDetail.diaryId)'"
             sportMaster.diaryType = .sportDiary
-    
+            
             var dict = [String:String]()
             
             if let image = selectImage{
                 
-                 let selectImageHash  = "sport_\(image.hash)"
+                let selectImageHash  = "sport_\(image.hash)"
                 dict[SPORTYDIARY_IMAGENAME] = "'\(selectImageHash)'"
                 image.writeToFile(imageName: selectImageHash, search: .documentDirectory)
                 
@@ -132,12 +132,12 @@ class SportDetailViewController: UIViewController {
             
             
             sportMaster.updataDiary(cond:cond, rowInfo:dict)
-        
+            
         }
         
         
         navigationController?.popViewController(animated: true)
-    
+        
     }
     
     
@@ -166,7 +166,7 @@ class SportDetailViewController: UIViewController {
         
     }
     
-
+    
     
     @IBAction func collectionBtnAction(_ sender: Any) {
         
@@ -189,19 +189,21 @@ class SportDetailViewController: UIViewController {
             collectionBtn.isSelected = true
             
         }
-       sportMaster.diaryType = .sportDetail
-       sportMaster.updataDiary(cond: "\(SPORTDETAIL_ID) = '\(myDetail.detailId)' ",
-       rowInfo: [SPORTDETAIL_COLLECTION :"'\(iscollect)'"])
+        sportMaster.diaryType = .sportDetail
+        sportMaster.updataDiary(cond: "\(SPORTDETAIL_ID) = '\(myDetail.detailId)' ",
+            rowInfo: [SPORTDETAIL_COLLECTION :"'\(iscollect)'"])
         
-    
+        
     }
-    
-       
     
     
     @IBAction func minuteBtnAction(_ sender: Any) {
         
-      PickerViewController.shared.displayDialog(present: self)
+        if let myDetail = detail {
+            pickerVC.selectRowOfbegin = Double(myDetail.minute)
+        }
+        
+        pickerVC.displayDialog(present: self)
         
         
     }
@@ -227,7 +229,7 @@ class SportDetailViewController: UIViewController {
         
         
         
-        
+
     }
     
     
@@ -253,9 +255,9 @@ extension SportDetailViewController:UIImagePickerControllerDelegate,UINavigation
         
         dismiss(animated: true, completion: nil)
         
-
+        
     }
-
+    
 }
 
 extension SportDetailViewController:PickerViewDelegate{

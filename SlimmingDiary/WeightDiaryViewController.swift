@@ -49,13 +49,12 @@ class WeightDiaryViewController: UIViewController{
     
     @objc func refreshWeightDiary(){
         
-        if  (self.parent?.parent as? MainDiaryViewController)?.currentPage != 2{
+        if (self.parent?.parent as? MainDiaryViewController)?.currentPage != 2{
             
             return
             
         }
 
-        
         weightDiaryArray.removeAll()
         weightMaster.diaryType = .weightDiary
         
@@ -79,7 +78,6 @@ class WeightDiaryViewController: UIViewController{
         bodyManager.setBodyData(profileManager.userHeight,
                                 weight,
                                 profileManager.userGender)
-        
         
         if bodyManager.getBmi() == weightView.getProgress(){
             return

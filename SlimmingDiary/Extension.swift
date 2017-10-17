@@ -136,7 +136,6 @@ extension UIImage{
     
     
     
-    
     convenience init?(imageName:String?,search:FileManager.SearchPathDirectory){
         
         
@@ -165,6 +164,8 @@ extension UIImage{
         
     }
 }
+
+//MARK: - Double
 extension Double{
     
     func roundTo(places: Int) -> Double {
@@ -176,6 +177,8 @@ extension Double{
 
 let imageCach = NSCache<AnyObject,UIImage>()
 
+
+//MARK: - UIImageView
 extension UIImageView{
     
     

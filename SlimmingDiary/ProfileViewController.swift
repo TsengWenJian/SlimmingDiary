@@ -9,15 +9,15 @@
 import UIKit
 
 
-class ProFileViewController: UIViewController {
+class ProfileViewController: UIViewController {
     
     var userData = [String]() {
         didSet{
-            personalFilesTableView.reloadData()
+            profileTableView.reloadData()
         }
     }
     
-    @IBOutlet weak var personalFilesTableView: UITableView!
+    @IBOutlet weak var profileTableView: UITableView!
     
     
     var userPhoto:UIImage? = {
@@ -35,11 +35,10 @@ class ProFileViewController: UIViewController {
     let manager = ProfileManager.standard
     let serviceManager = DataService.standard
     var datePickerVC:DatePickerViewController?
+    let pickerVC = PickerViewController.shared
+    var currentTouchRow = 0
     
-    var numberOfRows:Int = 0
-    var numberOfComponents:Int = 2
-    var selectRowOfbegin:Double = 1.0
-    var currentTouchRow:Int = 0
+   
     var userPhotoIschanage = false
     
     
@@ -58,7 +57,11 @@ class ProFileViewController: UIViewController {
         
         
         userData = manager.getUserData()
-          PickerViewController.shared.delegate = self
+        pickerVC.delegate = self
+        pickerVC.numberOfRows = 0
+        pickerVC.numberOfComponents = 2
+        pickerVC.selectRowOfbegin = 1.0
+        
         
     }
     
@@ -76,9 +79,6 @@ class ProFileViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         
     }
-    
-    
-    
     
     @objc func editUserData(sender:UIBarButtonItem){
         
@@ -248,7 +248,7 @@ class ProFileViewController: UIViewController {
 
 
 //MARK: - UIImagePickerControllerDelegate,UINavigationControllerDelegate
-extension ProFileViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+extension ProfileViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -269,7 +269,7 @@ extension ProFileViewController:UIImagePickerControllerDelegate,UINavigationCont
         picker.dismiss(animated: true, completion: nil)
         userPhoto = image.resizeImage(maxLength:200)
         userName = userNameTextfield?.text
-        personalFilesTableView.reloadData()
+        profileTableView.reloadData()
         
         
     }
@@ -280,7 +280,7 @@ extension ProFileViewController:UIImagePickerControllerDelegate,UINavigationCont
 
 
 //MARK: - UITableViewDataSource,UITableViewDelegate
-extension ProFileViewController:UITableViewDataSource,UITableViewDelegate{
+extension ProfileViewController:UITableViewDataSource,UITableViewDelegate{
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -340,7 +340,7 @@ extension ProFileViewController:UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
-        numberOfComponents = 2
+        pickerVC.numberOfComponents = 2
         currentTouchRow = indexPath.row
         
         if indexPath.row == 0{
@@ -349,13 +349,13 @@ extension ProFileViewController:UITableViewDataSource,UITableViewDelegate{
             
         }else if indexPath.row > 0 && indexPath.row <= 3{
             
-            numberOfRows = 300
+            pickerVC.numberOfRows = 300
             
             if  let begin = Double(userData[indexPath.row]){
-                selectRowOfbegin = begin
+                pickerVC.selectRowOfbegin = begin
              
               
-                PickerViewController.shared.displayDialog(present: self)
+                pickerVC.displayDialog(present: self)
                 
                 
             }
@@ -371,11 +371,11 @@ extension ProFileViewController:UITableViewDataSource,UITableViewDelegate{
             
         }else{
             
-            numberOfComponents = 1
-            numberOfRows = 100000
+            pickerVC.numberOfComponents = 1
+            pickerVC.numberOfRows = 100000
             if  let begin = Double(userData[indexPath.row]){
-                selectRowOfbegin = begin
-                  PickerViewController.shared.displayDialog(present: self)
+                pickerVC.selectRowOfbegin = begin
+                 pickerVC.displayDialog(present: self)
             }
 
             
@@ -385,7 +385,7 @@ extension ProFileViewController:UITableViewDataSource,UITableViewDelegate{
     
 }
 //MARK: - UITextFieldDelegate
-extension ProFileViewController:UITextFieldDelegate{
+extension ProfileViewController:UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
@@ -399,7 +399,7 @@ extension ProFileViewController:UITextFieldDelegate{
 
 
 //MARK: - DatePickerDelegate
-extension ProFileViewController:DatePickerDelegate{
+extension ProfileViewController:DatePickerDelegate{
     
     func getSelectDate(date: Date) {
         
@@ -412,7 +412,7 @@ extension ProFileViewController:DatePickerDelegate{
 }
 
 //MARK: - PickerViewDelegate
-extension ProFileViewController:PickerViewDelegate{
+extension ProfileViewController:PickerViewDelegate{
     
     func getSelectRow(data:Double){
         

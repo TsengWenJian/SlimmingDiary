@@ -83,7 +83,7 @@ class ChoiceFoodViewController: UIViewController{
         
         
         let customView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        customView.backgroundColor = coral
+        customView.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
         let sum = UIBarButtonItem(customView:customView)
         navigationItem.rightBarButtonItems = [sum,plusSum]
         sumLabel.textAlignment = .center

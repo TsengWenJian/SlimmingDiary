@@ -14,6 +14,7 @@ enum ToastType:String {
     case download = "讀取中"
     case Upload = "上傳中"
     case logIn = "登入中"
+    
 }
 
 @IBDesignable class NickToastUIView: UIView {
@@ -21,7 +22,6 @@ enum ToastType:String {
    private var active:UIActivityIndicatorView?
    private var toastView = UIView()
     
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         

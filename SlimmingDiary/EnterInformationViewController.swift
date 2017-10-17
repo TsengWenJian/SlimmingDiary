@@ -23,12 +23,11 @@ class EnterInformationViewController: UIViewController {
     let profileManager = ProfileManager.standard
     let bodyManager = BodyInformationManager.standard
     var datePickerVC:DatePickerViewController?
+    let pickerVC = PickerViewController.shared
     
     
     
-    var numberOfRows:Int = 0
-    var numberOfComponents:Int = 2
-    var selectRowOfbegin:Double = 1.0
+    
     
     var gender:Int?{
         didSet{
@@ -53,7 +52,10 @@ class EnterInformationViewController: UIViewController {
         weightProgress.setSubTitleText(text: "--")
         datePickerVC = storyboard?.instantiateViewController(withIdentifier: "DatePickerViewController") as? DatePickerViewController
         datePickerVC?.delegate = self
-        PickerViewController.shared.delegate = self
+        pickerVC.delegate = self
+        pickerVC.numberOfRows = 0
+        pickerVC.numberOfComponents = 2
+        pickerVC.selectRowOfbegin = 1.0
         
     
     }
@@ -138,16 +140,16 @@ class EnterInformationViewController: UIViewController {
         switch btn {
             
         case 0:
-            numberOfRows = 200
+            pickerVC.numberOfRows = 200
             
             if let mytarget = targetWeight{
-                selectRowOfbegin = mytarget
+                pickerVC.selectRowOfbegin = mytarget
             }else{
                 
-                selectRowOfbegin = 60
+                pickerVC.selectRowOfbegin = 60
             }
             
-            PickerViewController.shared.displayDialog(present: self)
+            pickerVC.displayDialog(present: self)
             
         case 1:
             let alert = UIAlertController(title: "請選擇性別", message:"", preferredStyle:.actionSheet)
@@ -180,31 +182,31 @@ class EnterInformationViewController: UIViewController {
             break
         case 3:
             
-            numberOfRows = 300
+            pickerVC.numberOfRows = 300
             
             if let myHeight = height{
                 
                 
-                selectRowOfbegin = myHeight
+                pickerVC.selectRowOfbegin = myHeight
             }else{
-                selectRowOfbegin = 160
+                pickerVC.selectRowOfbegin = 160
                 
             }
             
-          PickerViewController.shared.displayDialog(present: self)
+          pickerVC.displayDialog(present: self)
             
             break
         case 4:
             
-            numberOfRows = 200
+            pickerVC.numberOfRows = 200
             if let myWeight = weight{
-                selectRowOfbegin = myWeight
+                pickerVC.selectRowOfbegin = myWeight
             }else{
-                selectRowOfbegin = 60
+                pickerVC.selectRowOfbegin = 60
                 
             }
             
-           PickerViewController.shared.displayDialog(present: self)
+           pickerVC.displayDialog(present: self)
             break
         default:
             

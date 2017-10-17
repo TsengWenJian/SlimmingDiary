@@ -75,9 +75,7 @@ class ProgressTableViewCell: UITableViewCell{
         weightImage.frame.size = CGSize(width: 40, height:40)
         
         
-        let fatLabel = UILabel()
-        fatLabel.text = "體脂"
-        fatLabel.textColor = blue
+       
 
         let fatImage = UIImageView()
         fatImage.image = UIImage(named: "sumo-fighter")
