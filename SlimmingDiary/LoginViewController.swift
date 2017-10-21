@@ -35,6 +35,8 @@ class LoginViewController: UIViewController {
     }
     
     
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
@@ -54,7 +56,7 @@ class LoginViewController: UIViewController {
         }
         
         toastView.showView(supView:view,type:.logIn)
-        serviceManager.singInWithEmail(email: email, password: password) { (error) in
+        serviceManager.singInWithEmail(email: email, password: password) { (error) in 
             
             if let err = error {
                 self.toastView.removefromView()
@@ -87,7 +89,8 @@ class LoginViewController: UIViewController {
         
         toastView.showView(supView: view, type: .logIn)
         
-        serviceManager.createAccount(name: name, email: email, password: password) { (error) in
+        
+        serviceManager.createAccount(name: name,email: email, password: password) { (error)  in
             
             
             if let  err = error {
@@ -126,8 +129,9 @@ class LoginViewController: UIViewController {
         
         
         toastView.showView(supView: self.view,type: .logIn)
-        serviceManager.longInWithFB(VC:self) { (error) in
+        serviceManager.longInWithFB(VC:self) { (error)  in
             
+           
             if let err = error{
                 self.toastView.removefromView()
                 self.showAlertWithError(message: err.localizedDescription)

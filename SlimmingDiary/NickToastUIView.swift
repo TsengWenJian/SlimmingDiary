@@ -90,7 +90,5 @@ enum ToastType:String {
         self.removeFromSuperview()
         
         
-        
-        
     }
 }

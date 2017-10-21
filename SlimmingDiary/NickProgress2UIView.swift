@@ -23,14 +23,14 @@ import UIKit
     @IBInspectable var titleTextSize:CGFloat = 18{
         didSet{titleLabel.font = UIFont.systemFont(ofSize: titleTextSize)}
     }
-    @IBInspectable var subTitleTextSize:CGFloat = 18{
-         didSet{subTitleLabel.font = UIFont.systemFont(ofSize: subTitleTextSize)}
+    @IBInspectable var subTitleTextSize:CGFloat = 20{
+        didSet{subTitleLabel.font = UIFont.systemFont(ofSize: subTitleTextSize)}
     }
     @IBInspectable var detailTextSize:CGFloat = 14{
-         didSet{detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)}
+        didSet{detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)}
     }
     
-
+    
     private let titleLabel = UILabel()
     private let subTitleLabel = UILabel()
     private let detailLabel = UILabel()
@@ -47,22 +47,27 @@ import UIKit
             }
         }
     }
-    private var trackLayer:CAShapeLayer?
+    private var outsideLayer:CAShapeLayer?
     private let pointerView = UIView()
     private let insiderLayer = CAShapeLayer()
-    private var margin:CGFloat = 0
+    
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        initialSetup()
         
+        
+        initialSetup()
         
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         initialSetup()
     }
+    
+    
     
     func initialSetup(){
         
@@ -71,20 +76,27 @@ import UIKit
         detailLabel.font = UIFont.systemFont(ofSize:detailTextSize)
         detailLabel.textColor = UIColor.gray
         
+        
+        addSubview(titleLabel)
+        addSubview(subTitleLabel)
+        addSubview(detailLabel)
+        
+        
     }
     
     
     override func draw(_ rect: CGRect) {
         
         
+        
         //check is exist
-        if trackLayer != nil{
-
+        if outsideLayer != nil{
+            
             return
-
+            
         }
-    
-        trackLayer = CAShapeLayer()
+        
+        outsideLayer = CAShapeLayer()
         let startAngle:CGFloat = CGFloat(Double.pi)
         let endAngle: CGFloat = CGFloat(Double.pi * 2)
         
@@ -97,17 +109,17 @@ import UIKit
                     startAngle:startAngle, endAngle:endAngle, clockwise: true)
         
         
-    
-        trackLayer?.frame = bounds
-        trackLayer?.fillColor = UIColor.clear.cgColor
-        trackLayer?.strokeColor = UIColor.gray.cgColor
-        trackLayer?.lineWidth = lineWidth
-        trackLayer?.path = path.cgPath
-        layer.addSublayer(trackLayer!)
+        
+        outsideLayer?.frame = bounds
+        outsideLayer?.fillColor = UIColor.clear.cgColor
+        outsideLayer?.strokeColor = UIColor.gray.cgColor
+        outsideLayer?.lineWidth = lineWidth
+        outsideLayer?.path = path.cgPath
+        layer.addSublayer(outsideLayer!)
         
         
         
-        // MARK: gradient layer mask
+        
         
         
         // MARK: start and end  dots
@@ -128,30 +140,30 @@ import UIKit
         
         
         startDotsLayer.path = startDotsPath.cgPath
-        trackLayer?.addSublayer(startDotsLayer)
+        outsideLayer?.addSublayer(startDotsLayer)
         
         
         
         endDotsLayer.path = endDotsPath.cgPath
-        trackLayer?.addSublayer(endDotsLayer)
+        outsideLayer?.addSublayer(endDotsLayer)
         
-        
+        let gold = UIColor(red: 1, green: 215/255, blue: 0, alpha: 1)
         let orangered = UIColor(red: 1, green: 69/255, blue: 0/255, alpha: 1)
         let mediumseagreen = UIColor(red: 60/255, green: 179/255, blue: 113/255, alpha: 1)
         let crimson = UIColor(red: 220/255, green: 20/255, blue: 60/255, alpha: 1)
-       
-
         
         
+        
+        // MARK: gradient layer mask
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = CGRect(x:bounds.minX, y: bounds.minY, width: bounds.width, height: bounds.width+lineWidth/2)
-        gradientLayer.colors = [mediumseagreen.cgColor,orangered.cgColor]
+        gradientLayer.colors = [mediumseagreen.cgColor,gold.cgColor,orangered.cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 1)
         gradientLayer.endPoint = CGPoint(x: 1, y:1)
         gradientLayer.locations = [0.0,0.7,1]
         layer.addSublayer(gradientLayer)
         
-        gradientLayer.mask = trackLayer
+        gradientLayer.mask = outsideLayer
         
         
         
@@ -170,7 +182,7 @@ import UIKit
                           endAngle:endAngle,
                           clockwise:true)
         
-    
+        
         
         insiderLayer.backgroundColor = UIColor.clear.cgColor
         insiderLayer.fillColor = UIColor.clear.cgColor
@@ -213,12 +225,12 @@ import UIKit
         triangleLayer2.fillColor = crimson.cgColor
         
         
-
+        
         pointerView.frame.origin = CGPoint.zero
         pointerView.layer.addSublayer(triangleLayer)
         pointerView.layer.addSublayer(triangleLayer2)
         
-    
+        
         
         setProgressAnim()
         
@@ -229,36 +241,35 @@ import UIKit
         
         let center = insiderLayer.position
         
-        
-        margin = insiderLayer.frame.height/10
-        
-        
-        titleLabel.sizeToFit()
-        titleLabel.center = CGPoint(x:center.x, y:insiderLayer.frame.minY+margin*2)
-        
-        
 
-        subTitleLabel.sizeToFit()
+
+        titleLabel.center = CGPoint(x:center.x, y:insiderLayer.frame.minY + titleLabel.bounds.height/2+5)
+        self.bringSubview(toFront: titleLabel)
+
+
+
+
         subTitleLabel.center = center
-        
 
-        detailLabel.sizeToFit()
-        detailLabel.center = CGPoint(x:center.x, y:bounds.height - detailLabel.frame.height)
+
+
+
+        detailLabel.center = CGPoint(x:center.x, y:bounds.height - detailLabel.frame.height/2)
+        self.bringSubview(toFront: detailLabel)
         
-    
-        addSubview(titleLabel)
-        addSubview(subTitleLabel)
-        addSubview(detailLabel)
+        
+        
+        
+        print("----------------")
         
         
         
     }
     
-   
+    
     
     
     func setTitleColor(_ color:UIColor){
-        
         
         titleLabel.textColor = color
         
@@ -266,35 +277,44 @@ import UIKit
     
     
     
-    
-    
     func setTitleText(text:String){
+        
         
         titleLabel.text = text
         titleLabel.sizeToFit()
-        titleLabel.center = CGPoint(x:insiderLayer.position.x, y:insiderLayer.frame.minY + margin*2)
+        titleLabel.center = CGPoint(x:bounds.width/2, y:insiderLayer.frame.minY + titleLabel.bounds.height/2+5)
+        self.bringSubview(toFront: titleLabel)
+        
         
         
     }
+    
+    
+    
     
     func setSubTitleText(text:String){
         
         subTitleLabel.text = text
         subTitleLabel.sizeToFit()
         subTitleLabel.center = insiderLayer.position
-        
-        
+        self.bringSubview(toFront: subTitleLabel)
         
     }
     
     func setDetailText(text:String){
         
         detailLabel.text = text
+        
+        
+        
         detailLabel.sizeToFit()
-        detailLabel.center = CGPoint(x:insiderLayer.position.x,y:bounds.height - detailLabel.frame.height/2)
+        detailLabel.center = CGPoint(x:bounds.width/2,y:bounds.height - detailLabel.frame.height/2)
+        self.bringSubview(toFront: detailLabel)
         
         
     }
+    
+    
     
     func setProgress(_ progress:Double){
         
@@ -308,15 +328,12 @@ import UIKit
     private func setProgressAnim() {
         
         
-        
         let pointerPath = UIBezierPath()
         let startAngle:CGFloat = CGFloat(Double.pi)
         
         
         let angle = pointerProgress/40
         let pointerEndAngle: CGFloat = CGFloat(Double.pi * (angle+1))
-        
-        
         
         pointerPath.addArc(withCenter:CGPoint(x:insiderLayer.bounds.midX,
                                               y:insiderLayer.bounds.maxY),
@@ -332,8 +349,12 @@ import UIKit
         orbit.fillMode = kCAFillModeForwards
         pointerView.layer.add(orbit,forKey:"pointer")
         
+        
     }
+    
+    
     func getProgress()->Double{
+        
         return pointerProgress
     }
     

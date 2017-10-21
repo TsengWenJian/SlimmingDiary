@@ -25,7 +25,7 @@ import UIKit
         didSet{titleLabel.font = UIFont.systemFont(ofSize:titleTextSize) }
     }
     
-    @IBInspectable var subTitleTextSize:CGFloat = 25{
+    @IBInspectable var subTitleTextSize:CGFloat = 22{
         didSet{subTitleLabel.font = UIFont.systemFont(ofSize:subTitleTextSize)}
     }
     @IBInspectable var detailTextSize:CGFloat = 18{
@@ -60,6 +60,11 @@ import UIKit
         titleLabel.textColor = titleTextColor
         subTitleLabel.textColor = subTitleTextColor
         detailLabel.textColor = detailTextColor
+        
+        
+        addSubview(titleLabel)
+        addSubview(subTitleLabel)
+        addSubview(detailLabel)
     }
     
     private var progress:Double = 0 {
@@ -77,13 +82,13 @@ import UIKit
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-         initialSetup()
+        initialSetup()
         
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-         initialSetup()
+        initialSetup()
     }
     
     
@@ -161,12 +166,6 @@ import UIKit
         setProgressAnim()
         
         
-        
-        addSubview(titleLabel)
-        addSubview(subTitleLabel)
-        addSubview(detailLabel)
-        
-        
     }
     
     
@@ -178,6 +177,9 @@ import UIKit
         titleLabel.center = CGPoint(x:bounds.midX,
                                     y:bounds.minY + lineWidth + labelMargin*2)
         
+        self.bringSubview(toFront: titleLabel)
+        
+        
         
     }
     
@@ -188,6 +190,8 @@ import UIKit
         subTitleLabel.center = CGPoint(x:bounds.midX,
                                        y:bounds.midY)
         
+        self.bringSubview(toFront: subTitleLabel)
+        
         
     }
     
@@ -197,6 +201,8 @@ import UIKit
         detailLabel.sizeToFit()
         detailLabel.center = CGPoint(x:bounds.midX,
                                      y:subTitleLabel.frame.maxY+labelMargin*1.5)
+        
+        self.bringSubview(toFront: detailLabel)
         
     }
     

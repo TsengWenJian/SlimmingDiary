@@ -56,15 +56,5 @@ import UIKit
         
         layer.addSublayer(layer2)
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     }
 }

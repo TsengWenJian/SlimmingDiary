@@ -66,8 +66,8 @@ class MainDiaryViewController: UIViewController{
         
         pageVC.setViewControllers([foodDairyVC],direction:.forward,animated: false,completion: nil)
         
-        
-        calendarPickVC = storyboard!.instantiateViewController(withIdentifier: "CalendarViewController") as!
+        let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+        calendarPickVC = mainStoryBoard.instantiateViewController(withIdentifier: "CalendarViewController") as!
         CalendarViewController
         calendarPickVC.delegate = self
         
