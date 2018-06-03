@@ -45,18 +45,18 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     func setLabel(){
-        
+       
 
         if let shared = UserDefaults(suiteName: "group.SlimmingDiary"),
-            let food =  shared.value(forKey: "todayFoodCalories") as? Int,
-            let sport =  shared.value(forKey: "todaySportCalories")as? Int,
-            let basic = shared.value(forKey: "baseCaloriesRequired")as? Int{
+            let food =  shared.value(forKey: "todayFoodCalories") as? Double,
+            let sport =  shared.value(forKey: "todaySportCalories")as? Double,
+            let basic = shared.value(forKey: "baseCaloriesRequired")as? Double{
             
             DispatchQueue.main.async {
-                self.basicCalorieLabel.text = "\(basic)"
-                self.foodCalorieLabel.text = "\(food)"
-                self.sportCalorieLabel.text = "\(sport)"
-                self.resultCalorieLabel.text = "\(basic - food)"
+                self.basicCalorieLabel.text = "\(Int(basic))"
+                self.foodCalorieLabel.text = "\(Int(food))"
+                self.sportCalorieLabel.text = "\(Int(sport))"
+                self.resultCalorieLabel.text = "\(Int(basic - food))"
                 
             }
             

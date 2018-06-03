@@ -128,8 +128,12 @@ extension FoodDiaryViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        
-        return  isExpanded[section] == true ? sectionArray[section].count:0
+        if  isExpanded.count > 0 && sectionArray.count > 0{
+             return  isExpanded[section] == true ? sectionArray[section].count:0
+        }else{
+            return 0
+        }
+       
         
     }
     

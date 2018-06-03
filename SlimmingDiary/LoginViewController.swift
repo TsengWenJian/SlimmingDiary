@@ -141,7 +141,7 @@ class LoginViewController: UIViewController {
             
             let user = self.serviceManager.currentUser
             self.setDataWithUserDefault(name:user?.displayName,
-                                        imageURLStr:user?.photoURL?.absoluteString)
+                                        imageURLStr:nil)
         }
         
     }

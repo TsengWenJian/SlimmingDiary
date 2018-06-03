@@ -54,6 +54,7 @@
 		6C3DEB871ED9B89D00D2A31B /* MainDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3DEB861ED9B89D00D2A31B /* MainDiaryViewController.swift */; };
 		6C4149FD1F60299400425E66 /* SearchDefaultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4149FC1F60299400425E66 /* SearchDefaultTableViewCell.swift */; };
 		6C46E5C41EF5574E00BED4D5 /* DetailProgressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C46E5C31EF5574E00BED4D5 /* DetailProgressCell.swift */; };
+		6C47058420C2753F00BA6E26 /* Diary.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C47058320C2753F00BA6E26 /* Diary.storyboard */; };
 		6C4731B91F22E33D007A048E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6C4731B81F22E33D007A048E /* GoogleService-Info.plist */; };
 		6C4C7DF11F6421A7000F83D1 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C4C7DF01F6421A7000F83D1 /* NotificationCenter.framework */; };
 		6C4C7DF41F6421A7000F83D1 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4C7DF31F6421A7000F83D1 /* TodayViewController.swift */; };
@@ -73,7 +74,6 @@
 		6C8D5A3B1F2F6F9B00BD3033 /* ShowDiarysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D5A3A1F2F6F9B00BD3033 /* ShowDiarysTableViewController.swift */; };
 		6C8D5A3D1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D5A3C1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift */; };
 		6C8F91DB1EF6984A003FCB5E /* NickProgressUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8F91DA1EF6984A003FCB5E /* NickProgressUIView.swift */; };
-		6C98935F1F9B971200EB261D /* Diary.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C98935E1F9B96BA00EB261D /* Diary.storyboard */; };
 		6C9C47F31F34793C00580DDA /* ShareDiaryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9C47F21F34793C00580DDA /* ShareDiaryManager.swift */; };
 		6CA0FC4A1F654DB6007444E2 /* TodayStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA0FC491F654DB6007444E2 /* TodayStepViewController.swift */; };
 		6CA649171F1D9CF8002C31D1 /* AddWeightHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA649161F1D9CF8002C31D1 /* AddWeightHeaderTableViewCell.swift */; };
@@ -173,6 +173,7 @@
 		6C3DEB861ED9B89D00D2A31B /* MainDiaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainDiaryViewController.swift; sourceTree = "<group>"; };
 		6C4149FC1F60299400425E66 /* SearchDefaultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDefaultTableViewCell.swift; sourceTree = "<group>"; };
 		6C46E5C31EF5574E00BED4D5 /* DetailProgressCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProgressCell.swift; sourceTree = "<group>"; };
+		6C47058320C2753F00BA6E26 /* Diary.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Diary.storyboard; sourceTree = "<group>"; };
 		6C4731B81F22E33D007A048E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6C4C7DEF1F6421A7000F83D1 /* SlimmingDiaryWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SlimmingDiaryWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C4C7DF01F6421A7000F83D1 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -196,7 +197,6 @@
 		6C8D5A3A1F2F6F9B00BD3033 /* ShowDiarysTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDiarysTableViewController.swift; sourceTree = "<group>"; };
 		6C8D5A3C1F2F6FCA00BD3033 /* ShowRecordsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRecordsTableViewCell.swift; sourceTree = "<group>"; };
 		6C8F91DA1EF6984A003FCB5E /* NickProgressUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NickProgressUIView.swift; sourceTree = "<group>"; };
-		6C98935E1F9B96BA00EB261D /* Diary.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Diary.storyboard; path = /Users/tsengwenjian/Documents/SlimmingDiary/SlimmingDiary/Diary.storyboard; sourceTree = "<absolute>"; };
 		6C9C47F21F34793C00580DDA /* ShareDiaryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareDiaryManager.swift; sourceTree = "<group>"; };
 		6CA0FC491F654DB6007444E2 /* TodayStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayStepViewController.swift; sourceTree = "<group>"; };
 		6CA649161F1D9CF8002C31D1 /* AddWeightHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWeightHeaderTableViewCell.swift; sourceTree = "<group>"; };
@@ -337,7 +337,7 @@
 			isa = PBXGroup;
 			children = (
 				6CBA0CD51ED7BBDF00122595 /* Main.storyboard */,
-				6C98935E1F9B96BA00EB261D /* Diary.storyboard */,
+				6C47058320C2753F00BA6E26 /* Diary.storyboard */,
 				6C1BB3D81F11FDDB001602EF /* AdvanceImageView.swift */,
 				6C8F91DA1EF6984A003FCB5E /* NickProgressUIView.swift */,
 				6C0A12E71F10D4F9009DB12E /* NickProgress2UIView.swift */,
@@ -610,11 +610,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C98935F1F9B971200EB261D /* Diary.storyboard in Resources */,
 				6C1442A21EF365B200AC0CE6 /* SearchTableViewCell.xib in Resources */,
 				6C003D871EDDB68300F1E69C /* sqlite3.sqlite in Resources */,
 				6CBA0CDC1ED7BBDF00122595 /* LaunchScreen.storyboard in Resources */,
 				6C1442A61EF38EF200AC0CE6 /* FooterTableViewCell.xib in Resources */,
+				6C47058420C2753F00BA6E26 /* Diary.storyboard in Resources */,
 				6C1442A41EF3732400AC0CE6 /* HeaderTableViewCell.xib in Resources */,
 				6CBA0CD71ED7BBDF00122595 /* Main.storyboard in Resources */,
 				6C342EB51EF3A4B1008378BF /* BodyTableViewCell.xib in Resources */,

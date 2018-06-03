@@ -17,10 +17,14 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.1</string>
+	<string>1.2.2</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>facebook</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb1227010624111956</string>
@@ -36,7 +40,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>FacebookAppID</key>
 	<string>1227010624111956</string>
 	<key>FacebookDisplayName</key>
@@ -61,32 +65,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>存取相簿以取得照片作發送和存取</string>
 	<key>UIApplicationShortcutItems</key>
-	<array>
-		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>touchWeight.png</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>紀錄體重</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>2</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>touchSport.png</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>紀錄運動</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>1</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>touchFood.png</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>紀錄飲食</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>0</string>
-		</dict>
-	</array>
+	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

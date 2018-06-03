@@ -24,7 +24,7 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
               let reach = Reachability(hostName: urlString)else{
             return
         }
-        
+        webView.loadHTMLString("style type = \text/css\">* {margin:0;padding:0;padding-bottom:10;padding-top:10;text-align:center;}img{width:90%}</style>", baseURL: nil)
    
         if !reach.checkInternetFunction(){
             
@@ -46,6 +46,7 @@ class NewsWebViewController: UIViewController,UIWebViewDelegate{
        
         
     }
+    
     
     @IBAction func backBtnAction(_ sender: Any) {
         self.dismiss(animated: true , completion:nil)

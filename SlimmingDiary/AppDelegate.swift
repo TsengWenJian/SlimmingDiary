@@ -34,50 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         
-        
-        
-        guard let tab = self.window?.rootViewController as? UITabBarController else{
-            return
-        }
-        
-        tab.selectedIndex = 1
-        
-        guard   let VC =  tab.selectedViewController as? UINavigationController,
-            let main = VC.childViewControllers[0] as? MainDiaryViewController else{
-                
-                
-                return
-                
-        }
-        
-        let button = UIButton()
-        button.tag = 1501
-        
-        switch shortcutItem.type {
-            
-        case "0":
-            main.currentPage = 0
-            main.pageVC.setViewControllers([main.foodDairyVC],direction: .forward, animated: false, completion: nil)
-            
-            
-        case "1":
-            main.currentPage = 1
-            main.pageVC.setViewControllers([main.sportsDiaryVC],direction: .forward, animated: false, completion: nil)
-            main.sportsDiaryVC.plusSport(sender:button)
-            
-            
-        case "2":
-            main.currentPage = 2
-            main.pageVC.setViewControllers([main.weightDiaryVC],direction: .forward, animated: false, completion: nil)
-            main.weightDiaryVC.plusWeight(sender:button)
-            
-        default:
-            break
-        }
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        
         let handled = FBSDKApplicationDelegate.sharedInstance().application(app,open: url, options:options)
         
         return handled
@@ -115,8 +74,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // myWidget://12345
         SHLog(message: "openURL:\(url)")
+        let result = FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+        return result
         
-        return true
         
     }
     
