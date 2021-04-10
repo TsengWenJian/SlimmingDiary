@@ -9,6 +9,5 @@
 import UIKit
 
 class ProgressPhotoCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var photoImageView: UIImageView!
-    
+    @IBOutlet var photoImageView: UIImageView!
 }

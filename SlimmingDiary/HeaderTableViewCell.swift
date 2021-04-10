@@ -9,17 +9,15 @@
 import UIKit
 
 class HeaderTableViewCell: UITableViewCell {
-   
+    @IBOutlet var rightLabel: UILabel!
+    @IBOutlet var expendBtn: UIButton!
+    @IBOutlet var totalCalorieLebel: UILabel!
+    @IBOutlet var titleLabel: UILabel!
 
-    @IBOutlet weak var rightLabel: UILabel!
-    @IBOutlet weak var expendBtn: UIButton!
-    @IBOutlet weak var totalCalorieLebel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
-    
-       override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
-        
-        self.contentView.layer.cornerRadius = 2
+
+        contentView.layer.cornerRadius = 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -27,5 +25,4 @@ class HeaderTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

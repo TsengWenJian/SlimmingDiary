@@ -9,12 +9,10 @@
 import UIKit
 
 class DetailImageTableViewCell: UITableViewCell {
-  
-  @IBOutlet weak var selectImageView: UIImageView!
-    
+    @IBOutlet var selectImageView: UIImageView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -22,5 +20,4 @@ class DetailImageTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

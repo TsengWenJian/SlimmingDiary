@@ -8,14 +8,12 @@
 
 import UIKit
 
-class AddTextFieldTableViewCell: UITableViewCell{
-
-    @IBOutlet weak var titleLabel: UILabel!
-     @IBOutlet weak var rightTextField: UITextField!
+class AddTextFieldTableViewCell: UITableViewCell {
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var rightTextField: UITextField!
     override func awakeFromNib() {
-       
         super.awakeFromNib()
-        
+
         rightTextField.delegate = self
     }
 
@@ -24,12 +22,10 @@ class AddTextFieldTableViewCell: UITableViewCell{
 
         // Configure the view for the selected state
     }
-    
-    
-
 }
-extension AddTextFieldTableViewCell: UITextFieldDelegate{
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+
+extension AddTextFieldTableViewCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_: UITextField) -> Bool {
         rightTextField.resignFirstResponder()
         return true
     }

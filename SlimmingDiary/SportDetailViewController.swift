@@ -9,63 +9,50 @@
 import UIKit
 
 class SportDetailViewController: UIViewController {
-    
-    
-    
-    @IBOutlet weak var collectionBtn: UIButton!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var calorieLabel: UILabel!
-    @IBOutlet weak var selectMinuteBtn: UIButton!
-    @IBOutlet weak var sampleNameLabel: UILabel!
-    
-    
-    var actionType:ActionType = .insert
+    @IBOutlet var collectionBtn: UIButton!
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var calorieLabel: UILabel!
+    @IBOutlet var selectMinuteBtn: UIButton!
+    @IBOutlet var sampleNameLabel: UILabel!
+
+    var actionType: ActionType = .insert
     let sportMaster = SportMaster.standard
-    var selectImage:UIImage?
+    var selectImage: UIImage?
     let pickerVC = PickerViewController.shared
-    
-    
-    var detail:sportDetail?{
-        
-        didSet{
-            
+
+    var detail: sportDetail? {
+        didSet {
             DispatchQueue.main.async {
-                
-                guard let myDetail = self.detail else{
+                guard let myDetail = self.detail else {
                     return
                 }
-                
+
                 self.calorieLabel.text = "消耗  \(myDetail.calories.roundTo(places: 1)) 卡"
                 self.selectMinuteBtn.setTitle("\(myDetail.minute) 分鐘", for: .normal)
                 self.sampleNameLabel.text = myDetail.sampleName
-                
+
                 if self.detail?.imageName != nil,
-                    self.actionType == .update{
-                    self.imageView.image = UIImage(imageName:myDetail.imageName, search: .documentDirectory)
-                    
+                   self.actionType == .update
+                {
+                    self.imageView.image = UIImage(imageName: myDetail.imageName, search: .documentDirectory)
                 }
             }
         }
     }
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        calorieLabel.setShadowView(0,0.1,CGSize.zero)
-        
-        let insert = UIBarButtonItem(title:"新增", style: .plain, target: self, action:#selector(insertSport))
-        
+
+        calorieLabel.setShadowView(0, 0.1, CGSize.zero)
+
+        let insert = UIBarButtonItem(title: "新增", style: .plain, target: self, action: #selector(insertSport))
+
         navigationItem.rightBarButtonItem = insert
-        
-        
-        if detail?.collection == 1{
+
+        if detail?.collection == 1 {
             collectionBtn.isSelected = true
         }
-        
-        
+
         navigationItem.rightBarButtonItem?.title = actionType.rawValue
         navigationItem.title = "\(actionType.rawValue)運動"
         pickerVC.delegate = self
@@ -73,209 +60,151 @@ class SportDetailViewController: UIViewController {
         pickerVC.numberOfComponents = 1
         pickerVC.selectRowOfbegin = 30
     }
-    
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
     }
-    
-    
-    
-    @objc func insertSport(){
-        
-        guard let myDetail = detail else{
-            return
-        }
-        
-        if actionType == .insert{
-            
-            
-            
-            var diary = sportDiary(minute: myDetail.minute,
-                                   sportId:myDetail.detailId,
-                                   calories: myDetail.calories)
-            
-            
-            diary.image = selectImage?.resizeImage(maxLength:1024)
-            
-            
-            // if isExist replace
-            if let index =  sportMaster.switchIsOnIDs.index(of:myDetail.detailId){
-                sportMaster.switchIsOnIDs.remove(at:index)
-                sportMaster.sportDiarys.remove(at:index)
-            }
-            
-            sportMaster.switchIsOnIDs.append(myDetail.detailId)
-            sportMaster.sportDiarys.append(diary)
-            
-            
-        }else{
-            
-            
-            let cond = "\(SPORTYDIARY_ID) = '\(myDetail.diaryId)'"
-            sportMaster.diaryType = .sportDiary
-            
-            var dict = [String:String]()
-            
-            if let image = selectImage{
-                
-                let selectImageHash  = "sport_\(image.hash)"
-                dict[SPORTYDIARY_IMAGENAME] = "'\(selectImageHash)'"
-                image.writeToFile(imageName: selectImageHash, search: .documentDirectory)
-                
-            }
-            
-            dict[SPORTYDIARY_MINUTE] = "'\(Int(myDetail.minute))'"
-            dict[SPORTYDIARY_CALORIE] = "'\(myDetail.calories)'"
-            
-            
-            
-            sportMaster.updataDiary(cond:cond, rowInfo:dict)
-            
-        }
-        
-        
-        navigationController?.popViewController(animated: true)
-        
-    }
-    
-    
-    
-    
-    func launchImagePickerWithSourceType(type:UIImagePickerControllerSourceType){
-        
-        
-        if UIImagePickerController.isSourceTypeAvailable(type) == false{
-            return
-            
-        }
-        
-        let picker = UIImagePickerController()
-        picker.sourceType =  type
-        picker.delegate = self
-        
-        if type == .camera{
-            picker.mediaTypes = ["public.image"]
-            
-        }else{
-            picker.allowsEditing = true;
-            
-        }
-        present(picker, animated: true, completion: nil)
-        
-    }
-    
-    
-    
-    @IBAction func collectionBtnAction(_ sender: Any) {
-        
-        
+
+    @objc func insertSport() {
         guard let myDetail = detail else {
             return
         }
-        
-        var iscollect:Int
+
+        if actionType == .insert {
+            var diary = sportDiary(minute: myDetail.minute,
+                                   sportId: myDetail.detailId,
+                                   calories: myDetail.calories)
+
+            diary.image = selectImage?.resizeImage(maxLength: 1024)
+
+            // if isExist replace
+            if let index = sportMaster.switchIsOnIDs.index(of: myDetail.detailId) {
+                sportMaster.switchIsOnIDs.remove(at: index)
+                sportMaster.sportDiarys.remove(at: index)
+            }
+
+            sportMaster.switchIsOnIDs.append(myDetail.detailId)
+            sportMaster.sportDiarys.append(diary)
+
+        } else {
+            let cond = "\(SPORTYDIARY_ID) = '\(myDetail.diaryId)'"
+            sportMaster.diaryType = .sportDiary
+
+            var dict = [String: String]()
+
+            if let image = selectImage {
+                let selectImageHash = "sport_\(image.hash)"
+                dict[SPORTYDIARY_IMAGENAME] = "'\(selectImageHash)'"
+                image.writeToFile(imageName: selectImageHash, search: .documentDirectory)
+            }
+
+            dict[SPORTYDIARY_MINUTE] = "'\(Int(myDetail.minute))'"
+            dict[SPORTYDIARY_CALORIE] = "'\(myDetail.calories)'"
+
+            sportMaster.updataDiary(cond: cond, rowInfo: dict)
+        }
+
+        navigationController?.popViewController(animated: true)
+    }
+
+    func launchImagePickerWithSourceType(type: UIImagePickerControllerSourceType) {
+        if UIImagePickerController.isSourceTypeAvailable(type) == false {
+            return
+        }
+
+        let picker = UIImagePickerController()
+        picker.sourceType = type
+        picker.delegate = self
+
+        if type == .camera {
+            picker.mediaTypes = ["public.image"]
+
+        } else {
+            picker.allowsEditing = true
+        }
+        present(picker, animated: true, completion: nil)
+    }
+
+    @IBAction func collectionBtnAction(_: Any) {
+        guard let myDetail = detail else {
+            return
+        }
+
+        var iscollect: Int
         sportMaster.diaryType = .sportDetail
-        
-        if collectionBtn.isSelected{
-            
+
+        if collectionBtn.isSelected {
             iscollect = 0
             collectionBtn.isSelected = false
-            
-        }else{
-            
+
+        } else {
             iscollect = 1
             collectionBtn.isSelected = true
-            
         }
         sportMaster.diaryType = .sportDetail
         sportMaster.updataDiary(cond: "\(SPORTDETAIL_ID) = '\(myDetail.detailId)' ",
-            rowInfo: [SPORTDETAIL_COLLECTION :"'\(iscollect)'"])
-        
-        
+                                rowInfo: [SPORTDETAIL_COLLECTION: "'\(iscollect)'"])
     }
-    
-    
-    @IBAction func minuteBtnAction(_ sender: Any) {
-        
+
+    @IBAction func minuteBtnAction(_: Any) {
         if let myDetail = detail {
             pickerVC.selectRowOfbegin = Double(myDetail.minute)
         }
-        
+
         pickerVC.displayDialog(present: self)
-        
-        
     }
-    @IBAction func selectImageViewTap(_ sender: Any) {
-        
-        let alertVC = UIAlertController(title:"選擇照片", message:"", preferredStyle:.actionSheet)
-        
-        let camera = UIAlertAction(title: "拍照", style: .default, handler: { (UIAlertAction) in
-            self.launchImagePickerWithSourceType(type:.camera)
+
+    @IBAction func selectImageViewTap(_: Any) {
+        let alertVC = UIAlertController(title: "選擇照片", message: "", preferredStyle: .actionSheet)
+
+        let camera = UIAlertAction(title: "拍照", style: .default, handler: { _ in
+            self.launchImagePickerWithSourceType(type: .camera)
         })
-        
-        
-        let library = UIAlertAction(title: "相簿", style: .default, handler: { (UIAlertAction) in
-            self.launchImagePickerWithSourceType(type:.photoLibrary)
+
+        let library = UIAlertAction(title: "相簿", style: .default, handler: { _ in
+            self.launchImagePickerWithSourceType(type: .photoLibrary)
         })
-        
-        
-        let cancel = UIAlertAction(title: "取消", style:.cancel, handler:nil)
+
+        let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
         alertVC.addAction(camera)
         alertVC.addAction(library)
         alertVC.addAction(cancel)
         present(alertVC, animated: true, completion: nil)
-        
-        
-        
-
     }
-    
-    
 }
 
-//MARK: - UIImagePickerControllerDelegate,UINavigationControllerDelegate
-extension SportDetailViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+// MARK: - UIImagePickerControllerDelegate,UINavigationControllerDelegate
+
+extension SportDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
         selectImage = UIImage()
-        
-        if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage{
+
+        if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage {
             selectImage = photo
-            
         }
         if let myImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             selectImage = myImage
         }
-        
+
         selectImage = selectImage?.resizeImage(maxLength: 1024)
         imageView.image = selectImage
-        
+
         dismiss(animated: true, completion: nil)
-        
-        
     }
-    
 }
 
-extension SportDetailViewController:PickerViewDelegate{
-    
-    func getSelectRow(data:Double){
-        
-        guard let myDetail = detail else{
+extension SportDetailViewController: PickerViewDelegate {
+    func getSelectRow(data: Double) {
+        guard let myDetail = detail else {
             return
         }
-        detail = sportDetail(diaryId:myDetail.diaryId,
-                             detailId:myDetail.detailId,
-                             minute:Int(data),
-                             classification:myDetail.classification,
-                             sampleName:myDetail.sampleName,
-                             imageName:myDetail.imageName,
-                             collection:myDetail.collection,
+        detail = sportDetail(diaryId: myDetail.diaryId,
+                             detailId: myDetail.detailId,
+                             minute: Int(data),
+                             classification: myDetail.classification,
+                             sampleName: myDetail.sampleName,
+                             imageName: myDetail.imageName,
+                             collection: myDetail.collection,
                              emts: myDetail.emts)
-        
-        
     }
 }

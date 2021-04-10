@@ -9,17 +9,11 @@
 import UIKit
 
 class CalendarCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var day: UILabel!
-    @IBOutlet weak var shadowView: UIView!
-    
+    @IBOutlet var day: UILabel!
+    @IBOutlet var shadowView: UIView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        shadowView.layer.cornerRadius = UIScreen.main.bounds.width/7*0.9/2
-            
+        shadowView.layer.cornerRadius = UIScreen.main.bounds.width / 7 * 0.9 / 2
     }
-
-    
-    
 }
- 
-   

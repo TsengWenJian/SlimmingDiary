@@ -6,99 +6,78 @@
 //  Copyright © 2017年 Nick. All rights reserved.
 //
 
-
 import Foundation
 import UIKit
 
-struct myProgress{
-    var progess:Double
-    var color:UIColor
-
+struct myProgress {
+    var progess: Double
+    var color: UIColor
 }
 
-@IBDesignable class NickProgressUIView: UIView{
-    
-    
-    @IBInspectable var lineWidth:CGFloat = 10
-    @IBInspectable var trackColor:UIColor = UIColor(red:(245/255.0),
-                                                    green:(245/255.0),
-                                                    blue:(245/255.0),
-                                                    alpha: 1.0)
-    
-    @IBInspectable var anim:Bool = false
-    @IBInspectable var duration:Double = 0.5
-    
-    private var trackLayer:CAShapeLayer?
+@IBDesignable class NickProgressUIView: UIView {
+    @IBInspectable var lineWidth: CGFloat = 10
+    @IBInspectable var trackColor = UIColor(red: 245 / 255.0,
+                                            green: 245 / 255.0,
+                                            blue: 245 / 255.0,
+                                            alpha: 1.0)
+
+    @IBInspectable var anim: Bool = false
+    @IBInspectable var duration: Double = 0.5
+
+    private var trackLayer: CAShapeLayer?
     private let path = UIBezierPath()
     private let titleLabel = UILabel()
     private let subTitleLabel = UILabel()
     var myProgresses = [myProgress]()
     var progressLayers = [CAShapeLayer]()
 
-
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    
     }
-    
-     override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-    }
-    
 
-    override func draw(_ rect: CGRect) {
-        
-        if trackLayer == nil{
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
+    override func draw(_: CGRect) {
+        if trackLayer == nil {
             trackLayer = CAShapeLayer()
-        }else{
-            
+        } else {
             return
         }
-    
-        let startAngle:CGFloat = CGFloat(Double.pi * -1/2)
-        let endAngle: CGFloat = CGFloat(Double.pi * 3/2)
-        
-        path.addArc(withCenter:CGPoint(x:bounds.midX, y: bounds.midY),
-                    radius: bounds.size.width/2 - lineWidth,
-                    startAngle:startAngle, endAngle:endAngle, clockwise: true)
-        
+
+        let startAngle = CGFloat(Double.pi * -1 / 2)
+        let endAngle = CGFloat(Double.pi * 3 / 2)
+
+        path.addArc(withCenter: CGPoint(x: bounds.midX, y: bounds.midY),
+                    radius: bounds.size.width / 2 - lineWidth,
+                    startAngle: startAngle, endAngle: endAngle, clockwise: true)
+
         trackLayer?.frame = bounds
         trackLayer?.fillColor = UIColor.clear.cgColor
         trackLayer?.strokeColor = trackColor.cgColor
         trackLayer?.lineWidth = lineWidth
         trackLayer?.path = path.cgPath
         layer.addSublayer(trackLayer!)
-        
-        
+
         addProgressLayerArray()
-        
-        
-        titleLabel.frame.size = CGSize(width:bounds.width,height: 20)
+
+        titleLabel.frame.size = CGSize(width: bounds.width, height: 20)
         titleLabel.textAlignment = .center
-        titleLabel.center = CGPoint(x: bounds.midX, y: bounds.midY-bounds.height/10)
+        titleLabel.center = CGPoint(x: bounds.midX, y: bounds.midY - bounds.height / 10)
         addSubview(titleLabel)
-        
+
         subTitleLabel.sizeToFit()
-        subTitleLabel.center = CGPoint(x:bounds.midX,y:titleLabel.frame.maxY+(bounds.height/10)*2)
+        subTitleLabel.center = CGPoint(x: bounds.midX, y: titleLabel.frame.maxY + (bounds.height / 10) * 2)
         addSubview(subTitleLabel)
-        
-        
     }
-    
-    
-    
-    
-    //根據progressArray 來增加CAShapeLayer
-    private func addProgressLayerArray(){
-        
-        var start:Double = 0
-        
-        for i in 0..<myProgresses.count{
-            
-            
-            let pr3  = CAShapeLayer()
+
+    // 根據progressArray 來增加CAShapeLayer
+    private func addProgressLayerArray() {
+        var start: Double = 0
+
+        for i in 0 ..< myProgresses.count {
+            let pr3 = CAShapeLayer()
             pr3.fillColor = UIColor.clear.cgColor
             pr3.strokeColor = myProgresses[i].color.cgColor
             pr3.lineWidth = lineWidth
@@ -107,53 +86,40 @@ struct myProgress{
             pr3.shadowOpacity = 0.2
             pr3.shadowOffset = CGSize(width: 0, height: 0)
             pr3.path = path.cgPath
-            
-            
-            
-            if i != 0{
-                start += myProgresses[i-1].progess
-                
+
+            if i != 0 {
+                start += myProgresses[i - 1].progess
             }
-            pr3.strokeStart = CGFloat(0 + start)/100
-            pr3.strokeEnd =  CGFloat(start)/100 + CGFloat(Double(myProgresses[i].progess))/100.0
+            pr3.strokeStart = CGFloat(0 + start) / 100
+            pr3.strokeEnd = CGFloat(start) / 100 + CGFloat(Double(myProgresses[i].progess)) / 100.0
             layer.addSublayer(pr3)
             progressLayers.append(pr3)
-            
-            if anim{
-                
+
+            if anim {
                 let animation = CABasicAnimation(keyPath: "strokeEnd")
-                animation.fromValue =  pr3.strokeStart
+                animation.fromValue = pr3.strokeStart
                 animation.toValue = pr3.strokeEnd
                 animation.duration = 1
-                pr3.add(animation, forKey:nil)
-                
+                pr3.add(animation, forKey: nil)
             }
         }
     }
-    
-    
-    func setProgress(pros:[myProgress]){
+
+    func setProgress(pros: [myProgress]) {
         myProgresses = pros
-        
     }
-    
-    func setTitleLabelText(text:String,size:CGFloat){
-        
+
+    func setTitleLabelText(text: String, size: CGFloat) {
         titleLabel.text = text
         titleLabel.font = UIFont.systemFont(ofSize: size)
-        
     }
-    
-    func setSubTitleLabelText(text:String,size:CGFloat){
-        
+
+    func setSubTitleLabelText(text: String, size: CGFloat) {
         subTitleLabel.text = text
         subTitleLabel.sizeToFit()
         subTitleLabel.font = UIFont.systemFont(ofSize: size)
-        
-        
     }
-    
-    
+
     //    func setProgress(calayer:CAShapeLayer) {
     //
     //
@@ -164,9 +130,8 @@ struct myProgress{
     //            CATransaction.setAnimationDuration(duration)
     //            calayer.strokeEnd = CGFloat(1)
     //            CATransaction.commit()
-    //            
-    //                
-    //           
+    //
+    //
+    //
     //           }
 }
-

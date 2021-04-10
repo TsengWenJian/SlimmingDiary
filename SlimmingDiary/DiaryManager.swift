@@ -8,10 +8,7 @@
 
 import Foundation
 
-
-enum DiaryType:String {
-    
-    
+enum DiaryType: String {
     case foodDetail = "Food_Detail"
     case foodDiary = "Food_Diary"
     case sportDetail = "Sport_Detail"
@@ -19,83 +16,61 @@ enum DiaryType:String {
     case sportDiaryAndDetail = "Sport_Diary,Sport_Detail"
     case foodDiaryAndDetail = "Food_Diary,Food_Detail"
     case weightDiary = "Weight_Diary"
-
 }
 
 enum DetailType {
-    
     case diaryData
     case defaultData
-    
-    
 }
 
-enum ActionType:String{
+enum ActionType: String {
     case update = "修改"
     case insert = "新增"
     case delete = "刪除"
     case search = "搜尋"
-    
 }
 
-class DiaryManager{
-    
-    var diaryType:DiaryType = .foodDiary
-    
-    
-    func getDiaryData(cond:String?,order:String?)->[[String:Any?]]{
-        
+class DiaryManager {
+    var diaryType: DiaryType = .foodDiary
+
+    func getDiaryData(cond: String?, order: String?) -> [[String: Any?]] {
         let db = SQLiteConnect()
-        if let mydb = db{
-            
-            return mydb.fetch2(diaryType.rawValue, cond: cond,order:order)
+        if let mydb = db {
+            return mydb.fetch2(diaryType.rawValue, cond: cond, order: order)
         }
-        return [[String:Any?]]()
-        
-        
+        return [[String: Any?]]()
     }
-    func deleteDiary(cond:String?){
+
+    func deleteDiary(cond: String?) {
         let db = SQLiteConnect()
-        if let mydb = db{
-            let _ =  mydb.delete(diaryType.rawValue, cond: cond)
+        if let mydb = db {
+            _ = mydb.delete(diaryType.rawValue, cond: cond)
         }
-        
-        
     }
-    
-    func updataDiary(cond:String?,rowInfo:[String:String]){
+
+    func updataDiary(cond: String?, rowInfo: [String: String]) {
         let db = SQLiteConnect()
-        
-        if let mydb = db{
-            let _ =  mydb.update(diaryType.rawValue, cond:cond,rowInfo:rowInfo)
+
+        if let mydb = db {
+            _ = mydb.update(diaryType.rawValue, cond: cond, rowInfo: rowInfo)
         }
-        
-        
     }
-    
-    func insertDiary(rowInfo:[String:String]){
-        
+
+    func insertDiary(rowInfo: [String: String]) {
         let db = SQLiteConnect()
-        let _ = db?.insert(diaryType.rawValue,rowInfo:rowInfo)
-        
+        _ = db?.insert(diaryType.rawValue, rowInfo: rowInfo)
     }
-    
-    func deleteImage(imageName:String?){
-        
-        guard let name = imageName else{
+
+    func deleteImage(imageName: String?) {
+        guard let name = imageName else {
             return
         }
         let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        
-        guard let imageURL = documentURL?.appendingPathComponent(name) else{
+
+        guard let imageURL = documentURL?.appendingPathComponent(name) else {
             return
         }
-        
-        let _ = try? FileManager.default.removeItem(at: imageURL)
-        
-    }
-    
-    
-    
-}
 
+        _ = try? FileManager.default.removeItem(at: imageURL)
+    }
+}

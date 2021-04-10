@@ -9,23 +9,19 @@
 import UIKit
 
 class ShowRecordsTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var titleImageView:AdvanceImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var userPhotoImageView:AdvanceImageView!
-    @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var shadowView: UIView!
-    @IBOutlet weak var detailLabel: UILabel!
+    @IBOutlet var titleImageView: AdvanceImageView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var userPhotoImageView: AdvanceImageView!
+    @IBOutlet var userNameLabel: UILabel!
+    @IBOutlet var shadowView: UIView!
+    @IBOutlet var detailLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        
+
         userPhotoImageView.layer.borderColor = UIColor.white.cgColor
         titleImageView.layer.cornerRadius = 5
         shadowView.layer.cornerRadius = 5
-        
-    
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -33,5 +29,4 @@ class ShowRecordsTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

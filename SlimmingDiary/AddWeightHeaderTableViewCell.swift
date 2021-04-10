@@ -9,9 +9,9 @@
 import UIKit
 
 class AddWeightHeaderTableViewCell: UITableViewCell {
-    @IBOutlet weak var confirmBtn: UIButton!
-    @IBOutlet weak var TitleLabel: UILabel!
-    @IBOutlet weak var cancelBtn: UIButton!
+    @IBOutlet var confirmBtn: UIButton!
+    @IBOutlet var TitleLabel: UILabel!
+    @IBOutlet var cancelBtn: UIButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,5 +23,4 @@ class AddWeightHeaderTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

@@ -9,9 +9,8 @@
 import UIKit
 
 class SearchDefaultTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var defaultImageView: UIImageView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var defaultImageView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -22,5 +21,4 @@ class SearchDefaultTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

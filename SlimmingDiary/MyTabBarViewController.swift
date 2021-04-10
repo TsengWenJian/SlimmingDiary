@@ -9,61 +9,46 @@
 import UIKit
 
 class MyTabBarViewController: UITabBarController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        if !ProfileManager.standard.isInputDone{
-            
+
+        if !ProfileManager.standard.isInputDone {
             DispatchQueue.main.async {
-                
-                if let viewController = self.storyboard?.instantiateViewController(withIdentifier:"EnterInformation"){
+                if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "EnterInformation") {
                     UIApplication.shared.keyWindow?.rootViewController = viewController
                     self.dismiss(animated: true, completion: nil)
                 }
-
             }
-            
-            return
 
+            return
         }
-        
+
         checkIsLogIn()
-        
     }
-    
-    
-    func checkIsLogIn(){
-        
+
+    func checkIsLogIn() {
         let manager = DataService.standard
         let profileManager = ProfileManager.standard
-        
-        
-        if manager.isLogin{
-            
-            if profileManager.userUid == nil{
+
+        if manager.isLogin {
+            if profileManager.userUid == nil {
                 manager.userLogOut()
-                
             }
         }
-        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         // Get the new view controller using segue.destinationViewController.
+         // Pass the selected object to the new view controller.
+     }
+     */
 }

@@ -9,18 +9,14 @@
 import UIKit
 
 class LoginBtnTableViewCell: UITableViewCell {
+    @IBOutlet var loginBtn: UIButton!
 
-    @IBOutlet weak var loginBtn: UIButton!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
-         loginBtn.layer.cornerRadius = 5
+        loginBtn.layer.cornerRadius = 5
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-       
-        
     }
-
 }

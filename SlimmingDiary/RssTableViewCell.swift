@@ -9,24 +9,20 @@
 import UIKit
 
 class RssTableViewCell: UITableViewCell {
-    @IBOutlet weak var advanceImage: AdvanceImageView!
-    @IBOutlet weak var pudDate: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var LabelView: UIView!
-    @IBOutlet weak var shadowView: UIView!
+    @IBOutlet var advanceImage: AdvanceImageView!
+    @IBOutlet var pudDate: UILabel!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var LabelView: UIView!
+    @IBOutlet var shadowView: UIView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        shadowView.setShadowView(1,0.4, CGSize(width: 1, height: 1))
-        LabelView.setShadowView(0,0.2, CGSize(width: 1, height: 1))
-        
-            }
+        shadowView.setShadowView(1, 0.4, CGSize(width: 1, height: 1))
+        LabelView.setShadowView(0, 0.2, CGSize(width: 1, height: 1))
+    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        
     }
-
 }

@@ -8,226 +8,172 @@
 
 import Foundation
 
-
-
 class ProfileManager {
-    
-    
     static let standard = ProfileManager()
-    
-    let liftStyles = ["靜態或坐的工作","站立活動較多的工作","重度使用體力之工作"]
-    let genders = ["女姓","男性"]
-    let presonalTitles = ["性別","身高","體重","目標體重","生日","生活型態","每日步數"]
-    
-    
-    var isInputDone:Bool{
-        return  UserDefaults.standard.bool(forKey:"isInuptDone")
+
+    let liftStyles = ["靜態或坐的工作", "站立活動較多的工作", "重度使用體力之工作"]
+    let genders = ["女姓", "男性"]
+    let presonalTitles = ["性別", "身高", "體重", "目標體重", "生日", "生活型態", "每日步數"]
+
+    var isInputDone: Bool {
+        return UserDefaults.standard.bool(forKey: "isInuptDone")
     }
-    
-    
-    var userHeight:Double{
-        return  UserDefaults.standard.double(forKey: "height")
-        
+
+    var userHeight: Double {
+        return UserDefaults.standard.double(forKey: "height")
     }
-    
-    var userWeight:Double{
+
+    var userWeight: Double {
         return UserDefaults.standard.double(forKey: "weight")
     }
-    
-    var userBirthday:String?{
+
+    var userBirthday: String? {
         return UserDefaults.standard.string(forKey: "birthday")
     }
-    
-    var userLifeStyle:Int{
+
+    var userLifeStyle: Int {
         return UserDefaults.standard.integer(forKey: "lifeStyle")
     }
-    
-    var userGender:Int{
-        return UserDefaults.standard.integer(forKey: "gender")
-        
-    }
-    
-    var userTargetWeight:Double{
-        return  UserDefaults.standard.double(forKey: "targetWeight")
-        
-    }
-    
-    
-    var userOriginWeight:Double{
-        return  UserDefaults.standard.double(forKey: "originWeight")
-    }
-    
-    var userEmbraveText:String?{
-        return  UserDefaults.standard.string(forKey:"embraveText")
-    }
-    
-    
-    
-    var userUid:String?{
-        return  UserDefaults.standard.string(forKey:"uid")
-    }
-    
-    
-    
-    var userName:String?{
-        return  UserDefaults.standard.string(forKey:"name")
-    }
-    var userPhotoName:String?{
-        
-        return UserDefaults.standard.string(forKey:"photo")
-    }
-    var userEmail:String?{
-    
-        return UserDefaults.standard.string(forKey:"email")
-        
-    }
-    
-    var targetStep:Double{
-        
-         return UserDefaults.standard.double(forKey:"targetStep")
-        
-    }
-    
 
-    
-    //MARK : - Function setUserDefault
-    
-    func setUserEmail(_ email:String?){
-        
+    var userGender: Int {
+        return UserDefaults.standard.integer(forKey: "gender")
+    }
+
+    var userTargetWeight: Double {
+        return UserDefaults.standard.double(forKey: "targetWeight")
+    }
+
+    var userOriginWeight: Double {
+        return UserDefaults.standard.double(forKey: "originWeight")
+    }
+
+    var userEmbraveText: String? {
+        return UserDefaults.standard.string(forKey: "embraveText")
+    }
+
+    var userUid: String? {
+        return UserDefaults.standard.string(forKey: "uid")
+    }
+
+    var userName: String? {
+        return UserDefaults.standard.string(forKey: "name")
+    }
+
+    var userPhotoName: String? {
+        return UserDefaults.standard.string(forKey: "photo")
+    }
+
+    var userEmail: String? {
+        return UserDefaults.standard.string(forKey: "email")
+    }
+
+    var targetStep: Double {
+        return UserDefaults.standard.double(forKey: "targetStep")
+    }
+
+    // MARK: - Function setUserDefault
+
+    func setUserEmail(_ email: String?) {
         UserDefaults.standard.set(email, forKey: "email")
         UserDefaults.standard.synchronize()
-        
-        
     }
 
-    
-    
-    func setPhotName(_ path:String?){
-        
+    func setPhotName(_ path: String?) {
         UserDefaults.standard.set(path, forKey: "photo")
         UserDefaults.standard.synchronize()
-        
-        
     }
-    
-    
-    
-    func setUserName(_ name:String?){
-        
+
+    func setUserName(_ name: String?) {
         UserDefaults.standard.set(name, forKey: "name")
         UserDefaults.standard.synchronize()
     }
-    
-    func setUid(_ uid:String?){
-        
+
+    func setUid(_ uid: String?) {
         UserDefaults.standard.set(uid, forKey: "uid")
         UserDefaults.standard.synchronize()
     }
-    
-    
-    func setUserHeight(_ height:Double){
-        
+
+    func setUserHeight(_ height: Double) {
         UserDefaults.standard.set(height, forKey: "height")
         UserDefaults.standard.synchronize()
     }
-    
-    func setUserWeight(_ weight:Double){
-        
+
+    func setUserWeight(_ weight: Double) {
         UserDefaults.standard.set(weight, forKey: "weight")
         UserDefaults.standard.synchronize()
     }
-    
-    func setUserBirthday(_ birthday:String){
-        
+
+    func setUserBirthday(_ birthday: String) {
         UserDefaults.standard.set(birthday, forKey: "birthday")
         UserDefaults.standard.synchronize()
     }
-    
-    func setUserTargetWeight(_ targetWeight:Double){
-        
+
+    func setUserTargetWeight(_ targetWeight: Double) {
         UserDefaults.standard.set(targetWeight, forKey: "targetWeight")
         UserDefaults.standard.synchronize()
     }
-    
-    func setUserOriginWeight(_ originWeight:Double){
+
+    func setUserOriginWeight(_ originWeight: Double) {
         UserDefaults.standard.set(originWeight, forKey: "originWeight")
         UserDefaults.standard.synchronize()
     }
-    
-    func setUserlifeStyle(_ lifeStyle:Int){
-        
+
+    func setUserlifeStyle(_ lifeStyle: Int) {
         UserDefaults.standard.set(lifeStyle, forKey: "lifeStyle")
         UserDefaults.standard.synchronize()
     }
-    
-    func setUserGender(_ gender:Int){
-        
+
+    func setUserGender(_ gender: Int) {
         UserDefaults.standard.set(gender, forKey: "gender")
         UserDefaults.standard.synchronize()
     }
-    
-    func setUserIsInputDone(_ done:Bool){
-        
-        UserDefaults.standard.set(done,forKey:"isInuptDone")
+
+    func setUserIsInputDone(_ done: Bool) {
+        UserDefaults.standard.set(done, forKey: "isInuptDone")
         UserDefaults.standard.synchronize()
-    }
-    
-    
-    func setUserEmbrave(_ text:String){
-        
-        UserDefaults.standard.set(text,forKey:"embraveText")
-        UserDefaults.standard.synchronize()
-        
-        
-    }
-    
-    func setTargetStep(_ step:Double){
-        
-        UserDefaults.standard.set(step, forKey: "targetStep")
-        UserDefaults.standard.synchronize()
-        
-        
     }
 
-    
-    
-    func getUserData()->[String]{
-        
+    func setUserEmbrave(_ text: String) {
+        UserDefaults.standard.set(text, forKey: "embraveText")
+        UserDefaults.standard.synchronize()
+    }
+
+    func setTargetStep(_ step: Double) {
+        UserDefaults.standard.set(step, forKey: "targetStep")
+        UserDefaults.standard.synchronize()
+    }
+
+    func getUserData() -> [String] {
         var userArray = [String]()
         userArray.append(genders[userGender])
         userArray.append(String(userHeight))
         userArray.append(String(userWeight))
         userArray.append(String(userTargetWeight))
-        
-        if let bir = userBirthday{
-            
+
+        if let bir = userBirthday {
             userArray.append(bir)
-            
-        }else{
+
+        } else {
             userArray.append("2001-01-01")
         }
-        
+
         userArray.append(liftStyles[userLifeStyle])
         userArray.append(String(Int(targetStep)))
-        
+
         return userArray
-        
-        
     }
-    
-    func setUserData(data:[String]){
-        
-        
-        guard  let gender = genders.index(of: data[0]),
-               let height = Double(data[1]),
-               let weight = Double(data[2]),
-               let targetWeight = Double(data[3]),
-               let liftStyle = liftStyles.index(of: data[5]),
-               let targetStep = Double(data[6])else{
+
+    func setUserData(data: [String]) {
+        guard let gender = genders.index(of: data[0]),
+              let height = Double(data[1]),
+              let weight = Double(data[2]),
+              let targetWeight = Double(data[3]),
+              let liftStyle = liftStyles.index(of: data[5]),
+              let targetStep = Double(data[6])
+        else {
             return
         }
-        
-        
+
         setUserGender(gender)
         setUserHeight(height)
         setUserWeight(weight)
@@ -235,15 +181,12 @@ class ProfileManager {
         setUserBirthday(data[4])
         setUserlifeStyle(liftStyle)
         setTargetStep(targetStep)
-        
-
     }
-    
-    
-    func setUserServiceDataNill(){
+
+    func setUserServiceDataNill() {
         setUserEmail(nil)
         setUid(nil)
         setPhotName(nil)
         setUserName(nil)
     }
- }
+}

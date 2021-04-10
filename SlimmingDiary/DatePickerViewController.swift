@@ -8,52 +8,40 @@
 
 import UIKit
 
-
-protocol DatePickerDelegate:class{
-    func getSelectDate(date:Date)
+protocol DatePickerDelegate: class {
+    func getSelectDate(date: Date)
 }
 
 class DatePickerViewController: UIViewController {
+    @IBOutlet var datePicker: UIDatePicker!
+    weak var delegate: DatePickerDelegate!
 
-    @IBOutlet weak var datePicker: UIDatePicker!
-    weak var delegate:DatePickerDelegate!
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+    override func touchesBegan(_: Set<UITouch>, with _: UIEvent?) {
         hideDialog()
     }
-    
-    
-    func displayPickViewDialog(present:UIViewController){
+
+    func displayPickViewDialog(present: UIViewController) {
         present.addChildViewController(self)
-        present.view.addSubview(self.view)
+        present.view.addSubview(view)
         didMove(toParentViewController: self)
     }
-    
-    func hideDialog(){
-        self.willMove(toParentViewController: nil)
-        self.view.removeFromSuperview()
-        self.removeFromParentViewController()
-        
+
+    func hideDialog() {
+        willMove(toParentViewController: nil)
+        view.removeFromSuperview()
+        removeFromParentViewController()
     }
-    
-    
-    
-    @IBAction func confirmBtnAction(_ sender: UIButton) {
-        
-        delegate.getSelectDate(date:datePicker.date)
+
+    @IBAction func confirmBtnAction(_: UIButton) {
+        delegate.getSelectDate(date: datePicker.date)
         hideDialog()
     }
-    
 }

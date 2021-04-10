@@ -9,28 +9,21 @@
 import UIKit
 
 class InTableCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var detailLabel: UILabel!
-    @IBOutlet weak var deleteBtnAction: UIButton!
-    @IBOutlet weak var shadowView: UIView!
-    
-    var isBeginEdit = false{
-        
-        didSet{
-            
-                deleteBtnAction.isHidden = !isBeginEdit
-            
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var detailLabel: UILabel!
+    @IBOutlet var deleteBtnAction: UIButton!
+    @IBOutlet var shadowView: UIView!
+
+    var isBeginEdit = false {
+        didSet {
+            deleteBtnAction.isHidden = !isBeginEdit
         }
     }
-   
+
     override func awakeFromNib() {
-        
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         shadowView.layer.cornerRadius = 5
-        
-        
     }
-    
 }
